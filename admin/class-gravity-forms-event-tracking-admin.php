@@ -150,7 +150,7 @@ class Gravity_Forms_Event_Tracking_Admin {
 	 * @since 1.0.0
 	 */
 	public function render_settings_description() {
-		echo '<p>Yup</p>';
+		echo '<p>Enter the UA code here. Make sure to setup your goal properly!</p>';
 	}
 
 	/**
