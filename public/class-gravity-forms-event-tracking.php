@@ -100,13 +100,10 @@ class Gravity_Forms_Event_Tracking {
 		require_once( 'includes/ga-mp/src/Racecore/GATracking/Autoloader.php');
 		Racecore\GATracking\Autoloader::register(dirname(__FILE__).'/includes/ga-mp/src/');
 
-		$ua_id = get_option('gravity_forms_event_tracking_ua');
+		$this->ua_id = get_option('gravity_forms_event_tracking_ua');
 
-		if (!$ua_id)
+		if (!$this->ua_id)
 			return;
-
-		// init tracking
-		$this->tracking = new \Racecore\GATracking\GATracking($ua_id,false);
 
 		add_action('gform_after_submission',array($this,'track_form'),10,2);
 	}
@@ -117,6 +114,8 @@ class Gravity_Forms_Event_Tracking {
 	 * @since 1.1.0
 	 */
 	public function track_form($entry,$form){
+		// init tracking
+		$this->tracking = new \Racecore\GATracking\GATracking($this->ua_id,false);
 
 		$event = new \Racecore\GATracking\Tracking\Event();
 		$event->setEventCategory('Forms');
