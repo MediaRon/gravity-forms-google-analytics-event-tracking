@@ -24,7 +24,6 @@ class Gravity_Forms_Event_Tracking {
 	const VERSION = '1.0.0';
 
 	/**
-	 * @TODO - Rename "gf-event-tracking" to the name of your plugin
 	 *
 	 * Unique identifier for your plugin.
 	 *
@@ -49,16 +48,19 @@ class Gravity_Forms_Event_Tracking {
 	protected static $instance = null;
 
 	/**
+	 * GA Tracking Object
+	 * 
+	 * @since 1.1.0
+	 */
+
+	/**
 	 * Initialize the plugin by setting localization and loading public scripts
 	 * and styles.
 	 *
 	 * @since     1.0.0
 	 */
 	private function __construct() {
-
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-
-		add_filter('gform_get_form_filter',array($this,'gform_js_event_tracking'),10,2);
+		$this->init_measurement_client();
 	}
 
 	/**
@@ -90,34 +92,47 @@ class Gravity_Forms_Event_Tracking {
 	}
 
 	/**
-	 * Register and enqueues public-facing JavaScript files.
-	 *
-	 * @since    1.0.0
+	 * Setup the google measurement protocol PHP client.
+	 * 
+	 * @since 1.1.0
 	 */
-	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_slug . '-script', plugins_url( 'assets/js/gf-event-tracking.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+	private function init_measurement_client(){
+		require_once( 'includes/ga-mp/src/Racecore/GATracking/Autoloader.php');
+		Racecore\GATracking\Autoloader::register(dirname(__FILE__).'/includes/ga-mp/src/');
+
+		$ua_id = get_option('gravity_forms_event_tracking_ua');
+
+		if (!$ua_id)
+			return;
+
+		// init tracking
+		$this->tracking = new \Racecore\GATracking\GATracking($ua_id,false);
+
+		add_action('gform_after_submission',array($this,'track_form'),10,2);
 	}
 
 	/**
-	 * Modify the Gravity Forms JS output
+	 * Track the form
 	 * 
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
-	public function gform_js_event_tracking($form_string,$form) {
+	public function track_form($entry,$form){
 
-		$tracking_injection = "if(window['gformRedirect']) { gf_event_track(".$form['id'].",gformRedirect()); }";
+		$event = new \Racecore\GATracking\Tracking\Event();
+		$event->setEventCategory('Forms');
+		$event->setEventLabel('Form: '.$form['title'].' ID: '.$form['id']);
+		$event->setEventAction('Submission');
 
-		$form_string = str_replace("if(window['gformRedirect']) {gformRedirect();}", $tracking_injection, $form_string);
+		$this->tracking->addTracking($event);
 
-		$script = '<script>';
-	    $script .= 'if (window.gf_event_form_labels === undefined){ window.gf_event_form_labels = new Object(); }';
-	    $script .= 'window.gf_event_form_labels['.$form['id'].'] = "Form: '.strip_tags($form['title']).' ID: '.$form['id'].'";';
-	    $script .= '</script>';
-	    return $form_string.$script;
+		try {
+		    $this->tracking->send();
+		} catch (Exception $e) {
+		    echo 'Error: ' . $e->getMessage() . '<br />' . "\r\n";
+		    echo 'Type: ' . get_class($e);
+		}
 
-		return $form_string;
 	}
 
-	
 
 }
