@@ -48,7 +48,94 @@ class Gravity_Forms_Event_Tracking_Admin {
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
-
+		
+		//Add items to Gravity Forms settings
+		add_filter( 'gform_form_settings', array( $this, 'form_settings' ), 10, 2 );
+		add_filter('gform_tooltips', array( $this, 'add_gforms_tooltips' ) );
+		add_filter( 'gform_pre_form_settings_save', array( $this, 'save_gforms_data' ), 10, 2 );
+	}
+	/**
+	* Save Gravity Forms Data
+	*
+	* @since     1.0.0
+	*
+	* @return    array    sanitized gravity form settings
+	*/
+	public function save_gforms_data( $form_data, $form ) {
+		$form_data[ 'gaEventCategory' ] = rgpost( 'ga_event_category' );
+		$form_data[ 'gaEventLabel' ] = rgpost( 'ga_event_label' );
+		$form_data[ 'gaEventAction' ] = rgpost( 'ga_event_action' );
+		return $form_data;
+	}
+	
+	
+	/**
+	* Add Gravity Forms Tooltips
+	*
+	* @since     1.0.0
+	*
+	* @return    array    Gravity Form tooltips
+	*/
+	public function add_gforms_tooltips( $tooltips ) {
+		//todo - internationalization 
+		$tooltips[ 'ga_event_category' ] = '<h6>Event Category</h6>Enter your GA goal event category';
+		$tooltips[ 'ga_event_label' ] = '<h6>Event Label</h6>Enter your GA goal event label';
+		$tooltips[ 'ga_event_action' ] = '<h6>Event Action</h6>Enter your GA goal event action';	
+		return $tooltips;
+	}
+	
+	/**
+	* Add settings to the form settings page
+	*
+	* @since     1.0.0
+	*
+	* @return    array    Gravity Form settings
+	*/
+	public function form_settings( $form_settings, $form ) {
+		$event_category = ' 
+        <tr>
+            <th>
+                <label for="ga_event_category" style="display:block;">' .
+                    __("Event Category", "gf-event-tracking") . ' ' .
+                    gform_tooltip("ga_event_category", "", true) .
+                '</label>
+            </th>
+            <td>
+                <input type="text" id="ga_event_category" name="ga_event_category" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventCategory')) . '" />
+            </td>
+        </tr>';
+        $event_label = ' 
+        <tr>
+            <th>
+                <label for="ga_event_label" style="display:block;">' .
+                    __("Event Label", "gf-event-tracking") . ' ' .
+                    gform_tooltip("ga_event_label", "", true) .
+                '</label>
+            </th>
+            <td>
+                <input type="text" id="ga_event_label" name="ga_event_label" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventLabel')) . '" />
+            </td>
+        </tr>';
+        $event_action = ' 
+        <tr>
+            <th>
+                <label for="ga_event_action" style="display:block;">' .
+                    __("Event Action", "gf-event-tracking") . ' ' .
+                    gform_tooltip("ga_event_action", "", true) .
+                '</label>
+            </th>
+            <td>
+                <input type="text" id="ga_event_action" name="ga_event_action" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventAction')) . '" />
+            </td>
+        </tr>';
+        $event_settings = array(
+	      	'cat' => $event_category,
+	      	'label' => $event_label,
+	      	'action' => $event_action  
+	    );
+		$event_tracking = array( __( 'Event Tracking', 'gf-event-tracking' ) => $event_settings );
+		$form_settings = $form_settings + $event_tracking;
+		return $form_settings;
 	}
 
 	/**
