@@ -129,9 +129,36 @@ class Gravity_Forms_Event_Tracking {
 		$this->tracking = new \Racecore\GATracking\GATracking($this->ua_id,false);
 
 		$event = new \Racecore\GATracking\Tracking\Event();
-		$event->setEventCategory('Forms');
-		$event->setEventLabel('Form: '.$form['title'].' ID: '.$form['id']);
-		$event->setEventAction('Submission');
+		
+		//Get event defaults
+		$event_category = 'Forms';
+		$event_label = 'Form: '.$form['title'].' ID: '.$form['id'];
+		$event_action = 'Submission';
+		
+		//Overwrite with Gravity Form Settings if necessary
+		if ( function_exists( 'rgar' ) ) {
+			//Event category
+			$gf_event_category = rgar( $form, 'gaEventCategory' );
+			if ( !empty( $gf_event_category ) ) {
+				$event_category = 	$gf_event_category;
+			}
+			
+			//Event label
+			$gf_event_label = rgar( $form, 'gaEventLabel' );
+			if ( !empty( $gf_event_label ) ) {
+				$event_label =  $gf_event_label;
+			}
+			
+			//Event action
+			$gf_event_action = rgar( $form, 'gaEventAction' );
+			if ( !empty( $gf_event_action ) ) {
+				$event_action =  $gf_event_action;
+			}
+		}
+				
+		$event->setEventCategory( $event_category );
+		$event->setEventLabel( $event_label );
+		$event->setEventAction( $event_action );
 
 		$this->tracking->addTracking($event);
 

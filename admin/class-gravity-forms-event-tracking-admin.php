@@ -52,7 +52,7 @@ class Gravity_Forms_Event_Tracking_Admin {
 		//Add items to Gravity Forms settings
 		add_filter( 'gform_form_settings', array( $this, 'form_settings' ), 10, 2 );
 		add_filter('gform_tooltips', array( $this, 'add_gforms_tooltips' ) );
-		add_filter( 'gform_pre_form_settings_save', array( $this, 'save_gforms_data' ), 10, 2 );
+		add_filter( 'gform_pre_form_settings_save', array( $this, 'save_gforms_data' ), 10, 1 );
 	}
 	/**
 	* Save Gravity Forms Data
@@ -61,7 +61,7 @@ class Gravity_Forms_Event_Tracking_Admin {
 	*
 	* @return    array    sanitized gravity form settings
 	*/
-	public function save_gforms_data( $form_data, $form ) {
+	public function save_gforms_data( $form_data ) {
 		$form_data[ 'gaEventCategory' ] = rgpost( 'ga_event_category' );
 		$form_data[ 'gaEventLabel' ] = rgpost( 'ga_event_label' );
 		$form_data[ 'gaEventAction' ] = rgpost( 'ga_event_action' );
