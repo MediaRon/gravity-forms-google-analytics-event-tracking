@@ -99,8 +99,19 @@ class Gravity_Forms_Event_Tracking {
 	private function init_measurement_client(){
 		require_once( 'includes/ga-mp/src/Racecore/GATracking/Autoloader.php');
 		Racecore\GATracking\Autoloader::register(dirname(__FILE__).'/includes/ga-mp/src/');
-
-		$this->ua_id = get_option('gravity_forms_event_tracking_ua');
+		
+		//Get the UA ID
+		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_gravity-forms-event-tracking_settings', array() );
+		$this->ua_id = $ua_id = false;
+		if ( !isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ] ) ) {
+			$ua_id = 	get_option('gravity_forms_event_tracking_ua', false ); //Backwards compat
+		} else {
+			$ua_id = 	$gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ];
+		}
+		$ua_regex = "/^UA-[0-9]{5,}-[0-9]{1,}$/";
+		if ( preg_match( $ua_regex, $ua_id ) ) {
+			$this->ua_id = $ua_id;
+		}
 
 		if (!$this->ua_id)
 			return;
