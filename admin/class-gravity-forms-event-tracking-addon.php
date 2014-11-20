@@ -33,7 +33,7 @@
 			return array(
 				array(
 					'title'       => __( 'Google Analytics', 'gf-event-tracking' ),
-					'description' => __( 'Enter the UA code here. Make sure to setup your goal properly!', 'gf-event-tracking' ),
+					'description' => __( 'Enter the UA code (UA-XXXX-Y) here. Make sure to setup your goal properly!', 'gf-event-tracking' ),
 					'fields'      => array(
 						array(
 							'name'              => 'gravity_forms_event_tracking_ua',
