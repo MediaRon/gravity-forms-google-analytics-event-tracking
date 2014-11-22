@@ -45,14 +45,97 @@ class Gravity_Forms_Event_Tracking_Admin {
 		$plugin = Gravity_Forms_Event_Tracking::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
-		// Add the options page and menu item.
-		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-		add_action('admin_init',array($this,'add_settings_fields'));
-
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
-
+		
+		//Add items to Gravity Forms settings
+		add_filter( 'gform_form_settings', array( $this, 'form_settings' ), 10, 2 );
+		add_filter('gform_tooltips', array( $this, 'add_gforms_tooltips' ) );
+		add_filter( 'gform_pre_form_settings_save', array( $this, 'save_gforms_data' ), 10, 1 );
+	}
+	/**
+	* Save Gravity Forms Data
+	*
+	* @since     1.0.0
+	*
+	* @return    array    sanitized gravity form settings
+	*/
+	public function save_gforms_data( $form_data ) {
+		$form_data[ 'gaEventCategory' ] = rgpost( 'ga_event_category' );
+		$form_data[ 'gaEventLabel' ] = rgpost( 'ga_event_label' );
+		$form_data[ 'gaEventAction' ] = rgpost( 'ga_event_action' );
+		return $form_data;
+	}
+	
+	
+	/**
+	* Add Gravity Forms Tooltips
+	*
+	* @since     1.0.0
+	*
+	* @return    array    Gravity Form tooltips
+	*/
+	public function add_gforms_tooltips( $tooltips ) {
+		//todo - internationalization 
+		$tooltips[ 'ga_event_category' ] = '<h6>Event Category</h6>Enter your GA goal event category';
+		$tooltips[ 'ga_event_label' ] = '<h6>Event Label</h6>Enter your GA goal event label';
+		$tooltips[ 'ga_event_action' ] = '<h6>Event Action</h6>Enter your GA goal event action';	
+		return $tooltips;
+	}
+	
+	/**
+	* Add settings to the form settings page
+	*
+	* @since     1.0.0
+	*
+	* @return    array    Gravity Form settings
+	*/
+	public function form_settings( $form_settings, $form ) {
+		$event_category = ' 
+        <tr>
+            <th>
+                <label for="ga_event_category" style="display:block;">' .
+                    __("Event Category", "gf-event-tracking") . ' ' .
+                    gform_tooltip("ga_event_category", "", true) .
+                '</label>
+            </th>
+            <td>
+                <input type="text" id="ga_event_category" name="ga_event_category" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventCategory')) . '" />
+            </td>
+        </tr>';
+        $event_label = ' 
+        <tr>
+            <th>
+                <label for="ga_event_label" style="display:block;">' .
+                    __("Event Label", "gf-event-tracking") . ' ' .
+                    gform_tooltip("ga_event_label", "", true) .
+                '</label>
+            </th>
+            <td>
+                <input type="text" id="ga_event_label" name="ga_event_label" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventLabel')) . '" />
+            </td>
+        </tr>';
+        $event_action = ' 
+        <tr>
+            <th>
+                <label for="ga_event_action" style="display:block;">' .
+                    __("Event Action", "gf-event-tracking") . ' ' .
+                    gform_tooltip("ga_event_action", "", true) .
+                '</label>
+            </th>
+            <td>
+                <input type="text" id="ga_event_action" name="ga_event_action" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventAction')) . '" />
+            </td>
+        </tr>';
+        $event_settings = array(
+	      	'cat' => $event_category,
+	      	'label' => $event_label,
+	      	'action' => $event_action  
+	    );
+		$event_tracking = array( __( 'Event Tracking', 'gf-event-tracking' ) => $event_settings );
+		$form_settings = $form_settings + $event_tracking;
+		return $form_settings;
 	}
 
 	/**
@@ -73,116 +156,6 @@ class Gravity_Forms_Event_Tracking_Admin {
 	}
 
 	/**
-	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
-	 *
-	 * @since    1.0.0
-	 */
-	public function add_plugin_admin_menu() {
-
-		/*
-		 * Add a settings page for this plugin to the Settings menu.
-		 *
-		 */
-		$this->plugin_screen_hook_suffix = add_options_page(
-			__( 'Gravity Forms Event Tracking', $this->plugin_slug ),
-			__( 'Gravity Forms Event Tracking', $this->plugin_slug ),
-			'manage_options',
-			$this->plugin_slug,
-			array( $this, 'display_plugin_admin_page' )
-		);
-
-	}
-
-	/**
-	 * Adds the settings fields for the options page
-	 * 
-	 * @since 1.0.0
-	 */
-	public function add_settings_fields() {
-
-		/**
-		 * Add the settings section
-		 */
-		add_settings_section(
-			'gravity_forms_event_tracking_settings_section',
-			'',
-			array($this,'render_settings_description'),
-			$this->plugin_slug
-		);
-
-		/**
-		 * Add the tracking ID input
-		 */
-		add_settings_field(
-			'gravity_forms_event_tracking_ua',
-			'UA Tracking ID',
-			array($this,'render_ua_field'),
-			$this->plugin_slug,
-			'gravity_forms_event_tracking_settings_section',
-			array('UA-XXXX-Y')
-		);
-
-		/**
-		 * Register our settings
-		 */
-		register_setting($this->plugin_slug,'gravity_forms_event_tracking_ua',array($this,'ua_validation'));
-
-	}
-
-	/**
-	 * Render the UA Field
-	 * 
-	 * @since  1.0.0
-	 * @param array $args arguments sent via the add_settings_field function
-	 */
-	public function render_ua_field($args) {
-
-		$html = '<input type="text" id="gravity_forms_event_tracking_ua" class="regular-text" name="gravity_forms_event_tracking_ua" value="'.get_option('gravity_forms_event_tracking_ua').'">';
-
-		$html .= '<p class="description">'.$args[0].'</p>';
-
-		echo $html;
-	}
-
-	/**
-	 * Render the settings section description
-	 * 
-	 * @since 1.0.0
-	 */
-	public function render_settings_description() {
-		echo '<p>Enter the UA code here. Make sure to setup your goal properly!</p>';
-	}
-
-	/**
-	 * Basic Validation
-	 */
-	public static function ua_validation($input ) {
-		$input = strip_tags( stripslashes( $input ) );
-		$ua_regex = "/UA-[0-9]{5,}-[0-9]{1,}/";
-
-		if (preg_match($ua_regex, $input)) {
-			return $input;
-		}
-		else {
-			add_settings_error(
-		    	'gravity_forms_event_tracking_ua',
-		    	'gravity_forms_event_tracking_invalid_ua',
-		    	'Invalid UA ID'
-		    );
-		    return false;
-		}
-	}
-
-	/**
-	 * Render the settings page for this plugin.
-	 *
-	 * @since    1.0.0
-	 */
-	public function display_plugin_admin_page() {
-		include_once( 'views/admin.php' );
-	}
-
-	/**
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    1.0.0
@@ -191,7 +164,7 @@ class Gravity_Forms_Event_Tracking_Admin {
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>'
+				'settings' => '<a href="' . esc_url( admin_url( 'admin.php?page=gf_settings&subview=gravity-forms-event-tracking' ) ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>'
 			),
 			$links
 		);
