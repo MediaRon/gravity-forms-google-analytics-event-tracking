@@ -130,8 +130,8 @@ class Gravity_Forms_Event_Tracking_Admin {
         </tr>';
         $event_settings = array(
 	      	'cat' => $event_category,
-	      	'label' => $event_label,
-	      	'action' => $event_action  
+	      	'action' => $event_action,  
+	      	'label' => $event_label
 	    );
 		$event_tracking = array( __( 'Event Tracking', 'gf-event-tracking' ) => $event_settings );
 		$form_settings = $form_settings + $event_tracking;
