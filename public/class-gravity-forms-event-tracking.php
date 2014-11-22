@@ -103,12 +103,16 @@ class Gravity_Forms_Event_Tracking {
 		//Get the UA ID
 		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_gravity-forms-event-tracking_settings', array() );
 		$this->ua_id = $ua_id = false;
+
 		if ( !isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ] ) ) {
-			$ua_id = 	get_option('gravity_forms_event_tracking_ua', false ); //Backwards compat
-		} else {
-			$ua_id = 	$gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ];
+			$ua_id = get_option('gravity_forms_event_tracking_ua', false ); //Backwards compat
 		}
+		else {
+			$ua_id = $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ];
+		}
+
 		$ua_regex = "/^UA-[0-9]{5,}-[0-9]{1,}$/";
+
 		if ( preg_match( $ua_regex, $ua_id ) ) {
 			$this->ua_id = $ua_id;
 		}
@@ -125,15 +129,16 @@ class Gravity_Forms_Event_Tracking {
 	 * @since 1.1.0
 	 */
 	public function track_form($entry,$form){
-		// init tracking
-		$this->tracking = new \Racecore\GATracking\GATracking($this->ua_id,false);
+
+		// Init tracking object
+		$this->tracking = new \Racecore\GATracking\GATracking( apply_filters( 'gform_ua_id', $this->ua_id, $form ), false );
 
 		$event = new \Racecore\GATracking\Tracking\Event();
 		
 		//Get event defaults
 		$event_category = 'Forms';
-		$event_label = 'Form: '.$form['title'].' ID: '.$form['id'];
-		$event_action = 'Submission';
+		$event_label    = sprintf( "Form: %s ID: %s", $form['title'], $form['id'] );
+		$event_action   = 'Submission';
 		
 		//Overwrite with Gravity Form Settings if necessary
 		if ( function_exists( 'rgar' ) ) {
@@ -156,11 +161,11 @@ class Gravity_Forms_Event_Tracking {
 			}
 		}
 				
-		$event->setEventCategory( $event_category );
-		$event->setEventLabel( $event_label );
-		$event->setEventAction( $event_action );
+		$event->setEventCategory( apply_filters( 'gform_event_category', $event_category, $form ) );
+		$event->setEventLabel( apply_filters( 'gform_event_label', $event_label, $form ) );
+		$event->setEventAction( apply_filters( 'gform_event_action', $event_action, $form ) );
 
-		$this->tracking->addTracking($event);
+		$this->tracking->addTracking( $event );
 
 		try {
 		    $this->tracking->send();
