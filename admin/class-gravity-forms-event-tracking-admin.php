@@ -77,10 +77,9 @@ class Gravity_Forms_Event_Tracking_Admin {
 	* @return    array    Gravity Form tooltips
 	*/
 	public function add_gforms_tooltips( $tooltips ) {
-		//todo - internationalization 
-		$tooltips[ 'ga_event_category' ] = '<h6>Event Category</h6>Enter your GA goal event category';
-		$tooltips[ 'ga_event_label' ] = '<h6>Event Label</h6>Enter your GA goal event label';
-		$tooltips[ 'ga_event_action' ] = '<h6>Event Action</h6>Enter your GA goal event action';	
+		$tooltips[ 'ga_event_category' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Category', 'gf-event-tracking' ), __( 'Enter your Google Analytics goal event category', 'gf-event-tracking' ) );
+		$tooltips[ 'ga_event_label' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Label', 'gf-event-tracking' ), __( 'Enter your Google Analytics goal event label', 'gf-event-tracking' ) );
+		$tooltips[ 'ga_event_action' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Action', 'gf-event-tracking' ), __( 'Enter your Google Analytics goal event action', 'gf-event-tracking' ) );
 		return $tooltips;
 	}
 	
