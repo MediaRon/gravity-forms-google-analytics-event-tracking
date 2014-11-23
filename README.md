@@ -13,7 +13,7 @@ To use this WordPress plugin, you will need:
 
 ## Description
 
-Gravity Forms Event Tracker is a <a href="http://www.gravityforms.com/">Gravity Forms</a> add-on that allows you to track submission events with <a href="http://www.google.com/analytics/">Google Analytics</a>.
+Gravity Forms Event Tracker is a free <a href="http://www.gravityforms.com/">Gravity Forms</a> add-on that allows you to track submission events with <a href="http://www.google.com/analytics/">Google Analytics</a>.
 
 ## Installation
 
