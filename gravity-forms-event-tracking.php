@@ -13,7 +13,7 @@
  * Version:           1.2.0
  * Author:            Nathan Marks
  * Author URI:        http://www.nvisionsolutions.ca
- * Text Domain:       gf-event-tracking
+ * Text Domain:       gravity-forms-google-analytics-event-tracking
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages

@@ -77,9 +77,9 @@ class Gravity_Forms_Event_Tracking_Admin {
 	* @return    array    Gravity Form tooltips
 	*/
 	public function add_gforms_tooltips( $tooltips ) {
-		$tooltips[ 'ga_event_category' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Category', 'gf-event-tracking' ), __( 'Enter your Google Analytics goal event category', 'gf-event-tracking' ) );
-		$tooltips[ 'ga_event_label' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Label', 'gf-event-tracking' ), __( 'Enter your Google Analytics goal event label', 'gf-event-tracking' ) );
-		$tooltips[ 'ga_event_action' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Action', 'gf-event-tracking' ), __( 'Enter your Google Analytics goal event action', 'gf-event-tracking' ) );
+		$tooltips[ 'ga_event_category' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event category', 'gravity-forms-google-analytics-event-tracking' ) );
+		$tooltips[ 'ga_event_label' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event label', 'gravity-forms-google-analytics-event-tracking' ) );
+		$tooltips[ 'ga_event_action' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event action', 'gravity-forms-google-analytics-event-tracking' ) );
 		return $tooltips;
 	}
 	
@@ -95,7 +95,7 @@ class Gravity_Forms_Event_Tracking_Admin {
         <tr>
             <th>
                 <label for="ga_event_category" style="display:block;">' .
-                    __("Event Category", "gf-event-tracking") . ' ' .
+                    __("Event Category", "gravity-forms-google-analytics-event-tracking") . ' ' .
                     gform_tooltip("ga_event_category", "", true) .
                 '</label>
             </th>
@@ -107,7 +107,7 @@ class Gravity_Forms_Event_Tracking_Admin {
         <tr>
             <th>
                 <label for="ga_event_label" style="display:block;">' .
-                    __("Event Label", "gf-event-tracking") . ' ' .
+                    __("Event Label", "gravity-forms-google-analytics-event-tracking") . ' ' .
                     gform_tooltip("ga_event_label", "", true) .
                 '</label>
             </th>
@@ -119,7 +119,7 @@ class Gravity_Forms_Event_Tracking_Admin {
         <tr>
             <th>
                 <label for="ga_event_action" style="display:block;">' .
-                    __("Event Action", "gf-event-tracking") . ' ' .
+                    __("Event Action", "gravity-forms-google-analytics-event-tracking") . ' ' .
                     gform_tooltip("ga_event_action", "", true) .
                 '</label>
             </th>
@@ -132,7 +132,7 @@ class Gravity_Forms_Event_Tracking_Admin {
 	      	'action' => $event_action,  
 	      	'label' => $event_label
 	    );
-		$event_tracking = array( __( 'Event Tracking', 'gf-event-tracking' ) => $event_settings );
+		$event_tracking = array( __( 'Event Tracking', 'gravity-forms-google-analytics-event-tracking' ) => $event_settings );
 		$form_settings = $form_settings + $event_tracking;
 		return $form_settings;
 	}
