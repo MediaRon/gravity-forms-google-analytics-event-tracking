@@ -36,7 +36,7 @@ class Gravity_Forms_Event_Tracking {
 	 *
 	 * @var      string
 	 */
-	protected $plugin_slug = 'gravity-forms-event-tracking';
+	protected $plugin_slug = 'gravity-forms-google-analytics-event-tracking';
 
 	/**
 	 * Instance of this class.
@@ -48,19 +48,28 @@ class Gravity_Forms_Event_Tracking {
 	protected static $instance = null;
 
 	/**
-	 * GA Tracking Object
-	 * 
-	 * @since 1.1.0
-	 */
-
-	/**
-	 * Initialize the plugin by setting localization and loading public scripts
-	 * and styles.
+	 * Constructor
 	 *
 	 * @since     1.0.0
 	 */
 	private function __construct() {
-		$this->init_measurement_client();
+
+		add_action( 'init', array( $this, 'init' ) );
+
+	}
+
+	/**
+	 * Load the UA settings and add the tracking action if successful
+	 * 
+	 * @since 1.4.0
+	 */
+	public function init() {
+
+		if ( $this->load_ua_settings() ) {
+			$this->load_measurement_client();
+			add_action( 'gform_after_submission', array( $this, 'track_form_after_submission' ), 10, 2 );
+		}
+
 	}
 
 	/**
@@ -92,15 +101,12 @@ class Gravity_Forms_Event_Tracking {
 	}
 
 	/**
-	 * Setup the google measurement protocol PHP client.
+	 * Load UA Settings
 	 * 
-	 * @since 1.1.0
+	 * @since 1.4.0
+	 * @return bool Returns true if UA ID is loaded, false otherwise
 	 */
-	private function init_measurement_client(){
-		require_once( 'includes/ga-mp/src/Racecore/GATracking/Autoloader.php');
-		Racecore\GATracking\Autoloader::register(dirname(__FILE__).'/includes/ga-mp/src/');
-		
-		//Get the UA ID
+	private function load_ua_settings() {
 		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_gravity-forms-event-tracking_settings', array() );
 		$this->ua_id = $ua_id = false;
 
@@ -115,21 +121,46 @@ class Gravity_Forms_Event_Tracking {
 
 		if ( preg_match( $ua_regex, $ua_id ) ) {
 			$this->ua_id = $ua_id;
+			return true;
 		}
 
 		if (!$this->ua_id)
-			return;
-
-		add_action('gform_after_submission',array($this,'track_form'),10,2);
+			return false;
 	}
 
 	/**
-	 * Track the form
+	 * Load the google measurement protocol PHP client.
 	 * 
-	 * @since 1.1.0
+	 * @since 1.4.0
 	 */
-	public function track_form($entry,$form){
+	private function load_measurement_client() {
 
+		require_once( 'includes/ga-mp/src/Racecore/GATracking/Autoloader.php');
+		Racecore\GATracking\Autoloader::register(dirname(__FILE__).'/includes/ga-mp/src/');
+				
+	}
+
+	/**
+	 * Handle the form after submission before sending to the event push
+	 * 
+	 * @since 1.4.0
+	 * @param object $entry Gravity Forms entry object
+	 * @param object $form Gravity Forms form object
+	 */
+	public function track_form_after_submission( $entry, $form ) {
+
+		$this->push_event( $form );
+
+	}
+
+	/**
+	 * Push the Google Analytics Event!
+	 * 
+	 * @since 1.4.0
+	 * @param object $form Gravity Forms form object
+	 */
+	private function push_event( $form ) {
+		
 		// Init tracking object
 		$this->tracking = new \Racecore\GATracking\GATracking( apply_filters( 'gform_ua_id', $this->ua_id, $form ), false );
 
@@ -142,6 +173,7 @@ class Gravity_Forms_Event_Tracking {
 		
 		//Overwrite with Gravity Form Settings if necessary
 		if ( function_exists( 'rgar' ) ) {
+
 			//Event category
 			$gf_event_category = rgar( $form, 'gaEventCategory' );
 			if ( !empty( $gf_event_category ) ) {
@@ -173,8 +205,6 @@ class Gravity_Forms_Event_Tracking {
 		    echo 'Error: ' . $e->getMessage() . '<br />' . "\r\n";
 		    echo 'Type: ' . get_class($e);
 		}
-
 	}
-
 
 }
