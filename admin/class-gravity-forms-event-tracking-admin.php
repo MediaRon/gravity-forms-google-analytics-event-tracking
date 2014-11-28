@@ -141,6 +141,7 @@ class Gravity_Forms_Event_Tracking_Admin {
             </th>
             <td>
                 <input type="text" id="ga_event_value" name="ga_event_value" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventValue')) . '" />
+                <p><strong>Notice:</strong> You can leave this field blank to use the payment amount on forms taking payment.</p>
             </td>
         </tr>';
         $event_settings = array(

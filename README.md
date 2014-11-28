@@ -7,7 +7,7 @@ To use this WordPress plugin, you will need:
 <ul>
 <li>WordPress 3.5 or greater</li>
 <li>PHP 5.3 or greater</li>
-<li><a href="http://www.gravityforms.com/">Gravity Forms</a> v1.7.9 or greater</li>
+<li><a href="http://www.gravityforms.com/">Gravity Forms</a> v1.8.8 or greater</li>
 <li>A <a href="http://www.google.com/analytics/">Google Analytics</a> account</li>
 </ul>
 

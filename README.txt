@@ -23,6 +23,7 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 = Minimum Requirements =
 - PHP 5.3+
+- Gravity Forms 1.8.8+
 
 = Using The WordPress Dashboard =
 
@@ -71,8 +72,3 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 = 1.3 =
 * Properly integrated with Gravity Forms settings API (thanks ronalfy!)
 * Enabled custom category/action/label on a per form basis.
-
-== Upgrade Notice ==
-
-= 1.3 =
-Because this is better than doing it manually!

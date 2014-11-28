@@ -16,16 +16,17 @@
  * @author  Ronald Huereca <ronalfy@gmail.com>
  */
  if ( class_exists( "GFForms" ) ) {
+
  	GFForms::include_addon_framework();
 
 	class Gravity_Forms_Event_Tracking_Addon extends GFAddOn {
 		protected $_version = "1.0";
-        protected $_min_gravityforms_version = "1.7.9999";
-        protected $_slug = "gravity-forms-google-analytics-event-tracking";
+        protected $_min_gravityforms_version = "1.8.8";
+        protected $_slug = "gravity-forms-event-tracking";
         protected $_path = "gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php";
         protected $_full_path = __FILE__;
-        protected $_url = "https://github.com/nathanmarks/wordpress-gravity-forms-event-tracking";
-        protected $_title = "Gravity Forms Event Tracking";
+        protected $_url = "https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking";
+        protected $_title = "Gravity Forms Google Analytics Event Tracking";
         protected $_short_title = "Event Tracking";
 		
 		// ------- Plugin settings -------
@@ -34,7 +35,7 @@
 			return array(
 				array(
 					'title'       => __( 'Google Analytics', 'gravity-forms-google-analytics-event-tracking' ),
-					'description' => __( 'Enter the UA code (UA-XXXX-Y) here. Make sure to setup your goal properly!', 'gravity-forms-google-analytics-event-tracking' ),
+					'description' => __( 'Enter your UA code (UA-XXXX-Y) here.', 'gravity-forms-google-analytics-event-tracking' ),
 					'fields'      => array(
 						array(
 							'name'              => 'gravity_forms_event_tracking_ua',
