@@ -21,7 +21,7 @@
 
 	class Gravity_Forms_Event_Tracking_Addon extends GFAddOn {
 		protected $_version = "1.0";
-        protected $_min_gravityforms_version = "1.8.8";
+        protected $_min_gravityforms_version = "1.7.9";
         protected $_slug = "gravity-forms-event-tracking";
         protected $_path = "gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php";
         protected $_full_path = __FILE__;
