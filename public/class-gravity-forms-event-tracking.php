@@ -59,20 +59,6 @@ class Gravity_Forms_Event_Tracking {
 	}
 
 	/**
-	 * Load the UA settings and add the tracking action if successful
-	 * 
-	 * @since 1.4.0
-	 */
-	public function init() {
-
-		if ( $this->load_ua_settings() ) {
-			$this->load_measurement_client();
-			add_action( 'gform_after_submission', array( $this, 'track_form_after_submission' ), 10, 2 );
-		}
-
-	}
-
-	/**
 	 * Return the plugin slug.
 	 *
 	 * @since    1.0.0
@@ -98,6 +84,27 @@ class Gravity_Forms_Event_Tracking {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Load the UA settings and add the tracking action if successful
+	 * 
+	 * @since 1.4.0
+	 */
+	public function init() {
+
+		if ( $this->load_ua_settings() ) {
+			$this->load_measurement_client();
+
+
+			// Tracking hooks
+			add_action( 'gform_after_submission', array( $this, 'track_form_after_submission' ), 10, 2 );
+
+			// IPN hook for paypal standard!
+			add_action( 'gform_paypal_pre_ipn', array( $this, 'track_form_after_ipn' ), 10, 4 );
+			add_action( 'gform_paypal_post_ipn', array( $this, 'track_form_after_ipn' ), 10, 4 );
+		}
+
 	}
 
 	/**
@@ -149,9 +156,15 @@ class Gravity_Forms_Event_Tracking {
 	 */
 	public function track_form_after_submission( $entry, $form ) {
 
-		$this->push_event( $form );
+		echo "<pre>";
+		print_r($entry);
+		echo "</pre>";
+
+		//$this->push_event( $form );
 
 	}
+
+	
 
 	/**
 	 * Push the Google Analytics Event!
@@ -160,33 +173,33 @@ class Gravity_Forms_Event_Tracking {
 	 * @param object $form Gravity Forms form object
 	 */
 	private function push_event( $form ) {
-		
+
 		// Init tracking object
 		$this->tracking = new \Racecore\GATracking\GATracking( apply_filters( 'gform_ua_id', $this->ua_id, $form ), false );
 
 		$event = new \Racecore\GATracking\Tracking\Event();
 		
-		//Get event defaults
+		// Get event defaults
 		$event_category = 'Forms';
 		$event_label    = sprintf( "Form: %s ID: %s", $form['title'], $form['id'] );
 		$event_action   = 'Submission';
 		
-		//Overwrite with Gravity Form Settings if necessary
+		// Overwrite with Gravity Form Settings if necessary
 		if ( function_exists( 'rgar' ) ) {
 
-			//Event category
+			// Event category
 			$gf_event_category = rgar( $form, 'gaEventCategory' );
 			if ( !empty( $gf_event_category ) ) {
 				$event_category = 	$gf_event_category;
 			}
 			
-			//Event label
+			// Event label
 			$gf_event_label = rgar( $form, 'gaEventLabel' );
 			if ( !empty( $gf_event_label ) ) {
 				$event_label =  $gf_event_label;
 			}
 			
-			//Event action
+			// Event action
 			$gf_event_action = rgar( $form, 'gaEventAction' );
 			if ( !empty( $gf_event_action ) ) {
 				$event_action =  $gf_event_action;
