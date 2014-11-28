@@ -4,6 +4,7 @@
  *
  * @package   Gravity_Forms_Event_Tracking_Admin
  * @author    Nathan Marks <nmarks@nvisionsolutions.ca>
+ * @author    Ronald Huereca <ronalfy@gmail.com>
  * @license   GPL-2.0+
  * @link      http://www.nvisionsolutions.ca
  * @copyright 2014 Nathan Marks
@@ -40,7 +41,7 @@
 							'label'             => __( 'UA Tracking ID', 'gravity-forms-google-analytics-event-tracking' ),
 							'type'              => 'text',
 							'class'             => 'medium',
-							'tooltip' => 'UA-XXXX-Y',
+							'tooltip' 			=> 'UA-XXXX-Y',
 							'feedback_callback' => array( $this, 'ua_validation' )
 						),
 					)
@@ -61,5 +62,6 @@
 			}
 		}
 	}
+	
 	new Gravity_Forms_Event_Tracking_Addon();
 }

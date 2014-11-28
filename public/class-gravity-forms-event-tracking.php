@@ -93,16 +93,17 @@ class Gravity_Forms_Event_Tracking {
 	 */
 	public function init() {
 
-		if ( $this->load_ua_settings() ) {
+		if ( ! is_admin() && $this->load_ua_settings() ) {
 			$this->load_measurement_client();
-
 
 			// Tracking hooks
 			add_action( 'gform_after_submission', array( $this, 'track_form_after_submission' ), 10, 2 );
 
 			// IPN hook for paypal standard!
-			add_action( 'gform_paypal_pre_ipn', array( $this, 'track_form_after_ipn' ), 10, 4 );
-			add_action( 'gform_paypal_post_ipn', array( $this, 'track_form_after_ipn' ), 10, 4 );
+			if ( class_exists( 'GFPayPal' ) ) {
+				add_action( 'gform_paypal_request', array( $this, 'paypal_save_ga_cookie' ), 10, 3 );
+				add_action( 'gform_paypal_post_ipn', array( $this, 'paypal_track_form_post_ipn' ), 10, 4 );
+			}
 		}
 
 	}
@@ -114,7 +115,12 @@ class Gravity_Forms_Event_Tracking {
 	 * @return bool Returns true if UA ID is loaded, false otherwise
 	 */
 	private function load_ua_settings() {
-		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_gravity-forms-event-tracking_settings', array() );
+		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_gravity-forms-google-analytics-event-tracking_settings', array() );
+
+		echo "<pre>";
+		print_r($gravity_forms_add_on_settings);
+		echo "</pre>";
+
 		$this->ua_id = $ua_id = false;
 
 		if ( !isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ] ) ) {
@@ -160,19 +166,22 @@ class Gravity_Forms_Event_Tracking {
 		print_r($entry);
 		echo "</pre>";
 
-		//$this->push_event( $form );
+		exit();
+
+		$this->push_event( $entry, $form );
 
 	}
 
-	
+
 
 	/**
 	 * Push the Google Analytics Event!
 	 * 
 	 * @since 1.4.0
+	 * @param object $event Gravity Forms event object
 	 * @param object $form Gravity Forms form object
 	 */
-	private function push_event( $form ) {
+	private function push_event( $entry, $form ) {
 
 		// Init tracking object
 		$this->tracking = new \Racecore\GATracking\GATracking( apply_filters( 'gform_ua_id', $this->ua_id, $form ), false );
@@ -183,6 +192,7 @@ class Gravity_Forms_Event_Tracking {
 		$event_category = 'Forms';
 		$event_label    = sprintf( "Form: %s ID: %s", $form['title'], $form['id'] );
 		$event_action   = 'Submission';
+		$event_value    = false;
 		
 		// Overwrite with Gravity Form Settings if necessary
 		if ( function_exists( 'rgar' ) ) {

@@ -83,7 +83,7 @@ class Gravity_Forms_Event_Tracking_Admin {
 		$tooltips[ 'ga_event_category' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event category', 'gravity-forms-google-analytics-event-tracking' ) );
 		$tooltips[ 'ga_event_label' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event label', 'gravity-forms-google-analytics-event-tracking' ) );
 		$tooltips[ 'ga_event_action' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event action', 'gravity-forms-google-analytics-event-tracking' ) );
-		$tooltips[ 'ga_event_value' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event value', 'gravity-forms-google-analytics-event-tracking' ) );
+		$tooltips[ 'ga_event_value' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event value. Leave blank to omit pushing a value to Google Analytics.', 'gravity-forms-google-analytics-event-tracking' ) );
 		return $tooltips;
 	}
 	
