@@ -23,11 +23,12 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 = Minimum Requirements =
 - PHP 5.3+
+- Gravity Forms 1.7+
 
 = Using The WordPress Dashboard =
 
 1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'gravity-forms-event-tracking'
+2. Search for gravity-forms-google-analytics-event-tracking
 3. Click 'Install Now'
 4. Activate the plugin on the Plugin dashboard
 
@@ -64,11 +65,10 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 == Changelog ==
 
+= 1.4 =
+* Added value for events
+* Properly integrated with payment based forms
+
 = 1.3 =
 * Properly integrated with Gravity Forms settings API (thanks ronalfy!)
 * Enabled custom category/action/label on a per form basis.
-
-== Upgrade Notice ==
-
-= 1.3 =
-Because this is better than doing it manually!
