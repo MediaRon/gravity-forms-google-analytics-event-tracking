@@ -7,11 +7,11 @@ Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add Google Analytics event tracking to your Gravity Forms in less than 5 minutes!
+Add Google Analytics Event Tracking to your Gravity Forms in less than 5 minutes!
 
 == Description ==
 
-This plugin provides an easy way to add Google Analytics event tracking to your Gravity Forms, allowing you to properly track form submissions as goals within Google Analytics.
+This plugin provides an easy way to add Google Analytics event tracking to your Gravity Forms, allowing you to properly track form submissions as events/conversions within Google Analytics.
 
 = Features =
 - Automatically send form submission events to Google Analytics
