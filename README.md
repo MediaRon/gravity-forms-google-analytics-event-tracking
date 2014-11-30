@@ -2,6 +2,8 @@ Gravity Forms Event Tracker
 ======================
 Gravity Forms Event Tracker for WordPress
 
+#### Note: Hook/Filter documentation will be added here soon.
+
 ## Requirements 
 To use this WordPress plugin, you will need:
 <ul>
