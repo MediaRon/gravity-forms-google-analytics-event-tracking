@@ -180,10 +180,10 @@ class Gravity_Forms_Event_Tracking {
 	 * Handle the IPN response for pushing the event
 	 * 
 	 * @since 1.4.0
-	 * @param array $_POST global post array from the IPN
+	 * @param array $post_object global post array from the IPN
 	 * @param array $entry Gravity Forms entry object
 	 */
-	public function paypal_track_form_post_ipn( $_POST, $entry ) {
+	public function paypal_track_form_post_ipn( $post_object, $entry ) {
 		// Check if the payment was completed before continuing
 		if ( strtolower( $entry['payment_status'] ) != 'completed' ) {
 			return;
