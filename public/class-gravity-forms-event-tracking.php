@@ -185,7 +185,7 @@ class Gravity_Forms_Event_Tracking {
 	 */
 	public function paypal_track_form_post_ipn( $post_object, $entry ) {
 		// Check if the payment was completed before continuing
-		if ( strtolower( $entry['payment_status'] ) != 'completed' ) {
+		if ( strtolower( $entry['payment_status'] ) != 'paid' ) {
 			return;
 		}
 
