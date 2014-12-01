@@ -51,51 +51,56 @@ class Gravity_Forms_Event_Tracking_Admin {
 		
 		//Add items to Gravity Forms settings
 		add_filter( 'gform_form_settings', array( $this, 'form_settings' ), 10, 2 );
-		add_filter('gform_tooltips', array( $this, 'add_gforms_tooltips' ) );
+		add_filter( 'gform_tooltips', array( $this, 'add_gforms_tooltips' ) );
 		add_filter( 'gform_pre_form_settings_save', array( $this, 'save_gforms_data' ), 10, 1 );
 	}
+
 	/**
-	* Save Gravity Forms Data
-	*
-	* @since     1.0.0
-	*
-	* @return    array    sanitized gravity form settings
-	*/
+	 * Save Gravity Forms Data
+	 *
+	 * @since     1.0.0
+	 *
+	 * @return    array    sanitized gravity form settings
+	 */
 	public function save_gforms_data( $form_data ) {
+
 		$form_data[ 'gaEventCategory' ] = rgpost( 'ga_event_category' );
 		$form_data[ 'gaEventLabel' ] = rgpost( 'ga_event_label' );
 		$form_data[ 'gaEventAction' ] = rgpost( 'ga_event_action' );
+		$form_data[ 'gaEventValue' ] = rgpost( 'ga_event_value' );
+
 		return $form_data;
 	}
 	
 	
 	/**
-	* Add Gravity Forms Tooltips
-	*
-	* @since     1.0.0
-	*
-	* @return    array    Gravity Form tooltips
-	*/
+	 * Add Gravity Forms Tooltips
+	 *
+	 * @since     1.0.0
+	 *
+	 * @return    array    Gravity Form tooltips
+	 */
 	public function add_gforms_tooltips( $tooltips ) {
-		$tooltips[ 'ga_event_category' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Category', 'gf-event-tracking' ), __( 'Enter your Google Analytics goal event category', 'gf-event-tracking' ) );
-		$tooltips[ 'ga_event_label' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Label', 'gf-event-tracking' ), __( 'Enter your Google Analytics goal event label', 'gf-event-tracking' ) );
-		$tooltips[ 'ga_event_action' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Action', 'gf-event-tracking' ), __( 'Enter your Google Analytics goal event action', 'gf-event-tracking' ) );
+		$tooltips[ 'ga_event_category' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event category', 'gravity-forms-google-analytics-event-tracking' ) );
+		$tooltips[ 'ga_event_label' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event label', 'gravity-forms-google-analytics-event-tracking' ) );
+		$tooltips[ 'ga_event_action' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event action', 'gravity-forms-google-analytics-event-tracking' ) );
+		$tooltips[ 'ga_event_value' ] = sprintf( '<h6>%s</h6>%s', __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics goal event value. Leave blank to omit pushing a value to Google Analytics.', 'gravity-forms-google-analytics-event-tracking' ) );
 		return $tooltips;
 	}
 	
 	/**
-	* Add settings to the form settings page
-	*
-	* @since     1.0.0
-	*
-	* @return    array    Gravity Form settings
-	*/
+	 * Add settings to the form settings page
+	 *
+	 * @since     1.0.0
+	 *
+	 * @return    array    Gravity Form settings
+	 */
 	public function form_settings( $form_settings, $form ) {
-		$event_category = ' 
+		$event_category = '
         <tr>
             <th>
                 <label for="ga_event_category" style="display:block;">' .
-                    __("Event Category", "gf-event-tracking") . ' ' .
+                    __("Event Category", "gravity-forms-google-analytics-event-tracking") . ' ' .
                     gform_tooltip("ga_event_category", "", true) .
                 '</label>
             </th>
@@ -107,7 +112,7 @@ class Gravity_Forms_Event_Tracking_Admin {
         <tr>
             <th>
                 <label for="ga_event_label" style="display:block;">' .
-                    __("Event Label", "gf-event-tracking") . ' ' .
+                    __("Event Label", "gravity-forms-google-analytics-event-tracking") . ' ' .
                     gform_tooltip("ga_event_label", "", true) .
                 '</label>
             </th>
@@ -119,7 +124,7 @@ class Gravity_Forms_Event_Tracking_Admin {
         <tr>
             <th>
                 <label for="ga_event_action" style="display:block;">' .
-                    __("Event Action", "gf-event-tracking") . ' ' .
+                    __("Event Action", "gravity-forms-google-analytics-event-tracking") . ' ' .
                     gform_tooltip("ga_event_action", "", true) .
                 '</label>
             </th>
@@ -127,12 +132,39 @@ class Gravity_Forms_Event_Tracking_Admin {
                 <input type="text" id="ga_event_action" name="ga_event_action" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventAction')) . '" />
             </td>
         </tr>';
+        $event_value = ' 
+        <tr>
+            <th>
+                <label for="ga_event_value" style="display:block;">' .
+                    __("Event Value", "gravity-forms-google-analytics-event-tracking") . ' ' .
+                    gform_tooltip("ga_event_value", "", true) .
+                '</label>
+            </th>
+            <td>
+                <input type="number" id="ga_event_value" name="ga_event_value" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventValue')) . '" />
+                <p><strong>Notice:</strong> You can leave this field blank to use the payment amount on forms taking payment.</p>
+            </td>
+        </tr>';
+        $event_instructions = '
+		<tr>
+			<th></th>
+			<td>
+				<p>If you leave these <strong>blank</strong>, the following defaults will be used when the event is tracked:</p>
+				<p>
+					<strong>'.__("Event Category", "gravity-forms-google-analytics-event-tracking").':</strong> Forms<br>
+					<strong>'.__("Event Action", "gravity-forms-google-analytics-event-tracking").':</strong> Submission<br>
+					<strong>'.__("Event Label", "gravity-forms-google-analytics-event-tracking").':</strong> Form: Form Name ID: X
+				</p>
+			</td>
+		</tr>';
         $event_settings = array(
+        	//'instructions' => $event_instructions,
 	      	'cat' => $event_category,
 	      	'action' => $event_action,  
-	      	'label' => $event_label
+	      	'label' => $event_label,
+	      	'value' => $event_value,
 	    );
-		$event_tracking = array( __( 'Event Tracking', 'gf-event-tracking' ) => $event_settings );
+		$event_tracking = array( __( 'Event Tracking', 'gravity-forms-google-analytics-event-tracking' ) => $event_settings );
 		$form_settings = $form_settings + $event_tracking;
 		return $form_settings;
 	}
