@@ -67,6 +67,7 @@ class Gravity_Forms_Event_Tracking_Admin {
 		$form_data[ 'gaEventCategory' ] = rgpost( 'ga_event_category' );
 		$form_data[ 'gaEventLabel' ] = rgpost( 'ga_event_label' );
 		$form_data[ 'gaEventAction' ] = rgpost( 'ga_event_action' );
+		$form_data[ 'gaEventValue' ] = rgpost( 'ga_event_value' );
 
 		return $form_data;
 	}
@@ -95,7 +96,7 @@ class Gravity_Forms_Event_Tracking_Admin {
 	 * @return    array    Gravity Form settings
 	 */
 	public function form_settings( $form_settings, $form ) {
-		$event_category = ' 
+		$event_category = '
         <tr>
             <th>
                 <label for="ga_event_category" style="display:block;">' .
@@ -140,15 +141,28 @@ class Gravity_Forms_Event_Tracking_Admin {
                 '</label>
             </th>
             <td>
-                <input type="text" id="ga_event_value" name="ga_event_value" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventValue')) . '" />
+                <input type="number" id="ga_event_value" name="ga_event_value" class="fieldwidth-3" value="' . esc_attr(rgar($form, 'gaEventValue')) . '" />
                 <p><strong>Notice:</strong> You can leave this field blank to use the payment amount on forms taking payment.</p>
             </td>
         </tr>';
+        $event_instructions = '
+		<tr>
+			<th></th>
+			<td>
+				<p>If you leave these <strong>blank</strong>, the following defaults will be used when the event is tracked:</p>
+				<p>
+					<strong>'.__("Event Category", "gravity-forms-google-analytics-event-tracking").':</strong> Forms<br>
+					<strong>'.__("Event Action", "gravity-forms-google-analytics-event-tracking").':</strong> Submission<br>
+					<strong>'.__("Event Label", "gravity-forms-google-analytics-event-tracking").':</strong> Form: Form Name ID: X
+				</p>
+			</td>
+		</tr>';
         $event_settings = array(
+        	//'instructions' => $event_instructions,
 	      	'cat' => $event_category,
 	      	'action' => $event_action,  
 	      	'label' => $event_label,
-	      	'value' => $event_value
+	      	'value' => $event_value,
 	    );
 		$event_tracking = array( __( 'Event Tracking', 'gravity-forms-google-analytics-event-tracking' ) => $event_settings );
 		$form_settings = $form_settings + $event_tracking;
