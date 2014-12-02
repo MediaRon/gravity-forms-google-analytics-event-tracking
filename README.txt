@@ -3,7 +3,7 @@ Contributors: nmarks, ronalfy
 Tags: gravity forms, google analytics, event tracking
 Requires at least: 3.5.2
 Tested up to: 4.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,8 +73,8 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 == Changelog ==
 
-= 1.4.1 =
-* Made sure Gravity Forms is loaded before loading plugin
+= 1.4.3 =
+* Fixed backwards-compat issue
 
 = 1.4 =
 * Added value for events
