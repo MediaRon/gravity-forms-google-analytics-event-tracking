@@ -13,6 +13,9 @@ Add Google Analytics Event Tracking to your Gravity Forms in less than 5 minutes
 
 This plugin provides an easy way to add Google Analytics event tracking to your Gravity Forms, allowing you to properly track form submissions as events/conversions within Google Analytics.
 
+= Setup Guide =
+Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
+
 = Features =
 - Automatically send form submission events to Google Analytics
 - Custom event categories, actions, labels and even values
@@ -60,7 +63,7 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 = How do I configure the event category, action and label for the form? =
 
-An answer to that question.
+Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
 
 = Are there any filters/hooks? =
 
