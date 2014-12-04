@@ -191,7 +191,7 @@ class Gravity_Forms_Event_Tracking {
 
 		// Fetch the cookie we saved previously and set it into the cookie global
 		// The php analytics library looks for this
-		$_COOKIE['_ga'] = gform_get_meta( $entry['ID'], 'ga_cookie' );
+		$_COOKIE['_ga'] = gform_get_meta( $entry['id'], 'ga_cookie' );
 
 		$form = GFFormsModel::get_form_meta( $entry['form_id'] );
 
