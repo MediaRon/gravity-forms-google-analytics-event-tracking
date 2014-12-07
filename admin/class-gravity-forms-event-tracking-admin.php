@@ -51,7 +51,7 @@ class Gravity_Forms_Event_Tracking_Admin {
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 		
 		//Add items to Gravity Forms settings
-		add_filter( 'gform_form_settings', array( $this, 'form_settings' ), 10, 2 );
+		// add_filter( 'gform_form_settings', array( $this, 'form_settings' ), 10, 2 );
 		add_filter( 'gform_tooltips', array( $this, 'add_gforms_tooltips' ) );
 		add_filter( 'gform_pre_form_settings_save', array( $this, 'save_gforms_data' ), 10, 1 );
 	}
