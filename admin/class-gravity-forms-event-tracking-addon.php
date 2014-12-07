@@ -138,9 +138,31 @@
                         array(
                             "label"   => __( 'Event Category', $this->_text_domain ),
                             "type"    => "text",
-                            "name"    => "ga_event_category",
-                            "tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Disable Event Tracking', $this->_text_domain ), __( 'Check this if you don\'t want this form to send any events to Google Analytics.', $this->_text_domain ) ),
-                        )
+                            "name"    => "gaEventCategory",
+                            "class"   => "medium merge-tag-support mt-position-right",
+                            "tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Category', $this->_text_domain ), __( 'Enter your Google Analytics event category', $this->_text_domain ) ),
+                        ),
+                        array(
+                            "label"   => __( 'Event Action', $this->_text_domain ),
+                            "type"    => "text",
+                            "name"    => "gaEventAction",
+                            "class"   => "medium merge-tag-support mt-position-right",
+                            "tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Action', $this->_text_domain ), __( 'Enter your Google Analytics event action', $this->_text_domain ) ),
+                        ),
+                        array(
+                            "label"   => __( 'Event Label', $this->_text_domain ),
+                            "type"    => "text",
+                            "name"    => "gaEventLabel",
+                            "class"   => "medium merge-tag-support mt-position-right",
+                            "tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Label', $this->_text_domain ), __( 'Enter your Google Analytics event label', $this->_text_domain ) ),
+                        ),
+                        array(
+                            "label"   => __( 'Event Value', $this->_text_domain ),
+                            "type"    => "text",
+                            "name"    => "gaEventValue",
+                            "class"   => "medium merge-tag-support mt-position-right",
+                            "tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Value', $this->_text_domain ), __( 'Enter your Google Analytics event value. Leave blank to omit pushing a value to Google Analytics. Or to use the purchase value of a payment based form.', $this->_text_domain ) ),
+                        ),
                     )
                 )
             );

@@ -76,6 +76,12 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 == Changelog ==
 
+= 1.5.0 =
+* Moved the form specific settings to their own tab.
+* Re-structured the plugin code to fall in line with the official Gravity Forms plugins.
+* Added a disable option to prevent a form from tracking any events.
+* Added merge tag (choose a form field dropdown) to the settings fields for more dynamic tracking capabilities.
+
 = 1.4.5 =
 * Fixed a bug where the source/medium was not being tracked correctly for PayPal Standard IPN Notification based conversions.
 
