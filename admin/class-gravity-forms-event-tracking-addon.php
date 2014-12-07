@@ -4,7 +4,6 @@
  *
  * @package   Gravity_Forms_Event_Tracking_Addon
  * @author    Nathan Marks <nmarks@nvisionsolutions.ca>
- * @author    Ronald Huereca <ronalfy@gmail.com>
  * @license   GPL-2.0+
  * @link      http://www.nvisionsolutions.ca
  * @copyright 2014 Nathan Marks
@@ -42,6 +41,7 @@
 			load_plugin_textdomain( $this->_slug, false, $this->_text_domain . '/languages' );
 
 			add_filter( 'gform_logging_supported', array( $this, 'set_logging_supported' ) );
+			add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 
 			if ( RG_CURRENT_PAGE == 'admin-ajax.php' ) {
 
@@ -174,12 +174,63 @@
 		public function ua_validation($input ) {
 			$input = strip_tags( stripslashes( $input ) );
 			$ua_regex = "/^UA-[0-9]{5,}-[0-9]{1,}$/";
-			if (preg_match($ua_regex, $input)) {
+			if ( preg_match( $ua_regex, $input ) ) {
 				return true;
 			} else {
-				$this->log_error( __( 'Invalid UA ID', $this->_text_domain ) );
+				$this->log_error( __( 'Invalid UA Tracking ID', $this->_text_domain ) );
 			    return false;
 			}
+		}
+
+		/**
+		 * Upgrading functions
+		 */
+		public function upgrade( $previous_version ) {
+
+			// If the version is below 1.5.0, we need to move the form specific settings
+			if ( version_compare( $previous_version, "1.5.0" ) == -1 ) {
+				$forms = GFAPI::get_forms( true );
+
+				foreach ( $forms as $form ) {
+					$this->upgrade_old_form_settings( $form );	
+				}
+			}
+
+		}
+
+		/**
+		 * Upgrade old settings created prior to new settings tab
+		 * 
+		 * @since 1.5.0
+		 * @param array $form GF Form Object Array
+		 */
+		public function upgrade_old_form_settings( $form ) {
+			$settings = array( 'gaEventCategory', 'gaEventAction', 'gaEventLabel', 'gaEventValue' );
+
+			foreach( $settings as $key => $setting ) {
+				if ( isset( $form[ $setting ] ) && ( ! isset( $form[ $this->_slug ] ) || ! isset( $form[ $this->_slug ][ $setting ] ) || empty( $form[ $this->_slug ][ $setting ] ) ) ) {
+					$form[ $this->_slug ][ $setting ] = $form[ $setting ];
+				}
+				unset( $form[ $setting ] );
+			}
+
+			GFFormsModel::update_form_meta( $form['id'], $form );
+		}
+
+		/**
+		 * Add settings action link to the plugins page.
+		 *
+		 * @since    1.0.0
+		 */
+		public function add_action_links( $links ) {
+
+			return array_merge(
+				array(
+					'settings' => '<a href="' . esc_url( admin_url( 'admin.php?page=gf_settings&subview=gravity-forms-event-tracking' ) ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>'
+				),
+				$links
+			);
+
 		}
 
 	}

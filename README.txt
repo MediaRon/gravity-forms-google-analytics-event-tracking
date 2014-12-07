@@ -1,5 +1,5 @@
 === Gravity Forms Google Analytics Event Tracking ===
-Contributors: nmarks, ronalfy
+Contributors: nmarks
 Tags: gravity forms, google analytics, event tracking
 Requires at least: 3.5.2
 Tested up to: 4.1
@@ -23,7 +23,7 @@ Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
 - Awesomeness
 
 = Configuration =
-After installing, you setup your UA ID in the Event Tracking tab on Gravity Forms' settings page and then customize your event category/action/label/value on the form settings page (see screenshots for more information).
+After installing, you setup your UA ID in the Event Tracking tab on Gravity Forms' settings page and then customize your event category/action/label/value on the form event tracking settings page (see screenshots for more information).
 
 For payment based forms, you can leave the value blank to convert using the total payment amount.
 

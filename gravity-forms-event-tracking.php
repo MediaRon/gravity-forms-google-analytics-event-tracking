@@ -44,7 +44,6 @@ add_action( 'plugins_loaded', array( 'Gravity_Forms_Event_Tracking', 'get_instan
  */
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-gravity-forms-event-tracking-admin.php' );
 	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-gravity-forms-event-tracking-addon.php' );
 	add_action( 'plugins_loaded', array( 'Gravity_Forms_Event_Tracking_Admin', 'get_instance' ) );
 
