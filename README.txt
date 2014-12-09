@@ -3,7 +3,7 @@ Contributors: nmarks
 Tags: gravity forms, google analytics, event tracking
 Requires at least: 3.5.2
 Tested up to: 4.1
-Stable tag: 1.4.5
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
 = Features =
 - Automatically send form submission events to Google Analytics
 - Custom event categories, actions, labels and even values
-- Dynamic event value on payment forms (integration with the payment add-ons including Paypal Standard)
+- Dynamic event value on payment forms (integration with the payment add-ons including Paypal Standard, PayPal Pro, Stripe, etc...)
 - Awesomeness
 
 = Configuration =

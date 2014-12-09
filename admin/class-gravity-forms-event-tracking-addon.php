@@ -41,7 +41,7 @@
 			load_plugin_textdomain( $this->_slug, false, $this->_text_domain . '/languages' );
 
 			add_filter( 'gform_logging_supported', array( $this, 'set_logging_supported' ) );
-			add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
+			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_action_links' ) );
 
 			if ( RG_CURRENT_PAGE == 'admin-ajax.php' ) {
 
@@ -111,30 +111,19 @@
 		/**
          * Form settings fields
          * 
+         * @since 1.5.0
          * @return array Array of form settings
          */
 		public function form_settings_fields() {
 			return array(
                 array(
-                    "title"  => __( 'Basic Settings', $this->_text_domain ),
-                    "fields" => array(
-                        array(
-                            "label"   => __( 'Disable Event Tracking', $this->_text_domain ),
-                            "type"    => "checkbox",
-                            "name"    => "ga_event_tracking_disabled",
-                            "tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Disable Event Tracking', $this->_text_domain ), __( 'Check this if you don\'t want this form to send any events to Google Analytics.', $this->_text_domain ) ),
-                            "choices" => array(
-                                array(
-                                    "label" => "Disabled",
-                                    "name"  => "disabled"
-                                )
-                            )
-                        )
-                    )
-                ),
-                array(
                     "title"  => __( 'Event Tracking Settings', $this->_text_domain ),
                     "fields" => array(
+                    	array(
+                            "label"   => "",
+                            "type"    => "instruction_field",
+                            "name"    => "instructions"
+                        ),
                         array(
                             "label"   => __( 'Event Category', $this->_text_domain ),
                             "type"    => "text",
@@ -164,12 +153,53 @@
                             "tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Value', $this->_text_domain ), __( 'Enter your Google Analytics event value. Leave blank to omit pushing a value to Google Analytics. Or to use the purchase value of a payment based form.', $this->_text_domain ) ),
                         ),
                     )
-                )
+                ),
+                array(
+                    "title"  => __( 'Other Settings', $this->_text_domain ),
+                    "fields" => array(
+                        array(
+                            "label"   => __( 'Disable Event Tracking', $this->_text_domain ),
+                            "type"    => "checkbox",
+                            "name"    => "ga_event_tracking_disabled",
+                            "tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Disable Event Tracking', $this->_text_domain ), __( 'Check this if you don\'t want this form to send any events to Google Analytics.', $this->_text_domain ) ),
+                            "choices" => array(
+                                array(
+                                    "label" => "Disabled",
+                                    "name"  => "disabled"
+                                )
+                            )
+                        )
+                    )
+                ),
             );
+		}
+
+
+		/**
+		 * Instruction field
+		 * 
+		 * @since 1.5.0
+		 */
+		public function single_setting_row_instruction_field(){
+			echo '
+				<tr>
+					
+					<th colspan="2">
+						<p>' . __( "If you leave these blank, the following defaults will be used when the event is tracked", $this->_text_domain ) . ':</p>
+						<p>
+							<strong>' . __( "Event Category", $this->_text_domain ) . ':</strong> Forms<br>
+							<strong>' . __( "Event Action", $this->_text_domain ) . ':</strong> Submission<br>
+							<strong>' . __( "Event Label", $this->_text_domain ) . ':</strong> Form: {form_title} ID: {form_id}<br>
+							<strong>' . __( "Event Value", $this->_text_domain ) . ':</strong> Payment Amount (on payment forms only, otherwise nothing is sent by default)
+						</p>
+					</td>
+				</tr>';
 		}
 
 		/**
 		 * Basic Validation
+		 * 
+		 * @since 1.3.0
 		 */
 		public function ua_validation($input ) {
 			$input = strip_tags( stripslashes( $input ) );
@@ -184,6 +214,8 @@
 
 		/**
 		 * Upgrading functions
+		 * 
+		 * @since 1.5.0
 		 */
 		public function upgrade( $previous_version ) {
 

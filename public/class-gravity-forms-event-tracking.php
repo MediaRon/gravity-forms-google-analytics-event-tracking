@@ -222,29 +222,29 @@ class Gravity_Forms_Event_Tracking {
 		$event_value = $this->get_event_value( $entry, $form );
 		
 		// Overwrite with Gravity Form Settings if necessary
-		if ( function_exists( 'rgar' ) ) {
+		if ( function_exists( 'rgar' ) && isset( $form['gravity_forms_event_tracking'] ) ) {
 			// Event category
-			$gf_event_category = rgar( $form, 'gaEventCategory' );
+			$gf_event_category = rgar( $form['gravity_forms_event_tracking'], 'gaEventCategory' );
 			if ( !empty( $gf_event_category ) ) {
-				$event_category = 	$gf_event_category;
+				$event_category = GFCommon::replace_variables( $gf_event_category, $form, $entry, false, false, true, 'text' );
 			}
 			
 			// Event label
-			$gf_event_label = rgar( $form, 'gaEventLabel' );
+			$gf_event_label = rgar( $form['gravity_forms_event_tracking'], 'gaEventLabel' );
 			if ( !empty( $gf_event_label ) ) {
-				$event_label =  $gf_event_label;
+				$event_label =  GFCommon::replace_variables( $gf_event_label, $form, $entry, false, false, true, 'text' );
 			}
 			
 			// Event action
-			$gf_event_action = rgar( $form, 'gaEventAction' );
+			$gf_event_action = rgar( $form['gravity_forms_event_tracking'], 'gaEventAction' );
 			if ( !empty( $gf_event_action ) ) {
-				$event_action =  $gf_event_action;
+				$event_action =  GFCommon::replace_variables( $gf_event_action, $form, $entry, false, false, true, 'text' );
 			}
 
 			// Event value
-			$gf_event_value = rgar( $form, 'gaEventValue' );
+			$gf_event_value = rgar( $form['gravity_forms_event_tracking'], 'gaEventValue' );
 			if ( !empty( $gf_event_value ) ) {
-				$event_value =  $gf_event_value;
+				$event_value =  GFCommon::replace_variables( $gf_event_value, $form, $entry, false, false, true, 'text' );
 			}
 		}
 
