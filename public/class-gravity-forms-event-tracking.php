@@ -207,6 +207,9 @@ class Gravity_Forms_Event_Tracking {
 	 * @param array $form Gravity Forms form object
 	 */
 	private function push_event( $entry, $form ) {
+		if ( isset( $form['gravity-forms-event-tracking'] ) && $is_disabled = rgar( $form['gravity-forms-event-tracking'], 'gaEventTrackingDisabled' ) ) {
+			return false;
+		}
 
 		// Init tracking object
 		$this->tracking = new \Racecore\GATracking\GATracking( apply_filters( 'gform_ua_id', $this->ua_id, $form ), false );
@@ -222,27 +225,27 @@ class Gravity_Forms_Event_Tracking {
 		$event_value = $this->get_event_value( $entry, $form );
 		
 		// Overwrite with Gravity Form Settings if necessary
-		if ( function_exists( 'rgar' ) && isset( $form['gravity_forms_event_tracking'] ) ) {
+		if ( function_exists( 'rgar' ) && isset( $form['gravity-forms-event-tracking'] ) ) {
 			// Event category
-			$gf_event_category = rgar( $form['gravity_forms_event_tracking'], 'gaEventCategory' );
+			$gf_event_category = rgar( $form['gravity-forms-event-tracking'], 'gaEventCategory' );
 			if ( !empty( $gf_event_category ) ) {
 				$event_category = GFCommon::replace_variables( $gf_event_category, $form, $entry, false, false, true, 'text' );
 			}
 			
 			// Event label
-			$gf_event_label = rgar( $form['gravity_forms_event_tracking'], 'gaEventLabel' );
+			$gf_event_label = rgar( $form['gravity-forms-event-tracking'], 'gaEventLabel' );
 			if ( !empty( $gf_event_label ) ) {
 				$event_label =  GFCommon::replace_variables( $gf_event_label, $form, $entry, false, false, true, 'text' );
 			}
 			
 			// Event action
-			$gf_event_action = rgar( $form['gravity_forms_event_tracking'], 'gaEventAction' );
+			$gf_event_action = rgar( $form['gravity-forms-event-tracking'], 'gaEventAction' );
 			if ( !empty( $gf_event_action ) ) {
 				$event_action =  GFCommon::replace_variables( $gf_event_action, $form, $entry, false, false, true, 'text' );
 			}
 
 			// Event value
-			$gf_event_value = rgar( $form['gravity_forms_event_tracking'], 'gaEventValue' );
+			$gf_event_value = rgar( $form['gravity-forms-event-tracking'], 'gaEventValue' );
 			if ( !empty( $gf_event_value ) ) {
 				$event_value =  GFCommon::replace_variables( $gf_event_value, $form, $entry, false, false, true, 'text' );
 			}
@@ -263,8 +266,7 @@ class Gravity_Forms_Event_Tracking {
 		try {
 		    $this->tracking->send();
 		} catch (Exception $e) {
-		    echo 'Error: ' . $e->getMessage() . '<br />' . "\r\n";
-		    echo 'Type: ' . get_class($e);
+		    error_log( $e->getMessage() . ' in ' . get_class( $e ) );
 		}
 	}
 

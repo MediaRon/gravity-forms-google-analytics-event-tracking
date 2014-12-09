@@ -160,12 +160,12 @@
                         array(
                             "label"   => __( 'Disable Event Tracking', $this->_text_domain ),
                             "type"    => "checkbox",
-                            "name"    => "ga_event_tracking_disabled",
+                            "name"    => "gaDisableEventTracking",
                             "tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Disable Event Tracking', $this->_text_domain ), __( 'Check this if you don\'t want this form to send any events to Google Analytics.', $this->_text_domain ) ),
                             "choices" => array(
                                 array(
                                     "label" => "Disabled",
-                                    "name"  => "disabled"
+                                    "name"  => "gaEventTrackingDisabled"
                                 )
                             )
                         )
