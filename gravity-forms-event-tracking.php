@@ -10,7 +10,7 @@
  * Plugin Name:       Gravity Forms Google Analytics Event Tracking
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking/
  * Description:       Add Google Analytics event tracking to your Gravity Forms with ease.
- * Version:           1.4.5
+ * Version:           1.5.0
  * Author:            Nathan Marks
  * Author URI:        http://www.nvisionsolutions.ca
  * Text Domain:       gravity-forms-google-analytics-event-tracking
@@ -25,25 +25,20 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/*----------------------------------------------------------------------------*
- * Public-Facing Functionality
- *----------------------------------------------------------------------------*/
+class Gravity_Forms_Event_Tracking_Bootstrap {
 
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-gravity-forms-event-tracking.php' );
+	public static function load(){
 
-add_action( 'plugins_loaded', array( 'Gravity_Forms_Event_Tracking', 'get_instance' ) );
+		if ( ! method_exists( 'GFForms', 'include_addon_framework' ) ) {
+			return;
+		}
 
+		require_once( plugin_dir_path( __FILE__ ) . 'includes/class-gravity-forms-event-tracking.php' );
 
-/*----------------------------------------------------------------------------*
- * Dashboard and Administrative Functionality
- *----------------------------------------------------------------------------*/
+		GFAddOn::register( 'Gravity_Forms_Event_Tracking' );
 
-/*
- *
- * The code below is intended to to give the lightest footprint possible.
- */
-if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-gravity-forms-event-tracking-addon.php' );
+	}
 
 }
+
+add_action( 'gform_loaded', array( 'Gravity_Forms_Event_Tracking_Bootstrap', 'load' ), 5 );

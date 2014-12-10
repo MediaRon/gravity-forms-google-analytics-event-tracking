@@ -34,7 +34,7 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 = Minimum Requirements =
 - PHP 5.3+
-- Gravity Forms 1.7+
+- Gravity Forms 1.8+
 
 = Using The WordPress Dashboard =
 
