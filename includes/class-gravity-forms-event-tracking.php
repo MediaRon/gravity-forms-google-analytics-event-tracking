@@ -70,6 +70,7 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 			if ( $this->is_gravityforms_supported() ) {
 				$this->init_frontend();
 			}
+			
 		}
 
 	}
@@ -387,7 +388,6 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
         );
 	}
 
-
 	/**
 	 * Instruction field
 	 * 
@@ -396,7 +396,6 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 	public function single_setting_row_instruction_field(){
 		echo '
 			<tr>
-				
 				<th colspan="2">
 					<p>' . __( "If you leave these blank, the following defaults will be used when the event is tracked", $this->_text_domain ) . ':</p>
 					<p>
@@ -468,14 +467,12 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 	 * @since    1.0.0
 	 */
 	public function add_action_links( $links ) {
-
 		return array_merge(
 			array(
 				'settings' => '<a href="' . esc_url( admin_url( 'admin.php?page=gf_settings&subview=gravity-forms-event-tracking' ) ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>'
 			),
 			$links
 		);
-
 	}
 
 }
