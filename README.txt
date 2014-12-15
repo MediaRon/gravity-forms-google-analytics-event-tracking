@@ -1,9 +1,9 @@
 === Gravity Forms Google Analytics Event Tracking ===
-Contributors: nmarks, ronalfy
+Contributors: nmarks
 Tags: gravity forms, google analytics, event tracking
 Requires at least: 3.5.2
 Tested up to: 4.1
-Stable tag: 1.4.5
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,11 +19,11 @@ Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
 = Features =
 - Automatically send form submission events to Google Analytics
 - Custom event categories, actions, labels and even values
-- Dynamic event value on payment forms (integration with the payment add-ons including Paypal Standard)
+- Dynamic event value on payment forms (integration with the payment add-ons including Paypal Standard, PayPal Pro, Stripe, etc...)
 - Awesomeness
 
 = Configuration =
-After installing, you setup your UA ID in the Event Tracking tab on Gravity Forms' settings page and then customize your event category/action/label/value on the form settings page (see screenshots for more information).
+After installing, you setup your UA ID in the Event Tracking tab on Gravity Forms' settings page and then customize your event category/action/label/value on the form event tracking settings page (see screenshots for more information).
 
 For payment based forms, you can leave the value blank to convert using the total payment amount.
 
@@ -34,7 +34,7 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 = Minimum Requirements =
 - PHP 5.3+
-- Gravity Forms 1.7+
+- Gravity Forms 1.8+
 
 = Using The WordPress Dashboard =
 
@@ -75,6 +75,12 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 2. The form settings where you set your category, action and label.
 
 == Changelog ==
+
+= 1.5.0 =
+* Moved the form specific settings to their own tab.
+* Re-structured the plugin code to fall in line with the official Gravity Forms plugins.
+* Added a disable option to prevent a form from tracking any events.
+* Added merge tag (choose a form field dropdown) to the settings fields for more dynamic tracking capabilities.
 
 = 1.4.5 =
 * Fixed a bug where the source/medium was not being tracked correctly for PayPal Standard IPN Notification based conversions.
