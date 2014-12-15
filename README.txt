@@ -3,7 +3,7 @@ Contributors: nmarks
 Tags: gravity forms, google analytics, event tracking
 Requires at least: 3.5.2
 Tested up to: 4.1
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,10 @@ This plugin provides an easy way to add Google Analytics event tracking to your 
 
 = Setup Guide =
 Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
+
+= Minimum Requirements =
+- PHP 5.3+
+- Gravity Forms 1.8.20+
 
 = Features =
 - Automatically send form submission events to Google Analytics
@@ -34,7 +38,7 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 = Minimum Requirements =
 - PHP 5.3+
-- Gravity Forms 1.8+
+- Gravity Forms 1.8.20+
 
 = Using The WordPress Dashboard =
 
