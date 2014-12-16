@@ -10,7 +10,7 @@
  * Plugin Name:       Gravity Forms Google Analytics Event Tracking
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking/
  * Description:       Add Google Analytics event tracking to your Gravity Forms with ease.
- * Version:           1.5.1
+ * Version:           1.5.2
  * Author:            Nathan Marks
  * Author URI:        http://www.nvisionsolutions.ca
  * Text Domain:       gravity-forms-google-analytics-event-tracking

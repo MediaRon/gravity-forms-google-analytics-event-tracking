@@ -13,7 +13,7 @@
 GFForms::include_addon_framework();
 
 class Gravity_Forms_Event_Tracking extends GFAddOn {
-	protected $_version = "1.5.1";
+	protected $_version = "1.5.2";
     protected $_min_gravityforms_version = "1.8.20";
 
     /**
@@ -328,7 +328,7 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
      * @since 1.5.0
      * @return array Array of form settings
      */
-	public function form_settings_fields() {
+	public function form_settings_fields( $form ) {
 		return array(
             array(
                 "title"  => __( 'Event Tracking Settings', $this->_text_domain ),
