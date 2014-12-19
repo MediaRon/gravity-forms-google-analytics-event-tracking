@@ -47,7 +47,7 @@ class GATracking
      *
      * @var bool
      */
-    private $proxy = false;
+    private $proxy = true;
 
     /**
      * Protocol Version
@@ -337,6 +337,8 @@ class GATracking
             $eventPacket['uip'] = $_SERVER['REMOTE_ADDR']; // IP Override
             $eventPacket['ua'] = $_SERVER['HTTP_USER_AGENT']; // UA Override
         }
+
+        $eventPacket['ni'] = "1";
 
         $eventPacket = array_reverse($eventPacket);
 

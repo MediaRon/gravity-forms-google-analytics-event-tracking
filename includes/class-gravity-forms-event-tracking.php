@@ -208,6 +208,12 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 		// Init tracking object
 		$this->tracking = new \Racecore\GATracking\GATracking( apply_filters( 'gform_ua_id', $this->ua_id, $form ), false );
 		$event = new \Racecore\GATracking\Tracking\Event();
+
+		// Set some defaults
+		$full_url = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST']} . '/' . $_SERVER['REQUEST_URI'];
+		$event->setDocumentLocation( $full_url );
+		
+		$event->setDocumentTitle( $the_title );
 		
 		// Get event defaults
 		$event_category = 'Forms';
