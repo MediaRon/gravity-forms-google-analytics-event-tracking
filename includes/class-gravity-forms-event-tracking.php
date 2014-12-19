@@ -144,27 +144,22 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 	 * @param array $form Gravity Forms form object
 	 */
 	public function track_form_after_submission( $entry, $form ) {
-
+		global $post;
 		// Temporary until Gravity fix a bug
-		echo "<pre>";
-		print_r($entry);
-		echo "</pre>";
-		$entry = GFAPI::get_entry( $entry['id'] );
-		echo "<pre>";
-		print_r($entry);
-		echo "</pre>";
+		// $entry = GFAPI::get_entry( $entry['id'] );
 
-		// We need to check if this form is using paypal standard before we push a conversion.
-		if ( class_exists( 'GFPayPal' ) ) {
-			$paypal = GFPayPal::get_instance();
+		// Set some vars to send to GA
+		$ga_cookie = $_COOKIE['_ga'];
+		$document_location = 'http' . ( isset( $_SERVER['HTTPS'] ) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'];
+		$document_title = get_the_title( $post );
 
-			// See if a PayPal standard feed exists for this form and the condition is met.
-			// If it is we need to save the GA cookie to the entry instead for return from the IPN
-			if ( $feed = $paypal->get_payment_feed( $entry ) && $paypal->is_feed_condition_met( $feed, $form, $entry ) ) {
-				gform_update_meta( $entry['id'], 'ga_cookie', $_COOKIE['_ga'] );
-				return;
-			}
-		}
+		$ga_event_vars = array(
+			'ga_cookie' => $_COOKIE['_ga'],
+			'document_location' => $document_location,
+			'document_title' => $document_title
+		);
+
+		gform_update_meta( $entry['id'], 'ga_event_vars', maybe_serialize( $ga_event_vars ) );
 
 		// Push the event to google
 		$this->push_event( $entry, $form );
@@ -182,10 +177,6 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 		if ( strtolower( $entry['payment_status'] ) != 'paid' ) {
 			return;
 		}
-
-		// Fetch the cookie we saved previously and set it into the cookie global
-		// The php analytics library looks for this
-		$_COOKIE['_ga'] = gform_get_meta( $entry['id'], 'ga_cookie' );
 
 		$form = GFFormsModel::get_form_meta( $entry['form_id'] );
 
@@ -206,14 +197,18 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 		}
 
 		// Init tracking object
-		$this->tracking = new \Racecore\GATracking\GATracking( apply_filters( 'gform_ua_id', $this->ua_id, $form ), false );
+		$this->tracking = new \Racecore\GATracking\GATracking( apply_filters( 'gform_ua_id', $this->ua_id, $form ), true );
 		$event = new \Racecore\GATracking\Tracking\Event();
 
+		// get some stored vars
+		$ga_event_vars = maybe_unserialize( gform_get_meta( $entry['id'], 'ga_event_vars' ) );
+
 		// Set some defaults
-		$full_url = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST']} . '/' . $_SERVER['REQUEST_URI'];
-		$event->setDocumentLocation( $full_url );
+		$event->setDocumentLocation( $ga_event_vars['document_location'] );
+		$event->setDocumentTitle( $ga_event_vars['document_title'] );
 		
-		$event->setDocumentTitle( $the_title );
+		// Override this in case coming from paypal IPN
+		$_COOKIE['_ga'] = $ga_event_vars['ga_cookie'];
 		
 		// Get event defaults
 		$event_category = 'Forms';

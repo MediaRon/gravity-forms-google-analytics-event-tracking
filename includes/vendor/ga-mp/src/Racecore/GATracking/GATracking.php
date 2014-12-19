@@ -47,7 +47,7 @@ class GATracking
      *
      * @var bool
      */
-    private $proxy = true;
+    private $proxy = false;
 
     /**
      * Protocol Version
