@@ -101,7 +101,7 @@ class Social extends AbstractTracking
      * @return array
      * @throws \Racecore\GATracking\Exception\MissingTrackingParameterException
      */
-    public function getPaket()
+    public function createPackage()
     {
         if (!$this->getSocialAction()) {
             throw new MissingTrackingParameterException('social action musst be set');

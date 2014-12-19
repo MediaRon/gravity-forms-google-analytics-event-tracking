@@ -1,7 +1,7 @@
 <?php
 namespace Racecore\GATracking\Tracking\App;
 
-use Racecore\GATracking\Tracking\AbstractTracking;
+use Racecore\GATracking\Tracking\Event as DefaultEvent;
 
 /**
  * Google Analytics Measurement PHP Class
@@ -19,89 +19,6 @@ use Racecore\GATracking\Tracking\AbstractTracking;
  * @url     http://www.racecore.de
  * @package Racecore\GATracking\Tracking\App
  */
-class Event extends AbstractTracking
+class Event extends DefaultEvent
 {
-    /** @var string */
-    private $appName;
-
-    /** @var string */
-    private $eventCategory;
-
-    /** @var string */
-    private $eventAction;
-
-    /**
-     * Set the Application Name
-     *
-     * @param string $appName
-     */
-    public function setAppName($appName)
-    {
-        $this->appName = $appName;
-    }
-
-    /**
-     * Get the Application Name
-     *
-     * @return string
-     */
-    public function getAppName()
-    {
-        return $this->appName;
-    }
-
-    /**
-     * Set the Event Action
-     *
-     * @param string $eventAction
-     */
-    public function setEventAction($eventAction)
-    {
-        $this->eventAction = $eventAction;
-    }
-
-    /**
-     * Get the Event Action
-     *
-     * @return string
-     */
-    public function getEventAction()
-    {
-        return $this->eventAction;
-    }
-
-    /**
-     * Set the Event Category
-     *
-     * @param string $eventCategory
-     */
-    public function setEventCategory($eventCategory)
-    {
-        $this->eventCategory = $eventCategory;
-    }
-
-    /**
-     * Get the Event Category
-     *
-     * @return string
-     */
-    public function getEventCategory()
-    {
-        return $this->eventCategory;
-    }
-
-    /**
-     * Returns the Paket for App Event Tracking
-     *
-     * @return array
-     */
-    public function getPaket()
-    {
-        return array(
-            't' => 'event',
-            'an' => $this->getAppName(),
-            'ec' => $this->getEventCategory(),
-            'ea' => $this->getEventAction()
-        );
-    }
 }
