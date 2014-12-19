@@ -74,7 +74,7 @@ class Exception extends AbstractTracking
      *
      * @return array
      */
-    public function getPaket()
+    public function createPackage()
     {
         return array(
             't' => 'exception',

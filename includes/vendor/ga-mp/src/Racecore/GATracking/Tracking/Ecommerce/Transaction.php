@@ -29,7 +29,15 @@ class Transaction extends AbstractTracking
     private $shipping = 0;
     private $tax = 0;
     private $currency = '';
-    private $host = '';
+
+    /**
+     * @param $host
+     * @deprecated
+     */
+    public function setTransactionHost( $host )
+    {
+        return $this->setDocumentHost( $host );
+    }
 
     /**
      * Set the Transaction ID
@@ -160,34 +168,12 @@ class Transaction extends AbstractTracking
     }
 
     /**
-     * Return the Transaction Host Address
-     *
-     * @param $host
-     * @return $this
-     */
-    public function setTransactionHost($host)
-    {
-        $this->host = $host;
-        return $this;
-    }
-
-    /**
-     * Returns the Transaction Host
-     *
-     * @return string
-     */
-    public function getTransactionHost()
-    {
-        return $this->host;
-    }
-
-    /**
      * Returns the Google Paket for Transaction Tracking
      *
      * @return array
      * @throws \Racecore\GATracking\Exception\MissingTrackingParameterException
      */
-    public function getPaket()
+    public function createPackage()
     {
         if( !$this->getID() )
         {
@@ -201,7 +187,6 @@ class Transaction extends AbstractTracking
             'tr' => $this->getRevenue(),
             'ts' => $this->getShipping(),
             'tt' => $this->getTax(),
-            'dh' => $this->getTransactionHost(),
             'cu' => $this->getCurrency()
         );
     }

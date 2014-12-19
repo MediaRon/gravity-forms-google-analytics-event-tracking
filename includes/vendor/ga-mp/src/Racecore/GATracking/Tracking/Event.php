@@ -127,7 +127,7 @@ class Event extends AbstractTracking
      * @return array
      * @throws \Racecore\GATracking\Exception\MissingTrackingParameterException
      */
-    public function getPaket()
+    public function createPackage()
     {
         if (!$this->getEventCategory()) {
             throw new MissingTrackingParameterException('event category musst be set');

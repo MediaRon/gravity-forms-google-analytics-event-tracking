@@ -146,7 +146,13 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 	public function track_form_after_submission( $entry, $form ) {
 
 		// Temporary until Gravity fix a bug
+		echo "<pre>";
+		print_r($entry);
+		echo "</pre>";
 		$entry = GFAPI::get_entry( $entry['id'] );
+		echo "<pre>";
+		print_r($entry);
+		echo "</pre>";
 
 		// We need to check if this form is using paypal standard before we push a conversion.
 		if ( class_exists( 'GFPayPal' ) ) {

@@ -36,13 +36,18 @@ class GATracking
      * @var string
      */
     private $clientID;
-    
+
     /**
-     * Current User ID
-     *
-     * @var string
+     * User ID
      */
-    private $userID = null;
+    private $userID;
+
+    /**
+     * Use Proxy
+     *
+     * @var bool
+     */
+    private $proxy = false;
 
     /**
      * Protocol Version
@@ -78,33 +83,6 @@ class GATracking
      * @var array
      */
     private $last_response_stack = array();
-    
-    /**
-     * Send Proxy Variables
-     *
-     * @var boolean
-     */
-    private $use_proxy;
-    
-    /**
-     * Sets the Use Proxy variable
-     *
-     * @param $proxy
-     */
-    public function setProxy($proxy)
-    {
-        $this->use_proxy = $proxy;
-    }
-    
-    /**
-     * Returns the Use Proxy variable
-     *
-     * @return boolean
-     */
-    public function getProxy()
-    {
-        return $this->use_proxy;
-    }
 
     /**
      * Sets the Analytics Account ID
@@ -142,23 +120,17 @@ class GATracking
 
         return $this->clientID;
     }
-    
+
     /**
-     * Set the current User ID
-     *
-     * @param $clientID
-     * @return $this
+     * @param mixed $userID
      */
     public function setUserID($userID)
     {
         $this->userID = $userID;
-        return $this;
     }
 
     /**
-     * Returns the current User ID
-     *
-     * @return string
+     * @return mixed
      */
     public function getUserID()
     {
@@ -186,17 +158,31 @@ class GATracking
     }
 
     /**
+     * @param boolean $proxy
+     */
+    public function setProxy($proxy)
+    {
+        $this->proxy = $proxy;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getProxy()
+    {
+        return $this->proxy;
+    }
+
+    /**
      * Constructor
      *
-     * @param string $accountID
-     * @param boolean $proxy (default: false)
+     * @param null $accountID
+     * @param bool $proxy
      */
     public function __construct( $accountID = null, $proxy = false )
     {
         $this->setAccountID( $accountID );
-        $this->setProxy($proxy);
-
-        return $this;
+        $this->setProxy( $proxy );
     }
 
     /**
@@ -324,10 +310,10 @@ class GATracking
      * @return string
      * @throws Exception\MissingConfigurationException
      */
-    private function buildPacket( AbstractTracking $event )
+    private function buildPackage( AbstractTracking $event )
     {
         // get packet
-        $eventPacket = $event->getPaket();
+        $eventPacket = $event->getPackage();
 
         if( ! $this->getAccountID() )
         {
@@ -338,16 +324,19 @@ class GATracking
         $eventPacket['v'] = $this->protocol; // protocol version
         $eventPacket['tid'] = $this->getAccountID(); // account id
         $eventPacket['cid'] = $this->getClientID(); // client id
-        
-        if($this->getUserID() != null){
-        	$eventPacket['uid'] = $this->getUserID();
+
+        // add userid
+        if($this->getUserID())
+        {
+            $eventPacket['uid'] = $this->getUserID();
         }
-        
-        //Proxy Variables
-        if($this->getProxy()){
-        	$eventPacket['uip'] = $_SERVER['REMOTE_ADDR']; // IP Override
-        	$eventPacket['ua'] = $_SERVER['HTTP_USER_AGENT']; // UA Override
-      	}
+
+        // add proxy
+        if($this->getProxy() === true)
+        {
+            $eventPacket['uip'] = $_SERVER['REMOTE_ADDR']; // IP Override
+            $eventPacket['ua'] = $_SERVER['HTTP_USER_AGENT']; // UA Override
+        }
 
         $eventPacket = array_reverse($eventPacket);
 
@@ -379,7 +368,7 @@ class GATracking
     public function sendTracking(AbstractTracking $event)
     {
         // get packet
-        $eventPacket = $this->buildPacket( $event );
+        $eventPacket = $this->buildPackage( $event );
 
         // get endpoint
         $endpoint = parse_url($this->analytics_endpoint);

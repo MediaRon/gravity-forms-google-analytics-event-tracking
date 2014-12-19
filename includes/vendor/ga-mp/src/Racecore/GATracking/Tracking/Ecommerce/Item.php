@@ -32,9 +32,18 @@ class Item extends AbstractTracking
     private $currency = '';
 
     /**
+     * @param $host
+     * @deprecated
+     */
+    public function setTransactionHost( $host )
+    {
+        return $this->setDocumentHost( $host );
+    }
+
+    /**
      * Set the Transaction ID
      *
-     * @param $id
+     * @param $tid
      */
     public function setTransactionID($tid)
     {
@@ -183,26 +192,13 @@ class Item extends AbstractTracking
         return $this->currency;
     }
 
-    public function setTransactionHost($host)
-    {
-        $this->host = $host;
-        return $this;
-    }
-
     /**
-     * @return string
-     */
-    public function getTransactionHost()
-    {
-        return $this->host;
-    }
-
-    /**
-     * Returns the Google Paket for Item Tracking
+     * Create the Package
      *
      * @return array
+     * @throws \Racecore\GATracking\Exception\MissingTrackingParameterException
      */
-    public function getPaket()
+    public function createPackage()
     {
         if( !$this->getTransactionID() )
         {
@@ -222,7 +218,6 @@ class Item extends AbstractTracking
             'iq' => $this->getQuantity(),
             'ic' => $this->getSku(),
             'iv' => $this->getCategory(),
-            'dh' => $this->getTransactionHost(),
             'cu' => $this->getCurrency()
         );
     }
