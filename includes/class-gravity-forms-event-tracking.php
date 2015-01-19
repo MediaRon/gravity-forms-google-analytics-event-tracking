@@ -161,10 +161,12 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 
 		gform_update_meta( $entry['id'], 'ga_event_vars', maybe_serialize( $ga_event_vars ) );
 
-		if ( $entry['payment_status'] !== "Processing" ) {
-			// Push the event to google
-			$this->push_event( $entry, $form );
+		if ( isset($entry['payment_status']) && $entry['payment_status'] !== "Processing" ) {
+			return;
 		}
+
+		// Push the event to google
+		$this->push_event( $entry, $form );
 	}
 
 	/**
