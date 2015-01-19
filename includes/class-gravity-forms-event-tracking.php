@@ -13,7 +13,7 @@
 GFForms::include_addon_framework();
 
 class Gravity_Forms_Event_Tracking extends GFAddOn {
-	protected $_version = "1.5.3";
+	protected $_version = "1.5.4";
     protected $_min_gravityforms_version = "1.8.20";
 
     /**
@@ -161,8 +161,10 @@ class Gravity_Forms_Event_Tracking extends GFAddOn {
 
 		gform_update_meta( $entry['id'], 'ga_event_vars', maybe_serialize( $ga_event_vars ) );
 
-		// Push the event to google
-		$this->push_event( $entry, $form );
+		if ( $entry['payment_status'] !== "Processing" ) {
+			// Push the event to google
+			$this->push_event( $entry, $form );
+		}
 	}
 
 	/**
