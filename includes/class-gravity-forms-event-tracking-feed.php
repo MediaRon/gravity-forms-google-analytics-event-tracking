@@ -88,7 +88,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 			$this->load_measurement_client();
 
 			// Tracking hooks
-			add_action( 'gform_after_submission', array( $this, 'track_form_after_submission' ), 10, 2 );
+			// add_action( 'gform_after_submission', array( $this, 'track_form_after_submission' ), 10, 2 );
 
 			// IPN hook for paypal standard!
 			if ( class_exists( 'GFPayPal' ) ) {
@@ -96,6 +96,34 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 			}
 		}
 
+	}
+
+	/**
+	 * Process the feed!
+	 * @param  array $feed  feed data and settings
+	 * @param  array $entry gf entry object
+	 * @param  array $form  gf form data
+	 */
+	public function process_feed( $feed, $entry, $form ) {
+
+		$paypal_feeds = $this->get_feeds_by_slug( 'gravityformspaypal', $form['id'] );
+		$has_paypal_feed = false;
+
+		foreach ( $paypal_feeds as $paypal_feed ){
+			if ( $paypal_feed['is_active'] && $this->is_feed_condition_met( $paypal_feed, $form, $entry ) ){
+				$active_paypal_feed = true;
+				break;
+			}
+		}
+
+		if ( ! $has_paypal_feed ) {
+			return;
+		}
+		else {
+			$this->track_form_after_submission( $feed, $entry, $form );
+		}
+
+		return;
 	}
 
 	/**
@@ -141,8 +169,11 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	 */
 	public function track_form_after_submission( $entry, $form ) {
 		global $post;
-		// Temporary until Gravity fix a bug
-		// $entry = GFAPI::get_entry( $entry['id'] );
+
+		echo "<pre>";
+		print_r($entry);
+		echo "</pre>";
+		exit;
 
 		// Set some vars to send to GA
 		$ga_cookie = $_COOKIE['_ga'];
@@ -508,8 +539,8 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 			
 			$feed_id = $this->save_feed_settings( 0, $form['id'], $settings );
 			
-			if ( $previous_was_enabled ) {
-				$this->update_feed_active( $feed_id, true );
+			if ( ! $previous_was_enabled ) {
+				$this->update_feed_active( $feed_id, false );
 			}
 			
 		}
