@@ -29,11 +29,11 @@ class Gravity_Forms_Event_Tracking_Bootstrap {
 
 	public static function load(){
 
-		if ( ! method_exists( 'GFForms', 'include_addon_framework' ) ) {
+		if ( ! method_exists( 'GFForms', 'include_feed_addon_framework' ) ) {
 			return;
 		}
 
-		require_once( plugin_dir_path( __FILE__ ) . 'includes/class-gravity-forms-event-tracking.php' );
+		require_once( plugin_dir_path( __FILE__ ) . 'includes/class-gravity-forms-event-tracking-feed.php' );
 
 		GFAddOn::register( 'Gravity_Forms_Event_Tracking' );
 
