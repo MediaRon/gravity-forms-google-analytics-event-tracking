@@ -84,11 +84,14 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
 		parent::init_frontend();
 
+		// Move this hook so everything else is all done and dusted first!
+		remove_filter( 'gform_entry_post_save', array( $this, 'maybe_process_feed' ) );
+		
+
 		if ( $this->load_ua_settings() ) {
 			$this->load_measurement_client();
 
-			// Tracking hooks
-			// add_action( 'gform_after_submission', array( $this, 'track_form_after_submission' ), 10, 2 );
+			add_filter( 'gform_after_submission', array( $this, 'maybe_process_feed' ), 10, 2 );
 
 			// IPN hook for paypal standard!
 			if ( class_exists( 'GFPayPal' ) ) {
@@ -111,19 +114,19 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
 		foreach ( $paypal_feeds as $paypal_feed ){
 			if ( $paypal_feed['is_active'] && $this->is_feed_condition_met( $paypal_feed, $form, $entry ) ){
-				$active_paypal_feed = true;
+				$has_paypal_feed = true;
 				break;
 			}
 		}
 
-		if ( ! $has_paypal_feed ) {
-			return;
+		$ga_event_data = $this->get_event_data( $feed, $entry, $form );
+
+		if ( $has_paypal_feed ) {
+			gform_update_meta( $entry['id'], 'ga_event_data', maybe_serialize( $ga_event_data ) );
 		}
 		else {
-			$this->track_form_after_submission( $feed, $entry, $form );
+			$this->track_form_after_submission( $entry, $form, $ga_event_data );
 		}
-
-		return;
 	}
 
 	/**
@@ -161,35 +164,92 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	}
 
 	/**
+	 * Get data required for processing
+	 * @param  array $feed  feed
+	 * @param  array $entry GF Entry object
+	 * @param  array $form  GF Form object
+	 */
+	private function get_event_data( $feed, $entry, $form ) {
+		global $post;
+
+		// Paypal will need this cookie for the IPN
+		$ga_cookie = $_COOKIE['_ga'];
+
+		// Location
+		$document_location = 'http' . ( isset( $_SERVER['HTTPS'] ) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'];
+
+		// Title
+		$document_title = isset( $post ) && get_the_title( $post ) ? get_the_title( $post ) : 'no title';
+
+		// Store everything we need for later
+		$ga_event_data = array(
+			'ga_cookie' => $_COOKIE['_ga'],
+			'document_location' => $document_location,
+			'document_title' => $document_title,
+			'gaEventCategory' => $this->get_event_var( 'gaEventCategory', $feed, $entry, $form ),
+			'gaEventAction' => $this->get_event_var( 'gaEventAction', $feed, $entry, $form ),
+			'gaEventLabel' => $this->get_event_var( 'gaEventLabel', $feed, $entry, $form ),
+			'gaEventValue' => $this->get_event_var( 'gaEventValue', $feed, $entry, $form ),
+		);
+
+		return $ga_event_data;
+	}
+
+	/**
+	 * Get our event vars
+	 */
+	private function get_event_var( $var, $feed, $entry, $form ) {
+
+		if ( isset( $feed['meta'][ $var ] ) && ! empty( $feed['meta'][ $var ] ) ) {
+			return $feed['meta'][ $var ];
+		}
+		else {
+			switch ( $var ) {
+				case 'gaEventCategory':
+					return 'Forms';
+
+				case 'gaEventAction':
+					return 'Submission';
+
+				case 'gaEventLabel':
+					return 'Form: {form_title} ID: {form_id}';
+
+				case 'gaEventValue':
+					return false;
+
+				default:
+					return false;
+			}
+		}
+
+	}
+
+	/**
 	 * Handle the form after submission before sending to the event push
 	 * 
 	 * @since 1.4.0
 	 * @param array $entry Gravity Forms entry object
 	 * @param array $form Gravity Forms form object
 	 */
-	public function track_form_after_submission( $entry, $form ) {
-		global $post;
+	private function track_form_after_submission( $entry, $form, $ga_event_data ) {
 
-		echo "<pre>";
-		print_r($entry);
-		echo "</pre>";
-		exit;
+		// Try to get payment amount
+		// This needs to go here in case something changes with the amount
+		if ( ! $ga_event_data['gaEventValue'] ) {
+			$ga_event_data['gaEventValue'] = $this->get_event_value( $entry, $form );
+		}
 
-		// Set some vars to send to GA
-		$ga_cookie = $_COOKIE['_ga'];
-		$document_location = 'http' . ( isset( $_SERVER['HTTPS'] ) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'];
-		$document_title = get_the_title( $post );
+		$event_vars = array( 'gaEventCategory', 'gaEventAction', 'gaEventLabel', 'gaEventValue' );
 
-		$ga_event_vars = array(
-			'ga_cookie' => $_COOKIE['_ga'],
-			'document_location' => $document_location,
-			'document_title' => $document_title
-		);
-
-		gform_update_meta( $entry['id'], 'ga_event_vars', maybe_serialize( $ga_event_vars ) );
+		foreach ( $event_vars as $var ) {
+			if ( $ga_event_data[ $var ] ) {
+				$ga_event_data[ $var ] = GFCommon::replace_variables( $ga_event_data[ $var ], $form, $entry, false, false, true, 'text' );
+			}
+		}
+		
 
 		// Push the event to google
-		$this->push_event( $entry, $form );
+		$this->push_event( $entry, $form, $ga_event_data );
 	}
 
 	/**
@@ -207,8 +267,13 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
 		$form = GFFormsModel::get_form_meta( $entry['form_id'] );
 
+		$ga_event_data = maybe_unserialize( gform_get_meta( $entry['id'], 'ga_event_data' ) );
+
+		// Override this coming from paypal IPN
+		$_COOKIE['_ga'] = $ga_event_data['ga_cookie'];
+
 		// Push the event to google
-		$this->push_event( $entry, $form );
+		$this->push_event( $entry, $form, $ga_event_data );
 	}
 
 	/**
@@ -218,68 +283,23 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	 * @param array $event Gravity Forms event object
 	 * @param array $form Gravity Forms form object
 	 */
-	private function push_event( $entry, $form ) {
-		if ( isset( $form['gravity-forms-event-tracking'] ) && $is_disabled = rgar( $form['gravity-forms-event-tracking'], 'gaEventTrackingDisabled' ) ) {
-			return false;
-		}
+	private function push_event( $entry, $form, $ga_event_data ) {
 
 		// Init tracking object
 		$this->tracking = new \Racecore\GATracking\GATracking( apply_filters( 'gform_ua_id', $this->ua_id, $form ), true );
 		$event = new \Racecore\GATracking\Tracking\Event();
 
-		// get some stored vars
-		$ga_event_vars = maybe_unserialize( gform_get_meta( $entry['id'], 'ga_event_vars' ) );
-
 		// Set some defaults
-		$event->setDocumentLocation( $ga_event_vars['document_location'] );
-		$event->setDocumentTitle( $ga_event_vars['document_title'] );
+		$event->setDocumentLocation( $ga_event_data['document_location'] );
+		$event->setDocumentTitle( $ga_event_data['document_title'] );
 		
-		// Override this in case coming from paypal IPN
-		$_COOKIE['_ga'] = $ga_event_vars['ga_cookie'];
-		
-		// Get event defaults
-		$event_category = 'Forms';
-		$event_label    = sprintf( "Form: %s ID: %s", $form['title'], $form['id'] );
-		$event_action   = 'Submission';
-
-		// IF this form has payment, we should use that for the value
-		// as long a custom value hasn't been set
-		$event_value = $this->get_event_value( $entry, $form );
-		
-		// Overwrite with Gravity Form Settings if necessary
-		if ( function_exists( 'rgar' ) && isset( $form['gravity-forms-event-tracking'] ) ) {
-			// Event category
-			$gf_event_category = rgar( $form['gravity-forms-event-tracking'], 'gaEventCategory' );
-			if ( !empty( $gf_event_category ) ) {
-				$event_category = GFCommon::replace_variables( $gf_event_category, $form, $entry, false, false, true, 'text' );
-			}
-			
-			// Event label
-			$gf_event_label = rgar( $form['gravity-forms-event-tracking'], 'gaEventLabel' );
-			if ( !empty( $gf_event_label ) ) {
-				$event_label =  GFCommon::replace_variables( $gf_event_label, $form, $entry, false, false, true, 'text' );
-			}
-			
-			// Event action
-			$gf_event_action = rgar( $form['gravity-forms-event-tracking'], 'gaEventAction' );
-			if ( !empty( $gf_event_action ) ) {
-				$event_action =  GFCommon::replace_variables( $gf_event_action, $form, $entry, false, false, true, 'text' );
-			}
-
-			// Event value
-			$gf_event_value = rgar( $form['gravity-forms-event-tracking'], 'gaEventValue' );
-			if ( !empty( $gf_event_value ) ) {
-				$event_value =  GFCommon::replace_variables( $gf_event_value, $form, $entry, false, false, true, 'text' );
-			}
-		}
-
 		// Set our event object variables
-		$event->setEventCategory( apply_filters( 'gform_event_category', $event_category, $form ) );
-		$event->setEventAction( apply_filters( 'gform_event_action', $event_action, $form ) );
-		$event->setEventLabel( apply_filters( 'gform_event_label', $event_label, $form ) );
+		$event->setEventCategory( apply_filters( 'gform_event_category', $ga_event_data['gaEventCategory'], $form ) );
+		$event->setEventAction( apply_filters( 'gform_event_action', $ga_event_data['gaEventAction'], $form ) );
+		$event->setEventLabel( apply_filters( 'gform_event_label', $ga_event_data['gaEventLabel'], $form ) );
 		
 		
-		if ( $event_value = apply_filters( 'gform_event_value', $event_value, $form ) ) {
+		if ( $event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form ) ) {
 			// Event value must be a valid float!
 			$event_value = (float) $event_value;
 			$event->setEventValue( $event_value );
@@ -288,10 +308,12 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		// Pppp Push it!
 		$this->tracking->addTracking( $event );
 
+		echo "woof";
+
 		try {
-			$this->tracking->send();
+		    $this->tracking->send();
 		} catch (Exception $e) {
-			error_log( $e->getMessage() . ' in ' . get_class( $e ) );
+		    error_log( $e->getMessage() . ' in ' . get_class( $e ) );
 		}
 	}
 
