@@ -3,7 +3,7 @@ Contributors: nmarks
 Tags: gravity forms, google analytics, event tracking
 Requires at least: 3.5.2
 Tested up to: 4.1
-Stable tag: 1.5.5
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,6 +79,9 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 2. The form settings where you set your category, action and label.
 
 == Changelog ==
+
+= 1.6.0 =
+* Refactored the plugin to use feeds. Now you can have multiple feeds with conditions!
 
 = 1.5.5 =
 * Hotfix for issue with paypal standard converting early

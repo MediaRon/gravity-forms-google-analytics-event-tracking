@@ -14,7 +14,7 @@ GFForms::include_feed_addon_framework();
 
 class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
-	protected $_version = "1.5.3";
+	protected $_version = "1.6.0";
 	protected $_min_gravityforms_version = "1.8.20";
 
 	/**
