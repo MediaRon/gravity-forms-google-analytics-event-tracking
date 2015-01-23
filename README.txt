@@ -3,7 +3,7 @@ Contributors: nmarks
 Tags: gravity forms, google analytics, event tracking
 Requires at least: 3.5.2
 Tested up to: 4.1
-Stable tag: 1.5.5
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,9 +19,11 @@ Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
 = Minimum Requirements =
 - PHP 5.3+
 - Gravity Forms 1.8.20+
+- Google Analytics Universal Analytics (classic is not supported by Google's new fancy stuff this plugin leverages)
 
 = Features =
 - Automatically send form submission events to Google Analytics
+- Add multiple event feeds with conditionals
 - Custom event categories, actions, labels and even values
 - Dynamic event value on payment forms (integration with the payment add-ons including Paypal Standard, PayPal Pro, Stripe, etc...)
 - Awesomeness
@@ -76,9 +78,13 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 == Screenshots ==
 
 1. The Gravity Forms setting screen where you setup your UA ID.
-2. The form settings where you set your category, action and label.
+2. The form settings feed list.
+3. The feed settings page
 
 == Changelog ==
+
+= 1.6.0 =
+* Refactored the plugin to use feeds. Now you can have multiple feeds with conditions!
 
 = 1.5.5 =
 * Hotfix for issue with paypal standard converting early
