@@ -3,7 +3,7 @@ Contributors: nmarks
 Tags: gravity forms, google analytics, event tracking
 Requires at least: 3.5.2
 Tested up to: 4.1
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 3. The feed settings page
 
 == Changelog ==
+
+= 1.6.1 =
+* Hotfix to remove echo'd text bug
 
 = 1.6.0 =
 * Refactored the plugin to use feeds. Now you can have multiple feeds with conditions!

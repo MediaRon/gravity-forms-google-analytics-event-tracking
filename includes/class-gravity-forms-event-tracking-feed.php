@@ -14,7 +14,7 @@ GFForms::include_feed_addon_framework();
 
 class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
-	protected $_version = "1.6.0";
+	protected $_version = "1.6.1";
 	protected $_min_gravityforms_version = "1.8.20";
 
 	/**
@@ -307,8 +307,6 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
 		// Pppp Push it!
 		$this->tracking->addTracking( $event );
-
-		echo "woof";
 
 		try {
 		    $this->tracking->send();
