@@ -301,7 +301,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		
 		if ( $event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form ) ) {
 			// Event value must be a valid float!
-			$event_value = (float) $event_value;
+			$event_value = GFCommon::to_number( $event_value );
 			$event->setEventValue( $event_value );
 		}
 
