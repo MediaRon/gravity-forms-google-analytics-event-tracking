@@ -3,7 +3,7 @@ Contributors: nmarks
 Tags: gravity forms, google analytics, event tracking
 Requires at least: 3.5.2
 Tested up to: 4.1
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,6 +82,9 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 3. The feed settings page
 
 == Changelog ==
+
+= 1.6.3 =
+* Integration with members plugin
 
 = 1.6.2 =
 * Fixed bug where manual event values were not sent properly.

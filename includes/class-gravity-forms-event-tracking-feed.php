@@ -14,7 +14,7 @@ GFForms::include_feed_addon_framework();
 
 class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
-	protected $_version = "1.6.2";
+	protected $_version = "1.6.3";
 	protected $_min_gravityforms_version = "1.8.20";
 
 	/**
@@ -31,6 +31,14 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	protected $_url = "https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking";
 	protected $_title = "Gravity Forms Google Analytics Event Tracking";
 	protected $_short_title = "Event Tracking";
+
+	// Members plugin integration
+	protected $_capabilities = array( 'gravityforms_event_tracking', 'gravityforms_event_tracking_uninstall' );
+
+	// Permissions
+	protected $_capabilities_settings_page = 'gravityforms_event_tracking';
+	protected $_capabilities_form_settings = 'gravityforms_event_tracking';
+	protected $_capabilities_uninstall = 'gravityforms_event_tracking_uninstall';
 
 	public $ua_id = false;
 
