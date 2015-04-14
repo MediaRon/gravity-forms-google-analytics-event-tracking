@@ -349,7 +349,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		return array(
 			array(
 				'title'       => __( 'Google Analytics', $this->_text_domain ),
-				'description' => __( 'Enter your UA code (UA-XXXX-Y) here.', $this->_text_domain ),
+				'description' => __( 'Enter your UA code (UA-XXXX-Y). Find it <a href="https://support.google.com/analytics/answer/1032385" target="_blank">using this guide</a>', $this->_text_domain ),
 				'fields'      => array(
 					array(
 						'name'              => 'gravity_forms_event_tracking_ua',
