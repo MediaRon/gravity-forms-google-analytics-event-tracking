@@ -84,48 +84,67 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 == Changelog ==
 
 = 1.6.4 =
+* Released 2015-09-22
 * Testing with WordPress 4.3.
+* Better internationalization
 
 = 1.6.3 =
+* Released 2015-02-10
 * Integration with members plugin
 
 = 1.6.2 =
+* Released 2015-02-06
 * Fixed bug where manual event values were not sent properly.
 
 = 1.6.1 =
+* Released 2015-01-28
 * Hotfix to remove echo'd text bug
 
 = 1.6.0 =
+* Released 2015-01-25
 * Refactored the plugin to use feeds. Now you can have multiple feeds with conditions!
 
 = 1.5.5 =
+* Released 2015-01-19
 * Hotfix for issue with paypal standard converting early
 
 = 1.5.3 =
+* Released 2014-12-20
 * Ensured page title and location are properly being sent to Google
 
 = 1.5.2 =
+* Released 2014-12-16
 * Hotfix for PHP strict standards warning
 
 = 1.5.0 =
+* Released 2014-12-15
 * Moved the form specific settings to their own tab.
 * Re-structured the plugin code to fall in line with the official Gravity Forms plugins.
 * Added a disable option to prevent a form from tracking any events.
 * Added merge tag (choose a form field dropdown) to the settings fields for more dynamic tracking capabilities.
 
 = 1.4.5 =
+* Released 2014-12-04
 * Fixed a bug where the source/medium was not being tracked correctly for PayPal Standard IPN Notification based conversions.
 
 = 1.4.4 =
+* Released 2014-12-03
 * Added some information to the event settings section
 
 = 1.4.3 =
+* Released 2014-12-02
 * Fixed backwards-compat issue
 
 = 1.4 =
+* Released 2014-12-01-
 * Added value for events
 * Properly integrated with payment based forms
 
 = 1.3 =
 * Properly integrated with Gravity Forms settings API (thanks ronalfy!)
 * Enabled custom category/action/label on a per form basis.
+
+== Upgrade Notice ==
+
+= 1.6.4 =
+WordPress 4.3 compatibility and better internationalization. 
