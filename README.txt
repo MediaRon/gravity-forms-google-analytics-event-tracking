@@ -1,13 +1,13 @@
 === Gravity Forms Google Analytics Event Tracking ===
-Contributors: nmarks
-Tags: gravity forms, google analytics, event tracking
-Requires at least: 3.5.2
-Tested up to: 4.1
-Stable tag: 1.6.3
+Contributors: nmarks, ronalfy
+Tags: gravity forms, google analytics, event tracking, adopt-me
+Requires at least:4.0
+Tested up to: 4.3.1
+Stable tag: 1.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add Google Analytics Event Tracking to your Gravity Forms in less than 5 minutes!
+Add Google Analytics Event Tracking to your Gravity Forms in less than 5 minutes! Requires PHP 5.3+.
 
 == Description ==
 
@@ -82,6 +82,9 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 3. The feed settings page
 
 == Changelog ==
+
+= 1.6.4 =
+* Testing with WordPress 4.3.
 
 = 1.6.3 =
 * Integration with members plugin

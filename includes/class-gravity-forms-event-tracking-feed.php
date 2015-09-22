@@ -25,7 +25,6 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	 * @TODO Resolve this in 2.0 somehow...
 	 */
 	protected $_slug = "gravity-forms-event-tracking";
-	protected $_text_domain = "gravity-forms-google-analytics-event-tracking";
 	protected $_path = "gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php";
 	protected $_full_path = __FILE__;
 	protected $_url = "https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking";
@@ -58,7 +57,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	 */
 	public function init() {
 
-		load_plugin_textdomain( $this->_text_domain, false, $this->_text_domain . '/languages' );
+		load_plugin_textdomain( 'gravity-forms-google-analytics-event-tracking', false, dirname( plugin_basename( __FILE__ ) )  . '/languages' );
 
 		add_filter( 'gform_logging_supported', array( $this, 'set_logging_supported' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_action_links' ) );
@@ -348,12 +347,12 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	public function plugin_settings_fields() {
 		return array(
 			array(
-				'title'       => __( 'Google Analytics', $this->_text_domain ),
-				'description' => __( 'Enter your UA code (UA-XXXX-Y) here.', $this->_text_domain ),
+				'title'       => __( 'Google Analytics', 'gravity-forms-google-analytics-event-tracking' ),
+				'description' => __( 'Enter your UA code (UA-XXXX-Y) here.', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
 						'name'              => 'gravity_forms_event_tracking_ua',
-						'label'             => __( 'UA Tracking ID', $this->_text_domain ),
+						'label'             => __( 'UA Tracking ID', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'              => 'text',
 						'class'             => 'medium',
 						'tooltip' 			=> 'UA-XXXX-Y',
@@ -373,7 +372,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	 * @return string Form Settings Title
 	 */
 	public function feed_settings_title() {
-		return __( 'Event Tracking Feed Settings', $this->_text_domain );
+		return __( 'Event Tracking Feed Settings', 'gravity-forms-google-analytics-event-tracking' );
 	}
 
 	/**
@@ -385,20 +384,20 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	public function feed_settings_fields() {
 		return array(
 			array(
-				"title"  => __( 'Feed Settings', $this->_text_domain ),
+				"title"  => __( 'Feed Settings', 'gravity-forms-google-analytics-event-tracking' ),
 				"fields" => array(
 					array(
-						'label'    => __( 'Feed Name', $this->_text_domain ),
+						'label'    => __( 'Feed Name', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'     => 'text',
 						'name'     => 'feedName',
 						'class'    => 'medium',
 						'required' => true,
-						'tooltip'  => '<h6>' . __( 'Feed Name', $this->_text_domain ) . '</h6>' . __( 'Enter a feed name to uniquely identify this setup.', $this->_text_domain )
+						'tooltip'  => '<h6>' . __( 'Feed Name', 'gravity-forms-google-analytics-event-tracking' ) . '</h6>' . __( 'Enter a feed name to uniquely identify this setup.', 'gravity-forms-google-analytics-event-tracking' )
 					)
 				),
 			),
 			array(
-				"title"  => __( 'Event Tracking Settings', $this->_text_domain ),
+				"title"  => __( 'Event Tracking Settings', 'gravity-forms-google-analytics-event-tracking' ),
 				"fields" => array(
 					array(
 						"label"   => "",
@@ -406,43 +405,43 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 						"name"    => "instructions"
 					),
 					array(
-						"label"   => __( 'Event Category', $this->_text_domain ),
+						"label"   => __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ),
 						"type"    => "text",
 						"name"    => "gaEventCategory",
 						"class"   => "medium merge-tag-support mt-position-right",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Category', $this->_text_domain ), __( 'Enter your Google Analytics event category', $this->_text_domain ) ),
+						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event category', 'gravity-forms-google-analytics-event-tracking' ) ),
 					),
 					array(
-						"label"   => __( 'Event Action', $this->_text_domain ),
+						"label"   => __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ),
 						"type"    => "text",
 						"name"    => "gaEventAction",
 						"class"   => "medium merge-tag-support mt-position-right",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Action', $this->_text_domain ), __( 'Enter your Google Analytics event action', $this->_text_domain ) ),
+						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event action', 'gravity-forms-google-analytics-event-tracking' ) ),
 					),
 					array(
-						"label"   => __( 'Event Label', $this->_text_domain ),
+						"label"   => __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ),
 						"type"    => "text",
 						"name"    => "gaEventLabel",
 						"class"   => "medium merge-tag-support mt-position-right",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Label', $this->_text_domain ), __( 'Enter your Google Analytics event label', $this->_text_domain ) ),
+						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event label', 'gravity-forms-google-analytics-event-tracking' ) ),
 					),
 					array(
-						"label"   => __( 'Event Value', $this->_text_domain ),
+						"label"   => __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ),
 						"type"    => "text",
 						"name"    => "gaEventValue",
 						"class"   => "medium merge-tag-support mt-position-right",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Value', $this->_text_domain ), __( 'Enter your Google Analytics event value. Leave blank to omit pushing a value to Google Analytics. Or to use the purchase value of a payment based form. <strong>Note:</strong> This must be a number (int/float).', $this->_text_domain ) ),
+						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event value. Leave blank to omit pushing a value to Google Analytics. Or to use the purchase value of a payment based form. <strong>Note:</strong> This must be a number (int/float).', 'gravity-forms-google-analytics-event-tracking' ) ),
 					),
 				)
 			),
 			array(
-				"title"  => __( 'Other Settings', $this->_text_domain ),
+				"title"  => __( 'Other Settings', 'gravity-forms-google-analytics-event-tracking' ),
 				"fields" => array(
 					array(
 						'name'    => 'conditionalLogic',
-						'label'   => __( 'Conditional Logic', $this->_text_domain ),
+						'label'   => __( 'Conditional Logic', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'    => 'feed_condition',
-						'tooltip' => '<h6>' . __( 'Conditional Logic', $this->_text_domain ) . '</h6>' . __( 'When conditions are enabled, events will only be sent to google when the conditions are met. When disabled, all form submissions will trigger an event.', $this->_text_domain )
+						'tooltip' => '<h6>' . __( 'Conditional Logic', 'gravity-forms-google-analytics-event-tracking' ) . '</h6>' . __( 'When conditions are enabled, events will only be sent to google when the conditions are met. When disabled, all form submissions will trigger an event.', 'gravity-forms-google-analytics-event-tracking' )
 					)
 				)
 			),
@@ -458,12 +457,12 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		echo '
 			<tr>
 				<th colspan="2">
-					<p>' . __( "If you leave these blank, the following defaults will be used when the event is tracked", $this->_text_domain ) . ':</p>
+					<p>' . __( "If you leave these blank, the following defaults will be used when the event is tracked", 'gravity-forms-google-analytics-event-tracking' ) . ':</p>
 					<p>
-						<strong>' . __( "Event Category", $this->_text_domain ) . ':</strong> Forms<br>
-						<strong>' . __( "Event Action", $this->_text_domain ) . ':</strong> Submission<br>
-						<strong>' . __( "Event Label", $this->_text_domain ) . ':</strong> Form: {form_title} ID: {form_id}<br>
-						<strong>' . __( "Event Value", $this->_text_domain ) . ':</strong> Payment Amount (on payment forms only, otherwise nothing is sent by default)
+						<strong>' . __( "Event Category", 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Forms<br>
+						<strong>' . __( "Event Action", 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Submission<br>
+						<strong>' . __( "Event Label", 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Form: {form_title} ID: {form_id}<br>
+						<strong>' . __( "Event Value", 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Payment Amount (on payment forms only, otherwise nothing is sent by default)
 					</p>
 				</td>
 			</tr>';
@@ -475,11 +474,11 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	 */
 	public function feed_list_columns() {
 		return array(
-			'feedName'        => __( 'Name', $this->_text_domain ),
-			'gaEventCategory' => __( 'Category', $this->_text_domain ),
-			'gaEventAction'   => __( 'Action', $this->_text_domain ),
-			'gaEventLabel'    => __( 'Label', $this->_text_domain ),
-			'gaEventValue'    => __( 'Value', $this->_text_domain ),
+			'feedName'        => __( 'Name', 'gravity-forms-google-analytics-event-tracking' ),
+			'gaEventCategory' => __( 'Category', 'gravity-forms-google-analytics-event-tracking' ),
+			'gaEventAction'   => __( 'Action', 'gravity-forms-google-analytics-event-tracking' ),
+			'gaEventLabel'    => __( 'Label', 'gravity-forms-google-analytics-event-tracking' ),
+			'gaEventValue'    => __( 'Value', 'gravity-forms-google-analytics-event-tracking' ),
 		);
 	}
 
@@ -563,7 +562,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 				return;
 			}
 
-			$settings['feedName'] = __( 'Event Tracking Feed', $this->_text_domain );
+			$settings['feedName'] = __( 'Event Tracking Feed', 'gravity-forms-google-analytics-event-tracking' );
 			
 			$feed_id = $this->save_feed_settings( 0, $form['id'], $settings );
 			
