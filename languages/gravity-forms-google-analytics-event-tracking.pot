@@ -1,0 +1,141 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravity Forms Google Analytics Event Tracking\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/plugins/gravity-forms-google-"
+"analytics-event-tracking/\n"
+"POT-Creation-Date: 2015-09-22 17:02-0600\n"
+"PO-Revision-Date: 2015-09-22 17:02-0600\n"
+"Last-Translator: Ronald Huereca <ron@ronalfy.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.3\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:350
+msgid "Google Analytics"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:351
+msgid "Enter your UA code (UA-XXXX-Y) here."
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:355
+msgid "UA Tracking ID"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:375
+msgid "Event Tracking Feed Settings"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:387
+msgid "Feed Settings"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:390
+#: ../includes/class-gravity-forms-event-tracking-feed.php:395
+msgid "Feed Name"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:395
+msgid "Enter a feed name to uniquely identify this setup."
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:400
+msgid "Event Tracking Settings"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:408
+#: ../includes/class-gravity-forms-event-tracking-feed.php:412
+#: ../includes/class-gravity-forms-event-tracking-feed.php:462
+msgid "Event Category"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:412
+msgid "Enter your Google Analytics event category"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:415
+#: ../includes/class-gravity-forms-event-tracking-feed.php:419
+#: ../includes/class-gravity-forms-event-tracking-feed.php:463
+msgid "Event Action"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:419
+msgid "Enter your Google Analytics event action"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:422
+#: ../includes/class-gravity-forms-event-tracking-feed.php:426
+#: ../includes/class-gravity-forms-event-tracking-feed.php:464
+msgid "Event Label"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:426
+msgid "Enter your Google Analytics event label"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:429
+#: ../includes/class-gravity-forms-event-tracking-feed.php:433
+#: ../includes/class-gravity-forms-event-tracking-feed.php:465
+msgid "Event Value"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:433
+msgid ""
+"Enter your Google Analytics event value. Leave blank to omit pushing a value "
+"to Google Analytics. Or to use the purchase value of a payment based form. "
+"<strong>Note:</strong> This must be a number (int/float)."
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:438
+msgid "Other Settings"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:442
+#: ../includes/class-gravity-forms-event-tracking-feed.php:444
+msgid "Conditional Logic"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:444
+msgid ""
+"When conditions are enabled, events will only be sent to google when the "
+"conditions are met. When disabled, all form submissions will trigger an "
+"event."
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:460
+msgid ""
+"If you leave these blank, the following defaults will be used when the event "
+"is tracked"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:477
+msgid "Name"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:478
+msgid "Category"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:479
+msgid "Action"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:480
+msgid "Label"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:481
+msgid "Value"
+msgstr ""
+
+#: ../includes/class-gravity-forms-event-tracking-feed.php:565
+msgid "Event Tracking Feed"
+msgstr ""
