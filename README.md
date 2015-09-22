@@ -1,9 +1,3 @@
-# CURRENTLY NOT MAINTAINED
-
-<strong>This project is not currently maintained, I have switched jobs and am not really doing much WP related stuff anymore.</strong>
-
----
-
 Gravity Forms Event Tracker
 ======================
 Gravity Forms Event Tracker for WordPress
