@@ -348,7 +348,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		return array(
 			array(
 				'title'       => __( 'Google Analytics', 'gravity-forms-google-analytics-event-tracking' ),
-				'description' => __( 'Enter your UA code (UA-XXXX-Y) here.', 'gravity-forms-google-analytics-event-tracking' ),
+				'description' => __( 'Enter your UA code (UA-XXXX-Y). Find it <a href="https://support.google.com/analytics/answer/1032385" target="_blank">using this guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
 						'name'              => 'gravity_forms_event_tracking_ua',
