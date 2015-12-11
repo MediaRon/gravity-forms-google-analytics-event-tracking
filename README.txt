@@ -3,7 +3,7 @@ Contributors: nmarks, ronalfy
 Tags: gravity forms, google analytics, event tracking, adopt-me
 Requires at least:4.0
 Tested up to: 4.4
-Stable tag: 1.6.4
+Stable tag: 1.6.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -83,6 +83,10 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 == Changelog ==
 
+= 1.6.5 =
+* Released 2015-12-11
+* Ability to add multiple UA codes in the feed settings.
+
 = 1.6.4 =
 * Released 2015-09-22
 * Testing with WordPress 4.3.
@@ -145,6 +149,9 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 1.6.5 =
+Ability to add multiple UA codes in the feed settings
 
 = 1.6.4 =
 WordPress 4.3 compatibility and better internationalization. 
