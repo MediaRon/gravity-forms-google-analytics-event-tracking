@@ -332,8 +332,10 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		* @since 1.6.5
 		*
 		* @param array  $google_analytics_codes UA codes
+		* @param object $form Gravity Form form object
+		* @param object $entry Gravity Form Entry Object
 		*/
-        $google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form ); 
+        $google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form, $entry ); 
         
 		$event = new \Racecore\GATracking\Tracking\Event();
 
@@ -342,12 +344,12 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		$event->setDocumentTitle( $ga_event_data['document_title'] );
 		
 		// Set our event object variables
-		$event->setEventCategory( apply_filters( 'gform_event_category', $ga_event_data['gaEventCategory'], $form ) );
-		$event->setEventAction( apply_filters( 'gform_event_action', $ga_event_data['gaEventAction'], $form ) );
-		$event->setEventLabel( apply_filters( 'gform_event_label', $ga_event_data['gaEventLabel'], $form ) );
+		$event->setEventCategory( apply_filters( 'gform_event_category', $ga_event_data['gaEventCategory'], $form, $entry ) );
+		$event->setEventAction( apply_filters( 'gform_event_action', $ga_event_data['gaEventAction'], $form, $entry ) );
+		$event->setEventLabel( apply_filters( 'gform_event_label', $ga_event_data['gaEventLabel'], $form, $entry ) );
 		
 		
-		if ( $event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form ) ) {
+		if ( $event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form, $entry ) ) {
 			// Event value must be a valid float!
 			$event_value = GFCommon::to_number( $event_value );
 			$event->setEventValue( $event_value );
