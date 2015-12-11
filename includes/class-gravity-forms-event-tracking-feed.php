@@ -356,7 +356,6 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 						'type'              => 'text',
 						'class'             => 'medium',
 						'tooltip' 			=> 'UA-XXXX-Y',
-						'feedback_callback' => array( $this, 'ua_validation' )
 					),
 				)
 			),
