@@ -309,20 +309,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	private function push_event( $entry, $form, $ga_event_data ) {
         
         //Get all analytics codes to send
-        $google_analytics_codes = array();
-        if ( !empty( $ga_event_data[ 'gaEventUA' ] ) ) {
-            $ga_ua = explode( ',', $ga_event_data[ 'gaEventUA' ] );
-            if ( is_array( $ga_ua ) ) {
-                foreach( $ga_ua as &$value ) {
-                    $value = trim( $value );   
-                } 
-            }
-            $google_analytics_codes = $ga_ua;
-        }
-        if( $this->ua_id ) {
-            $google_analytics_codes[] = $this->ua_id;
-        }
-        $google_analytics_codes = array_unique( $google_analytics_codes );
+        $gogle_analytics_codes = $this->get_ua_codes( $ga_event_data[ 'gaEventUA' ], $this->ua_id );
         
         /**
 		* Filter: gform_ua_ids
@@ -418,6 +405,77 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	 */
 	public function feed_settings_title() {
 		return __( 'Event Tracking Feed Settings', 'gravity-forms-google-analytics-event-tracking' );
+	}
+	
+	public function maybe_save_feed_settings( $feed_id, $form_id ) {
+		if ( ! rgpost( 'gform-settings-save' ) ) {
+			return $feed_id;
+		}
+
+		check_admin_referer( $this->_slug . '_save_settings', '_' . $this->_slug . '_save_settings_nonce' );
+
+		if ( ! $this->current_user_can_any( $this->_capabilities_form_settings ) ) {
+			GFCommon::add_error_message( esc_html__( "You don't have sufficient permissions to update the form settings.", 'gravityforms' ) );
+			return $feed_id;
+		}
+
+		// store a copy of the previous settings for cases where action would only happen if value has changed
+		$feed = $this->get_feed( $feed_id );
+		$this->set_previous_settings( $feed['meta'] );
+
+		$settings = $this->get_posted_settings();
+		$sections = $this->get_feed_settings_fields();
+		$settings = $this->trim_conditional_logic_vales( $settings, $form_id );
+
+		$is_valid = $this->validate_settings( $sections, $settings );
+		$result   = false;
+		
+		//Check for a valid UA code
+		$feed_ua_code = isset( $settings[ 'gaEventUA' ] ) ? $settings[ 'gaEventUA' ] : '';
+		$ua_codes = $this->get_ua_codes( $feed_ua_code, $this->get_ga_id() );
+		if ( empty( $ua_codes ) ) {
+			GFCommon::add_error_message( __( 'You must set a UA code for event tracking to work.', 'gravity-forms-google-analytics-event-tracking' ) );
+			return $feed_id;
+		} 
+		
+		
+		if ( $is_valid ) {
+			$settings = $this->filter_settings( $sections, $settings );
+			$feed_id = $this->save_feed_settings( $feed_id, $form_id, $settings );
+			if ( $feed_id ) {
+				GFCommon::add_message( $this->get_save_success_message( $sections ) );
+			} else {
+				GFCommon::add_error_message( $this->get_save_error_message( $sections ) );
+			}
+		} else {
+			GFCommon::add_error_message( $this->get_save_error_message( $sections ) );
+		}
+
+		return $feed_id;
+	}
+	
+	/**
+	 * Return Google Analytics GA Codes
+	 * 
+	 * @since 1.7.0
+	 * @return array Array of GA codes
+	 */
+	private function get_ua_codes( $feed_ua, $settings_ua ) {
+		$google_analytics_codes = array();
+        if ( !empty( $feed_ua ) ) {
+            $ga_ua = explode( ',', $feed_ua );
+            if ( is_array( $ga_ua ) ) {
+                foreach( $ga_ua as &$value ) {
+                    $value = trim( $value );   
+                } 
+            }
+            $google_analytics_codes = $ga_ua;
+        }
+        if( $settings_ua ) {
+            $google_analytics_codes[] = $settings_ua;
+        }
+        $google_analytics_codes = array_unique( $google_analytics_codes );
+        return $google_analytics_codes;
 	}
 
 	/**
