@@ -147,7 +147,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		
 		$this->ua_id = $ua_id = false;
 
-		$ua_id = $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ];
+		$ua_id = isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ] ) ? $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ] : '';
 
 		$ua_regex = "/^UA-[0-9]{5,}-[0-9]{1,}$/";
 
