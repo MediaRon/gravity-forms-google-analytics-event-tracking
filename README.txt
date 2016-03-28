@@ -1,6 +1,6 @@
 === Gravity Forms Google Analytics Event Tracking ===
 Contributors: nmarks, ronalfy
-Tags: gravity forms, google analytics, event tracking, adopt-me
+Tags: gravity forms, google analytics, event tracking
 Requires at least:4.0
 Tested up to: 4.5
 Stable tag: 1.7.0
@@ -29,12 +29,20 @@ Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
 - Awesomeness
 
 = Configuration =
-After installing, you setup your UA ID in the Event Tracking tab on Gravity Forms' settings page and then customize your event category/action/label/value on the form event tracking settings page (see screenshots for more information).
+If you meet all the requirements of this plugin, you can simply install this plugin in your WordPress plugins folder.
+
+Once this plugin is activated, you can browse to the Gravity Forms settings and find a new sub-menu item called <strong>Event Tracker</strong>.  There, you will enter your <a href="https://support.google.com/analytics/answer/1032385?hl=en">Google Analytics Tracking Code</a>.
+
+The plugin provides some <a href="http://www.nvisionsolutions.ca/blog/search-engine-optimization/gravity-forms-scalable-event-tracking-google-analytics/">default event categories, labels, and actions</a>.  You can override these per form by going into the individual form's settings. 
+
+Within Google Analytics, you will want to set up an <a href="https://support.google.com/analytics/answer/1032415?hl=en">event-based goal</a> and match the event label, event category, and event action with the ones you set up.
+
+On each form, you need to make sure to setup an Event Tracking Feed. Open each forms settings, go to the "Event Tracking" section, and set one up. Leave the fields blank to use the default values.
 
 For payment based forms, you can leave the value blank to convert using the total payment amount.
 
 = Hooks/Filters =
-Check out the documentation on [github](https://github.com/nathanmarks/wordpress-gravity-forms-event-tracking)
+Check out the documentation on [github](https://github.com/ronalfy/wordpress-gravity-forms-event-tracking)
 
 == Installation ==
 
@@ -73,7 +81,7 @@ Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
 
 = Are there any filters/hooks? =
 
-Check out the documentation on [github](https://github.com/nathanmarks/wordpress-gravity-forms-event-tracking)
+Check out the documentation on [github](https://github.com/ronalfy/wordpress-gravity-forms-event-tracking)
 
 == Screenshots ==
 
