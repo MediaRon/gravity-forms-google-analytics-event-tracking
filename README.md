@@ -25,6 +25,8 @@ The plugin provides some <a href="http://www.nvisionsolutions.ca/blog/search-eng
 
 Within Google Analytics, you will want to set up an <a href="https://support.google.com/analytics/answer/1032415?hl=en">event-based goal</a> and match the event label, event category, and event action with the ones you set up.
 
+On each form, you need to make sure to setup an Event Tracking Feed. Open each forms settings, go to the "Event Tracking" section, and set one up. Leave the fields blank to use the default values.
+
 ## Filters
 
 ###gform_ua_ids
