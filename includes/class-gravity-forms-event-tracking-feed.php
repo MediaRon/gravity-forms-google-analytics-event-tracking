@@ -387,13 +387,8 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		
 		//Push out the event to each UA code
 		foreach( $google_analytics_codes as $ua_code ) {
-			$options = array(
-				'adapter' => array(
-					'ssl' => is_ssl()
-				)	
-			);
-    		$tracking = new \Racecore\GATracking\GATracking( $ua_code, $options );
-    		
+			
+    		$tracking = new \Racecore\GATracking\GATracking( $ua_code );
     		try {
     		    $tracking->sendTracking( $event );
     		} catch (Exception $e) {
