@@ -1,8 +1,6 @@
 <?php
 
-namespace Racecore\GATracking\Exception;
-
-use Racecore\GATracking\Exception;
+namespace Racecore\GATracking\Tracking;
 
 /**
  * Google Analytics Measurement PHP Class
@@ -18,8 +16,28 @@ use Racecore\GATracking\Exception;
  * @email   Rieger(at)racecore.de
  * @git     https://github.com/ins0
  * @url     http://www.racecore.de
- * @package Racecore\GATracking\Exception
+ * @package Racecore\GATracking\Tracking
  */
-class MissingConfigurationException extends Exception
+class Factory extends AbstractTracking
 {
+    private $payload = array();
+
+    public function __construct($payload)
+    {
+        $this->payload = $payload;
+    }
+
+    public function createPackage()
+    {
+        // nothing
+    }
+
+    /**
+     * Returns the payload for a custom tracking package
+     * @return array
+     */
+    public function getPackage()
+    {
+        return $this->payload;
+    }
 }

@@ -94,16 +94,14 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		// Move this hook so everything else is all done and dusted first!
 		remove_filter( 'gform_entry_post_save', array( $this, 'maybe_process_feed' ) );
 		
+		$this->load_ua_settings();
+		$this->load_measurement_client();
 
-		if ( $this->load_ua_settings() ) {
-			$this->load_measurement_client();
+		add_filter( 'gform_after_submission', array( $this, 'maybe_process_feed' ), 10, 2 );
 
-			add_filter( 'gform_after_submission', array( $this, 'maybe_process_feed' ), 10, 2 );
-
-			// IPN hook for paypal standard!
-			if ( class_exists( 'GFPayPal' ) ) {
-				add_action( 'gform_paypal_post_ipn', array( $this, 'paypal_track_form_post_ipn' ), 10, 2 );
-			}
+		// IPN hook for paypal standard!
+		if ( class_exists( 'GFPayPal' ) ) {
+			add_action( 'gform_paypal_post_ipn', array( $this, 'paypal_track_form_post_ipn' ), 10, 2 );
 		}
 
 	}
@@ -309,7 +307,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	private function push_event( $entry, $form, $ga_event_data ) {
         
         //Get all analytics codes to send
-        $gogle_analytics_codes = $this->get_ua_codes( $ga_event_data[ 'gaEventUA' ], $this->ua_id );
+        $google_analytics_codes = $this->get_ua_codes( $ga_event_data[ 'gaEventUA' ], $this->ua_id );
         
         /**
 		* Filter: gform_ua_ids
@@ -322,8 +320,10 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		* @param object $form Gravity Form form object
 		* @param object $entry Gravity Form Entry Object
 		*/
-        $google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form, $entry ); 
+        $google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form, $entry );
         
+        if ( !is_array( $google_analytics_codes ) || empty( $google_analytics_codes ) ) return; 
+                
 		$event = new \Racecore\GATracking\Tracking\Event();
 
 		// Set some defaults
@@ -383,11 +383,15 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		
 		//Push out the event to each UA code
 		foreach( $google_analytics_codes as $ua_code ) {
-    		$tracking = new \Racecore\GATracking\GATracking( $ua_code );
-    		$tracking->addTracking( $event );
+			$options = array(
+				'adapter' => array(
+					'ssl' => is_ssl()
+				)	
+			);
+    		$tracking = new \Racecore\GATracking\GATracking( $ua_code, $options );
     		
     		try {
-    		    $tracking->send();
+    		    $tracking->sendTracking( $event );
     		} catch (Exception $e) {
     		    error_log( $e->getMessage() . ' in ' . get_class( $e ) );
     		}

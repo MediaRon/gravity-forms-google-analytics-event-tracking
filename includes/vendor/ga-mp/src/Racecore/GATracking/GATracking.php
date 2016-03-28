@@ -1,9 +1,11 @@
 <?php
+
 namespace Racecore\GATracking;
 
-use Racecore\GATracking\Exception\EndpointServerException;
-use Racecore\GATracking\Exception\MissingConfigurationException;
-use Racecore\GATracking\Tracking\AbstractTracking;
+use Racecore\GATracking\Request;
+use Racecore\GATracking\Client;
+use Racecore\GATracking\Exception;
+use Racecore\GATracking\Tracking;
 
 /**
  * Google Analytics Measurement PHP Class
@@ -23,211 +25,213 @@ use Racecore\GATracking\Tracking\AbstractTracking;
  */
 class GATracking
 {
-    /**
-     * Google Analytics Account ID UA-...
-     *
-     * @var
-     */
-    private $accountID;
+    /** @var null */
+    private $analyticsAccountUid = null;
+
+    /** @var array */
+    private $options = array(
+        'client_create_random_id' => true, // create a random client id when the class can't fetch the current client id or none is provided by "client_id"
+        'client_fallback_id' => 555, // fallback client id when cid was not found and random client id is off
+        'client_id' => null,    // override client id
+        'user_id' => null,  // determine current user id
+
+        // adapter options
+        'adapter' => array(
+            'async' => true, // requests to google are async - don't wait for google server response
+            'ssl' => false // use ssl connection to google server
+        )
+
+        // use proxy
+        /**
+        'proxy' => array(
+            'ip' => '127.0.0.1', // override the proxy ip with this one
+            'user_agent' => 'override agent' // override the proxy user agent
+        ),
+        **/
+    );
+
+    /** @var Client\AbstractClientAdapter */
+    private $clientAdapter = null;
+
+    /** @var string */
+    private $apiProtocolVersion = '1';
+    private $apiEndpointUrl = 'http://www.google-analytics.com/collect';
 
     /**
-     * Current User Client ID
-     *
-     * @var string
+     * @param $analyticsAccountUid
+     * @param array $options
+     * @param Client\AbstractClientAdapter $clientAdapter
+     * @throws Exception\InvalidArgumentException
      */
-    private $clientID;
-    
-    /**
-     * Current User ID
-     *
-     * @var string
-     */
-    private $userID = null;
-
-    /**
-     * Protocol Version
-     *
-     * @var string
-     */
-    private $protocol = '1';
-
-    /**
-     * Analytics Endpoint URL
-     *
-     * @var string
-     */
-    private $analytics_endpoint = 'http://www.google-analytics.com/collect';
-
-    /**
-     * Tacking Holder
-     *
-     * @var array
-     */
-    private $tracking_holder = array();
-
-    /**
-     * Holds the last Response from Google Analytics Server
-     *
-     * @var string
-     */
-    private $last_response = null;
-
-    /**
-     * Holds all Responses from GA Server
-     *
-     * @var array
-     */
-    private $last_response_stack = array();
-    
-    /**
-     * Send Proxy Variables
-     *
-     * @var boolean
-     */
-    private $use_proxy;
-    
-    /**
-     * Sets the Use Proxy variable
-     *
-     * @param $proxy
-     */
-    public function setProxy($proxy)
+    public function __construct($analyticsAccountUid, $options = array(), Client\AbstractClientAdapter $clientAdapter = null)
     {
-        $this->use_proxy = $proxy;
-    }
-    
-    /**
-     * Returns the Use Proxy variable
-     *
-     * @return boolean
-     */
-    public function getProxy()
-    {
-        return $this->use_proxy;
-    }
-
-    /**
-     * Sets the Analytics Account ID
-     *
-     * @param $account
-     */
-    public function setAccountID($account)
-    {
-
-        $this->accountID = $account;
-    }
-
-    /**
-     * Set the current Client ID
-     *
-     * @param $clientID
-     * @return $this
-     */
-    public function setClientID($clientID)
-    {
-        $this->clientID = $clientID;
-        return $this;
-    }
-
-    /**
-     * Returns the current Client ID
-     *
-     * @return string
-     */
-    public function getClientID()
-    {
-        if (!$this->clientID) {
-            $this->clientID = $this->createClientID();
+        if (empty($analyticsAccountUid)) {
+            throw new Exception\InvalidArgumentException('Google Account/Tracking ID not provided');
         }
 
-        return $this->clientID;
-    }
-    
-    /**
-     * Set the current User ID
-     *
-     * @param $clientID
-     * @return $this
-     */
-    public function setUserID($userID)
-    {
-        $this->userID = $userID;
-        return $this;
+        $this->analyticsAccountUid = $analyticsAccountUid;
+
+        if (!class_exists('Racecore\GATracking\Client\Adapter\Socket')) {
+            require_once( dirname(__FILE__) . '/Autoloader.php');
+            Autoloader::register(dirname(__FILE__).'/../../../src/');
+        }
+
+        if (!$clientAdapter) {
+            $clientAdapter = new Client\Adapter\Socket();
+        }
+        $this->setClientAdapter($clientAdapter);
+
+        if (!empty($options)) {
+            $this->setOptions(
+                array_merge($this->options, $options)
+            );
+        }
     }
 
     /**
-     * Returns the current User ID
+     * Return Analytics Account ID
      *
-     * @return string
+     * @return null
      */
-    public function getUserID()
+    public function getAnalyticsAccountUid()
     {
-        return $this->userID;
+        return $this->analyticsAccountUid;
     }
 
     /**
-     * Return all registered Events
+     * Set the Analytics Account ID
+     *
+     * @param null $analyticsAccountUid
+     */
+    public function setAnalyticsAccountUid($analyticsAccountUid)
+    {
+        $this->analyticsAccountUid = $analyticsAccountUid;
+    }
+
+    /**
+     * Get the current Client Adapter
+     *
+     * @return Client\AbstractClientAdapter
+     */
+    public function getClientAdapter()
+    {
+        return $this->clientAdapter;
+    }
+
+    /**
+     * Set the current Client Adapter
+     *
+     * @param Client\AbstractClientAdapter $adapter
+     */
+    public function setClientAdapter(Client\AbstractClientAdapter $adapter)
+    {
+        $this->clientAdapter = $adapter;
+    }
+
+    /**
+     * Set Options
+     *
+     * @param $options
+     * @throws Exception\InvalidArgumentException
+     */
+    public function setOptions($options)
+    {
+        if (!is_array($options)) {
+            throw new Exception\InvalidArgumentException(sprintf(
+                '[%s] expects array; received [%s]',
+                __METHOD__,
+                gettype($options)
+            ));
+        }
+
+        $this->options = $options;
+    }
+
+    /**
+     * Set single Option
+     *
+     * @param $key
+     * @param $value
+     */
+    public function setOption($key, $value)
+    {
+        if (isset($this->options[$key]) && is_array($this->options[$key]) && is_array($value)) {
+            $oldValues = $this->options[$key];
+            $value = array_merge($oldValues, $value);
+        }
+
+        $this->options[$key] = $value;
+    }
+
+    /**
+     * Return Options
      *
      * @return array
      */
-    public function getEvents()
+    public function getOptions()
     {
-        return $this->tracking_holder;
+        return $this->options;
     }
 
     /**
-     * Returns current Google Account ID
+     * Return Single Option
      *
-     * @return mixed
+     * @param $key
+     * @return null|mixed
      */
-    public function getAccountID()
+    public function getOption($key)
     {
-        return $this->accountID;
+        if (!isset($this->options[$key])) {
+            return null;
+        }
+
+        return $this->options[$key];
     }
 
     /**
-     * Constructor
+     * Sets the used clientId
      *
-     * @param string $accountID
-     * @param boolean $proxy (default: false)
+     * @param $clientId
      */
-    public function __construct( $accountID = null, $proxy = false )
+    public function setClientId($clientId)
     {
-        $this->setAccountID( $accountID );
-        $this->setProxy($proxy);
-
-        return $this;
+        $this->setOption('client_id', $clientId);
     }
 
     /**
-     * Create a GUID on Client specific values
+     * Return the Current Client Id
      *
      * @return string
      */
-    private function createClientID()
+    public function getClientId()
     {
+        $clientId = $this->getOption('client_id');
+        if ($clientId) {
+            return $clientId;
+        }
+
         // collect user specific data
         if (isset($_COOKIE['_ga'])) {
-
             $gaCookie = explode('.', $_COOKIE['_ga']);
-            if( isset($gaCookie[2] ) )
-            {
+            if (isset($gaCookie[2])) {
                 // check if uuid
-                if( $this->checkUUID( $gaCookie[2] ) )
-                {
+                if ($this->checkUuid($gaCookie[2])) {
                     // uuid set in cookie
                     return $gaCookie[2];
-                }
-                elseif( isset($gaCookie[2]) && isset($gaCookie[3]) )
-                {
-                    // google default client id
+                } elseif (isset($gaCookie[2]) && isset($gaCookie[3])) {
+                    // google old client id
                     return $gaCookie[2] . '.' . $gaCookie[3];
                 }
             }
         }
 
-        // nothing found - return random uuid client id
-        return $this->generateUUID();
+        // nothing found - fallback
+        $generateClientId = $this->getOption('client_create_random_id');
+        if ($generateClientId) {
+            return $this->generateUuid();
+        }
+
+        return $this->getOption('client_fallback_id');
     }
 
     /**
@@ -236,9 +240,12 @@ class GATracking
      * @param $uuid
      * @return int
      */
-    private function checkUUID( $uuid )
+    final private function checkUuid($uuid)
     {
-        return preg_match('#^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$#i', $uuid );
+        return preg_match(
+            '#^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$#i',
+            $uuid
+        );
     }
 
     /**
@@ -247,231 +254,132 @@ class GATracking
      * @author Andrew Moore http://www.php.net/manual/en/function.uniqid.php#94959
      * @return string
      */
-    private function generateUUID() {
-        return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+    final private function generateUuid()
+    {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
             // 32 bits for "time_low"
-            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
-
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
             // 16 bits for "time_mid"
-            mt_rand( 0, 0xffff ),
-
+            mt_rand(0, 0xffff),
             // 16 bits for "time_hi_and_version",
             // four most significant bits holds version number 4
-            mt_rand( 0, 0x0fff ) | 0x4000,
-
+            mt_rand(0, 0x0fff) | 0x4000,
             // 16 bits, 8 bits for "clk_seq_hi_res",
             // 8 bits for "clk_seq_low",
             // two most significant bits holds zero and one for variant DCE1.1
-            mt_rand( 0, 0x3fff ) | 0x8000,
-
+            mt_rand(0, 0x3fff) | 0x8000,
             // 48 bits for "node"
-            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff)
         );
     }
 
     /**
-     * Send all captured Trackings to Analytics Server
-     * Flush all prev. captured tracking responses
+     * Build the Tracking Payload Data
      *
-     * @return bool
-     */
-    public function send()
-    {
-        // clear response logs
-        $this->last_response_stack = array();
-        $this->last_response = null;
-
-        /** @var AbstractTracking $event */
-        foreach ($this->tracking_holder as $tracking) {
-            $this->sendTracking($tracking);
-        }
-
-        return true;
-    }
-
-    /**
-     * Returns the Client IP
-     * The last octect of the IP address is removed to anonymize the user
-     *
-     * @param string $address
-     * @return string
-     */
-    function getClientIP($address = '')
-    {
-
-        if (!$address) {
-            $address = $_SERVER['REMOTE_ADDR'];
-        }
-
-        if (!$address) {
-            return '';
-        }
-
-        // Capture the first three octects of the IP address and replace the forth
-        // with 0, e.g. 124.455.3.123 becomes 124.455.3.0
-        $regex = "/^([^.]+\.[^.]+\.[^.]+\.).*/";
-        if (preg_match($regex, $address, $matches)) {
-            return $matches[1] . '0';
-        }
-
-        return '';
-    }
-
-    /**
-     * Build the POST Packet
-     *
-     * @param AbstractTracking $event
-     * @return string
+     * @param Tracking\AbstractTracking $event
+     * @return array
      * @throws Exception\MissingConfigurationException
      */
-    private function buildPacket( AbstractTracking $event )
+    protected function getTrackingPayloadData(Tracking\AbstractTracking $event)
     {
-        // get packet
-        $eventPacket = $event->getPaket();
+        $payloadData = $event->getPackage();
+        $payloadData['v'] = $this->apiProtocolVersion; // protocol version
+        $payloadData['tid'] = $this->analyticsAccountUid; // account id
+        $payloadData['uid'] = $this->getOption('user_id');
+        $payloadData['cid'] = $this->getClientId();
 
-        if( ! $this->getAccountID() )
-        {
-            throw new MissingConfigurationException('Google Account ID is missing');
+        $proxy = $this->getOption('proxy');
+        if ($proxy) {
+            if (!isset($proxy['ip'])) {
+                throw new Exception\MissingConfigurationException('proxy options need "ip" key/value');
+            }
+
+            if (isset($proxy['user_agent'])) {
+                $payloadData['ua'] = $proxy['user_agent'];
+            }
+
+            $payloadData['uip'] = $proxy['ip'];
         }
 
-        // Add Protocol
-        $eventPacket['v'] = $this->protocol; // protocol version
-        $eventPacket['tid'] = $this->getAccountID(); // account id
-        $eventPacket['cid'] = $this->getClientID(); // client id
-        
-        if($this->getUserID() != null){
-        	$eventPacket['uid'] = $this->getUserID();
-        }
-        
-        //Proxy Variables
-        if($this->getProxy()){
-        	$eventPacket['uip'] = $_SERVER['REMOTE_ADDR']; // IP Override
-        	$eventPacket['ua'] = $_SERVER['HTTP_USER_AGENT']; // UA Override
-      	}
-
-        $eventPacket = array_reverse($eventPacket);
-
-        // build query
-        return http_build_query($eventPacket);
+        return array_filter($payloadData);
     }
 
     /**
-     * Send an Event to Google Analytics
-     * Will be removed
+     * Call the client adapter
      *
-     * @param AbstractTracking $tracking
-     * @return bool
-     * @throws Exception\EndpointServerException
-     * @deprecated Use sendTracking
+     * @param $tracking
+     * @throws Exception\InvalidArgumentException
+     * @throws Exception\MissingConfigurationException
+     * @return Request\TrackingRequestCollection
      */
-    public function sendEvent(AbstractTracking $tracking)
+    private function callEndpoint($tracking)
     {
-        return $this->sendTracking($tracking);
+        $trackingHolder = is_array($tracking) ? $tracking : array($tracking);
+        $trackingCollection = new Request\TrackingRequestCollection();
+
+        foreach ($trackingHolder as $tracking) {
+            if (!$tracking instanceof Tracking\AbstractTracking) {
+                continue;
+            }
+
+            $payloadData = $this->getTrackingPayloadData($tracking);
+
+            $trackingRequest = new Request\TrackingRequest($payloadData);
+            $trackingCollection->add($trackingRequest);
+        }
+
+        $adapterOptions = $this->getOption('adapter');
+        $clientAdapter = $this->clientAdapter;
+        $clientAdapter->setOptions($adapterOptions);
+
+        return $clientAdapter->send($this->apiEndpointUrl, $trackingCollection);
     }
 
     /**
-     * Send an Event to Google Analytics
+     * Create a Tracking Class Instance - eg. "Event" or "Ecommerce\Transaction"
      *
-     * @param AbstractTracking $event
-     * @return bool
-     * @throws Exception\EndpointServerException
-     */
-    public function sendTracking(AbstractTracking $event)
-    {
-        // get packet
-        $eventPacket = $this->buildPacket( $event );
-
-        // get endpoint
-        $endpoint = parse_url($this->analytics_endpoint);
-
-        // port
-        $port = ($endpoint['scheme'] == 'https' ? 443 : 80);
-
-        // connect
-        $connection = @fsockopen($endpoint['scheme'] == 'https' ? 'ssl://' : $endpoint['host'], $port, $error, $errorstr, 10);
-
-        if (!$connection) {
-            throw new EndpointServerException('Analytics Host not reachable!');
-        }
-
-        $header =   'POST ' . $endpoint['path'] . ' HTTP/1.1' . "\r\n" .
-                    'Host: ' . $endpoint['host'] . "\r\n" .
-                    'User-Agent: Google-Measurement-PHP-Client' . "\r\n" .
-                    'Content-Type: application/x-www-form-urlencoded' . "\r\n" .
-                    'Content-Length: ' . strlen($eventPacket) . "\r\n" .
-                    'Connection: Close' . "\r\n\r\n";
-
-        $this->last_response = '';
-
-        // frwite data
-        fwrite($connection, $header);
-        fwrite($connection, $eventPacket);
-
-        // response
-        $response = '';
-
-        // receive response
-        while (!feof($connection)) {
-            $response .= fgets($connection, 1024);
-        }
-
-        // response
-        $responseContainer = explode("\r\n\r\n", $response, 2);
-        $responseContainer[0] = explode("\r\n", $responseContainer[0]);
-
-        // save last response
-        $this->addResponse( $responseContainer );
-
-        // connection close
-        fclose($connection);
-
-        return true;
-    }
-
-    /**
-     * Add a Response to the Stack
-     *
-     * @param $response
+     * @param $className
+     * @param null $options
      * @return bool
      */
-    public function addResponse( $response )
+    public function createTracking($className, $options = null)
     {
-        $this->last_response_stack[] = $response;
-        $this->last_response = $response;
-        return true;
+        if (strstr(strtolower($className), 'abstracttracking')) {
+            return false;
+        }
+
+        $class = 'Racecore\GATracking\Tracking\\' . $className;
+        if ($options) {
+            return new $class($options);
+        }
+        return new $class;
     }
 
     /**
-     * Returns the last Response from Google Analytics Server
+     * Send single tracking request
      *
-     * @author  Marco Rieger
-     * @return string
+     * @param Tracking\AbstractTracking $tracking
+     * @return Tracking\AbstractTracking
      */
-    public function getLastResponse()
+    public function sendTracking(Tracking\AbstractTracking $tracking)
     {
-        return $this->last_response;
+        $responseCollection = $this->callEndpoint($tracking);
+        $responseCollection->rewind();
+        return $responseCollection->current();
     }
 
     /**
-     * Returns all Responses since the last Send Method Call
+     * Send multiple tracking request
      *
-     * @return array
+     * @param $array
+     * @return Request\TrackingRequestCollection
      */
-    public function getLastResponseStack()
+    public function sendMultipleTracking($array)
     {
-        return $this->last_response_stack;
-    }
-
-    /**
-     * Add Tracking Event
-     *
-     * @param AbstractTracking $tracking
-     * @return $this
-     */
-    public function addTracking(AbstractTracking $tracking)
-    {
-        $this->tracking_holder[] = $tracking;
-
-        return $this;
+        return $this->callEndpoint($array);
     }
 }

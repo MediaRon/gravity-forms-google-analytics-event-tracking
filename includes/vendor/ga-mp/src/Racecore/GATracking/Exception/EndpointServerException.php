@@ -1,4 +1,5 @@
 <?php
+
 namespace Racecore\GATracking\Exception;
 
 use Racecore\GATracking\Exception;

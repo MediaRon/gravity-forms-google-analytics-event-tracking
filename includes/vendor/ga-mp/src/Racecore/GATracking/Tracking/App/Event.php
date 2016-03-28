@@ -1,4 +1,5 @@
 <?php
+
 namespace Racecore\GATracking\Tracking\App;
 
 use Racecore\GATracking\Tracking\Event as DefaultEvent;

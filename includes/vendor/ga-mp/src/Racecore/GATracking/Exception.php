@@ -1,4 +1,5 @@
 <?php
+
 namespace Racecore\GATracking;
 
 /**
@@ -17,6 +18,6 @@ namespace Racecore\GATracking;
  * @url     http://www.racecore.de
  * @package Racecore\GATracking
  */
-class Exception extends \UnexpectedValueException
+class Exception extends \Exception
 {
 }

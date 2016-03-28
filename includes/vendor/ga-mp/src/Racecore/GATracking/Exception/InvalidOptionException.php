@@ -20,6 +20,6 @@ use Racecore\GATracking\Exception;
  * @url     http://www.racecore.de
  * @package Racecore\GATracking\Exception
  */
-class MissingConfigurationException extends Exception
+class InvalidOptionException extends Exception
 {
 }
