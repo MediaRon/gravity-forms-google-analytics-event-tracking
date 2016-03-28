@@ -2,8 +2,8 @@
 Contributors: nmarks, ronalfy
 Tags: gravity forms, google analytics, event tracking, adopt-me
 Requires at least:4.0
-Tested up to: 4.4
-Stable tag: 1.6.5
+Tested up to: 4.5
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -83,6 +83,15 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 
 == Changelog ==
 
+= 1.7.0 =
+* Released 2016-03-28
+* Plugin will now display an error if an incompatible version of PHP is installed.
+* Bug Fix: Plugin no longer shows a notice if a UA code isn't set
+* Bug Fix: Plugin will now trigger events if a UA code is set in the feed but not in the settings
+* Enhancement: Document Path will now be set as part of event creation
+* Enhancement: Measurement protocol updated
+* Enhancement: Measurement protocol will not detect SSL and use the appropriate protocol 
+
 = 1.6.5 =
 * Released 2015-12-11
 * Ability to add multiple UA codes in the feed settings.
@@ -149,6 +158,9 @@ Check out the documentation on [github](https://github.com/nathanmarks/wordpress
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 1.7.0 =
+Updates to measurement protocol. Friendly notices for incompatible PHP versions and no UA codes.
 
 = 1.6.5 =
 Ability to add multiple UA codes in the feed settings
