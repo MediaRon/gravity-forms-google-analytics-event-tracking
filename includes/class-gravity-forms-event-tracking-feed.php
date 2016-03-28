@@ -339,8 +339,9 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		*
 		* @since 1.6.5
 		*
-		* @param object $form Gravity Form form object
-		* @param object $entry Gravity Form Entry Object
+		* @param string $category Event Category
+		* @param object $form     Gravity Form form object
+		* @param object $entry    Gravity Form Entry Object
 		*/
 		$event->setEventCategory( apply_filters( 'gform_event_category', $ga_event_data['gaEventCategory'], $form, $entry ) );
 		/**
@@ -350,8 +351,9 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		*
 		* @since 1.6.5
 		*
-		* @param object $form Gravity Form form object
-		* @param object $entry Gravity Form Entry Object
+		* @param string $action Event Action
+		* @param object $form   Gravity Form form object
+		* @param object $entry  Gravity Form Entry Object
 		*/
 		$event->setEventAction( apply_filters( 'gform_event_action', $ga_event_data['gaEventAction'], $form, $entry ) );
 		/**
@@ -361,7 +363,8 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 		*
 		* @since 1.6.5
 		*
-		* @param object $form Gravity Form form object
+		* @param string $label Event Label
+		* @param object $form  Gravity Form form object
 		* @param object $entry Gravity Form Entry Object
 		*/
 		$event->setEventLabel( apply_filters( 'gform_event_label', $ga_event_data['gaEventLabel'], $form, $entry ) );
