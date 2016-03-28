@@ -10,7 +10,7 @@
  * Plugin Name:       Gravity Forms Google Analytics Event Tracking
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking/
  * Description:       Add Google Analytics event tracking to your Gravity Forms with ease.
- * Version:           1.6.5
+ * Version:           1.7.0
  * Author:            Ronald Huereca
  * Author URI:        http://mediaron.com
  * Text Domain:       gravity-forms-google-analytics-event-tracking
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
 class Gravity_Forms_Event_Tracking_Bootstrap {
 
 	public static function load(){
-
+		if ( ! gravity_forms_event_tracking_has_minimum_php() ) return;
 		if ( ! method_exists( 'GFForms', 'include_feed_addon_framework' ) ) {
 			return;
 		}
@@ -42,3 +42,23 @@ class Gravity_Forms_Event_Tracking_Bootstrap {
 }
 
 add_action( 'gform_loaded', array( 'Gravity_Forms_Event_Tracking_Bootstrap', 'load' ), 5 );
+
+
+
+//Make sure minimum version of PHP version is supported
+//Returns true if minimum PHP is met, false if not
+function gravity_forms_event_tracking_has_minimum_php() {
+	if( ! version_compare( '5.3', PHP_VERSION, '<=' ) ) {
+		return false;
+	}
+	return true;
+}
+
+//Spit out error if user isn't using minimum version of PHP
+function gravity_forms_event_tracking_activation() {
+	if( !gravity_forms_event_tracking_has_minimum_php() ) {
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+		exit( sprintf( esc_html__( 'Gravity Forms Event Tracking requires PHP version 5.3 and up. You are currently running PHP version %s.', 'gravity-forms-google-analytics-event-tracking' ), esc_html( PHP_VERSION ) ) );
+	}
+}
+register_activation_hook( __FILE__, 'gravity_forms_event_tracking_activation' );
