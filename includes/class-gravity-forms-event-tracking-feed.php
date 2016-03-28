@@ -325,8 +325,9 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
         if ( !is_array( $google_analytics_codes ) || empty( $google_analytics_codes ) ) return; 
                 
 		$event = new \Racecore\GATracking\Tracking\Event();
-
+		
 		// Set some defaults
+		$event->setDocumentPath( str_replace( home_url(), '', $entry[ 'source_url' ] ) );
 		$event->setDocumentLocation( $ga_event_data['document_location'] );
 		$event->setDocumentTitle( $ga_event_data['document_title'] );
 		
