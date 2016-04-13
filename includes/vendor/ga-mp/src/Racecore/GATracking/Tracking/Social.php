@@ -1,7 +1,5 @@
 <?php
-
 namespace Racecore\GATracking\Tracking;
-
 use Racecore\GATracking\Exception\MissingTrackingParameterException;
 
 /**

@@ -1,5 +1,4 @@
 <?php
-
 namespace Racecore\GATracking\Tracking\User;
 
 use Racecore\GATracking\Tracking\AbstractTracking;

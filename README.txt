@@ -3,7 +3,7 @@ Contributors: nmarks, ronalfy
 Tags: gravity forms, google analytics, event tracking
 Requires at least:4.0
 Tested up to: 4.5
-Stable tag: 1.7.1
+Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Changelog ==
 
+= 1.7.3 =
+* Bugfix - Some users were experiencing PHP fatal errors upon form submission. Reverting to previously used library.
+
 = 1.7.1 =
 * Released 2016-03-28
 * Hotfix - Removing SSL requirement. Needs more testing.
@@ -170,6 +173,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 1.7.3 =
+Bugfix - Some users were experiencing PHP fatal errors upon form submission. Reverting to previously used library.
 
 = 1.7.1 =
 Removing SSL requirement. Needs more testing.

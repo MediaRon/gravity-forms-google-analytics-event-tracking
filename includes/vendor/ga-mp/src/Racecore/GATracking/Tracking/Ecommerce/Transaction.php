@@ -1,5 +1,4 @@
 <?php
-
 namespace Racecore\GATracking\Tracking\Ecommerce;
 
 use Racecore\GATracking\Exception\MissingTrackingParameterException;
@@ -35,9 +34,9 @@ class Transaction extends AbstractTracking
      * @param $host
      * @deprecated
      */
-    public function setTransactionHost($host)
+    public function setTransactionHost( $host )
     {
-        return $this->setDocumentHost($host);
+        return $this->setDocumentHost( $host );
     }
 
     /**
@@ -47,6 +46,7 @@ class Transaction extends AbstractTracking
      */
     public function setID($id)
     {
+
         $this->id = $id;
     }
 
@@ -175,7 +175,8 @@ class Transaction extends AbstractTracking
      */
     public function createPackage()
     {
-        if (!$this->getID()) {
+        if( !$this->getID() )
+        {
             throw new MissingTrackingParameterException('transaction id is missing');
         }
 
@@ -189,4 +190,5 @@ class Transaction extends AbstractTracking
             'cu' => $this->getCurrency()
         );
     }
+
 }
