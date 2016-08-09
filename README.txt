@@ -2,10 +2,11 @@
 Contributors: nmarks, ronalfy
 Tags: gravity forms, google analytics, event tracking
 Requires at least:4.0
-Tested up to: 4.5
+Tested up to: 4.6
 Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Donate link: https://mediaron.com/contribute/
 
 Add Google Analytics Event Tracking to your Gravity Forms in less than 5 minutes! Requires PHP 5.3+.
 
