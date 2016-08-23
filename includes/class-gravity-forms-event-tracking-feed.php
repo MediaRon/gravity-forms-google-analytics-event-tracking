@@ -61,8 +61,8 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
 		add_filter( 'gform_logging_supported', array( $this, 'set_logging_supported' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_action_links' ) );
-
-		if ( RG_CURRENT_PAGE == 'admin-ajax.php' ) {
+		$this->init_frontend();
+		if ( RG_CURRENT_PAGE == 'admin-ajax.php' || ( defined( 'DOING_AJAX' ) && true == DOING_AJAX ) ) {
 
 			//If gravity forms is supported, initialize AJAX
 			if ( $this->is_gravityforms_supported() ) {
