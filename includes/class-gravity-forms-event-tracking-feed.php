@@ -9,7 +9,6 @@
  * @copyright 2014 Nathan Marks
  */
 
-
 GFForms::include_feed_addon_framework();
 
 class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
