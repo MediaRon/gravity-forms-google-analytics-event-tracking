@@ -13,7 +13,7 @@ GFForms::include_feed_addon_framework();
 
 class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
-	protected $_version = "1.6.3";
+	protected $_version = "2.0.0";
 	protected $_min_gravityforms_version = "1.8.20";
 
 	/**
@@ -23,7 +23,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	 * 
 	 * @TODO Resolve this in 2.0 somehow...
 	 */
-	protected $_slug = "gravity-forms-event-tracking";
+	protected $_slug = "GFGAET_Submission_Feeds";
 	protected $_path = "gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php";
 	protected $_full_path = __FILE__;
 	protected $_url = "https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking";
@@ -44,7 +44,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
 	public static function get_instance() {
 		if ( self::$_instance == null ) {
-			self::$_instance = new Gravity_Forms_Event_Tracking();
+			self::$_instance = new new self();
 		}
 
 		return self::$_instance;
