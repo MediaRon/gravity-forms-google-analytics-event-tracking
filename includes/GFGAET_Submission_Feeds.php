@@ -15,18 +15,9 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 	protected $_version = "2.0.0";
 	protected $_min_gravityforms_version = "1.8.20";
-
-	/**
-	 * The actual slug of this plugin is too long for GF settings to save properly.
-	 * With the appended/prepended string it attempts to insert an option over 
-	 * 64 chars in length.
-	 * 
-	 * @TODO Resolve this in 2.0 somehow...
-	 */
-	protected $_slug = "GFGAET_Submission_Feeds";
+	protected $_slug = "gravity-forms-event-tracking";
 	protected $_path = "gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php";
 	protected $_full_path = __FILE__;
-	protected $_url = "https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking";
 	protected $_title = "Gravity Forms Google Analytics Event Tracking";
 	protected $_short_title = "Event Tracking";
 
