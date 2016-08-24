@@ -11,7 +11,7 @@
 
 GFForms::include_feed_addon_framework();
 
-class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
+class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 	protected $_version = "2.0.0";
 	protected $_min_gravityforms_version = "1.8.20";
@@ -44,7 +44,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
 	public static function get_instance() {
 		if ( self::$_instance == null ) {
-			self::$_instance = new new self();
+			self::$_instance = new self();
 		}
 
 		return self::$_instance;

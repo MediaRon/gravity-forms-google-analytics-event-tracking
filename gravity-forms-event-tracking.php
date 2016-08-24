@@ -100,6 +100,7 @@ class GFGAET {
 
 		//GFAddOn::register( 'Gravity_Forms_Event_Tracking' );
 		GFAddOn::register( 'GFGAET_UA' );
+		GFAddOn::register( 'GFGAET_Submission_Feeds' );
 	}
 	
 	/**
