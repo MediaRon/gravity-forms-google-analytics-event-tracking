@@ -1,23 +1,16 @@
 <?php
 /**
- * @package   Gravity_Forms_Event_Tracking
- * @author    Nathan Marks <nmarks@nvisionsolutions.ca>
- * @license   GPL-2.0+
- * @link      http://www.nvisionsolutions.ca
- * @copyright 2014-2015 Nathan Marks
- *
- * @wordpress-plugin
- * Plugin Name:       Gravity Forms Google Analytics Event Tracking
+ * Plugin Name:       Gravity Forms Event Tracking
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking/
  * Description:       Add Google Analytics event tracking to your Gravity Forms with ease.
- * Version:           1.7.3
+ * Version:           2.0.0
  * Author:            Ronald Huereca
  * Author URI:        https://mediaron.com
  * Text Domain:       gravity-forms-google-analytics-event-tracking
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
- * GitHub Plugin URI: https://github.com/nathanmarks/wordpress-gravity-forms-event-tracking
+ * Developer Credit:  Nathan Marks
  */
 
 // If this file is called directly, abort.
