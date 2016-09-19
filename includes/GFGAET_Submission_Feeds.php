@@ -19,7 +19,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	protected $_path = "gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php";
 	protected $_full_path = __FILE__;
 	protected $_title = "Gravity Forms Google Analytics Event Tracking";
-	protected $_short_title = "Event Tracking";
+	protected $_short_title = "Submission Tracking";
 
 	// Members plugin integration
 	protected $_capabilities = array( 'gravityforms_event_tracking', 'gravityforms_event_tracking_uninstall' );
@@ -57,7 +57,10 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	public function init_frontend() {
 
 		parent::init_frontend();
-
+		
+		require_once( 'vendor/ga-mp/src/Racecore/GATracking/Autoloader.php');
+		Racecore\GATracking\Autoloader::register( dirname(__FILE__) . '/vendor/ga-mp/src/' );
+		
 		// IPN hook for paypal standard!
 		if ( class_exists( 'GFPayPal' ) ) {
 			add_action( 'gform_paypal_post_ipn', array( $this, 'paypal_track_form_post_ipn' ), 10, 2 );
@@ -75,7 +78,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		$paypal_feeds = $this->get_feeds_by_slug( 'gravityformspaypal', $form['id'] );
 		$has_paypal_feed = false;
-
+		
 		foreach ( $paypal_feeds as $paypal_feed ){
 			if ( $paypal_feed['is_active'] && $this->is_feed_condition_met( $paypal_feed, $form, $entry ) ){
 				$has_paypal_feed = true;
@@ -333,6 +336,22 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			$event_value = GFCommon::to_number( $event_value );
 			$event->setEventValue( $event_value );
 		}
+		$count = 1;
+		//if ( defined( 'DOING_AJAX' ) && true == DOING_AJAX ) {
+			?>
+			<script>
+			<?php
+			foreach( $google_analytics_codes as $ua_code ) {
+				?>
+				window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
+				window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
+				<?php
+			}	
+			?>
+			console.log( 'yo' );
+			</script>
+			<?php
+	//	}
 		
 		//Push out the event to each UA code
 		foreach( $google_analytics_codes as $ua_code ) {
@@ -395,7 +414,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 * @return string Form Settings Title
 	 */
 	public function feed_settings_title() {
-		return __( 'Event Tracking Feed Settings', 'gravity-forms-google-analytics-event-tracking' );
+		return __( 'Submission Tracking Settings', 'gravity-forms-google-analytics-event-tracking' );
 	}
 	
 	public function maybe_save_feed_settings( $feed_id, $form_id ) {
@@ -492,7 +511,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 				),
 			),
 			array(
-				"title"  => __( 'Event Tracking Settings', 'gravity-forms-google-analytics-event-tracking' ),
+				"title"  => __( 'Submission Tracking Settings', 'gravity-forms-google-analytics-event-tracking' ),
 				"fields" => array(
 					array(
 						"label"   => "",

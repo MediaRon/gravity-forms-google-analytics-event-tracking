@@ -89,9 +89,6 @@ class GFGAET {
 			return;
 		}
 
-		//require_once( plugin_dir_path( __FILE__ ) . 'includes/class-gravity-forms-event-tracking-feed.php' );
-
-		//GFAddOn::register( 'Gravity_Forms_Event_Tracking' );
 		GFAddOn::register( 'GFGAET_UA' );
 		GFAddOn::register( 'GFGAET_Submission_Feeds' );
 	}
