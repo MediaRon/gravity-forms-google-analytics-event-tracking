@@ -11,22 +11,13 @@
 
 GFForms::include_feed_addon_framework();
 
-class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
+class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
-	protected $_version = "1.6.3";
+	protected $_version = "2.0.0";
 	protected $_min_gravityforms_version = "1.8.20";
-
-	/**
-	 * The actual slug of this plugin is too long for GF settings to save properly.
-	 * With the appended/prepended string it attempts to insert an option over 
-	 * 64 chars in length.
-	 * 
-	 * @TODO Resolve this in 2.0 somehow...
-	 */
 	protected $_slug = "gravity-forms-event-tracking";
 	protected $_path = "gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php";
 	protected $_full_path = __FILE__;
-	protected $_url = "https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking";
 	protected $_title = "Gravity Forms Google Analytics Event Tracking";
 	protected $_short_title = "Event Tracking";
 
@@ -44,7 +35,7 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 
 	public static function get_instance() {
 		if ( self::$_instance == null ) {
-			self::$_instance = new Gravity_Forms_Event_Tracking();
+			self::$_instance = new self();
 		}
 
 		return self::$_instance;
@@ -55,48 +46,17 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 	 * See comment above for explanation.
 	 */
 	public function init() {
-
-		load_plugin_textdomain( 'gravity-forms-google-analytics-event-tracking', false, dirname( plugin_basename( __FILE__ ) )  . '/languages' );
-
-		add_filter( 'gform_logging_supported', array( $this, 'set_logging_supported' ) );
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_action_links' ) );
-		$this->init_frontend();
-		if ( RG_CURRENT_PAGE == 'admin-ajax.php' || ( defined( 'DOING_AJAX' ) && true == DOING_AJAX ) ) {
-
-			//If gravity forms is supported, initialize AJAX
-			if ( $this->is_gravityforms_supported() ) {
-				$this->init_ajax();
-			}
-		} else if ( is_admin() ) {
-
-			$this->init_admin();
-
-		} else {
-
-			if ( $this->is_gravityforms_supported() ) {
-				$this->init_frontend();
-			}
-			
-		}
-
+		parent::init();
 	}
 
 	/**
 	 * Public facing init
 	 * 
-	 * @since 1.5.0
+	 * @since 2.0.0
 	 */
 	public function init_frontend() {
 
 		parent::init_frontend();
-
-		// Move this hook so everything else is all done and dusted first!
-		remove_filter( 'gform_entry_post_save', array( $this, 'maybe_process_feed' ) );
-		
-		$this->load_ua_settings();
-		$this->load_measurement_client();
-
-		add_filter( 'gform_after_submission', array( $this, 'maybe_process_feed' ), 10, 2 );
 
 		// IPN hook for paypal standard!
 		if ( class_exists( 'GFPayPal' ) ) {
@@ -171,16 +131,6 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
             return $this->ua_id;   
         }
      }
-
-	/**
-	 * Load the google measurement protocol PHP client.
-	 * 
-	 * @since 1.4.0
-	 */
-	private function load_measurement_client() {
-		require_once( 'vendor/ga-mp/src/Racecore/GATracking/Autoloader.php');
-		Racecore\GATracking\Autoloader::register( dirname(__FILE__) . '/vendor/ga-mp/src/' );
-	}
 
 	/**
 	 * Get data required for processing
@@ -633,101 +583,6 @@ class Gravity_Forms_Event_Tracking extends GFFeedAddOn {
 			'gaEventLabel'    => __( 'Label', 'gravity-forms-google-analytics-event-tracking' ),
 			'gaEventValue'    => __( 'Value', 'gravity-forms-google-analytics-event-tracking' ),
 		);
-	}
-
-	//--------------  Setup  ---------------
-
-	/**
-	 * Upgrading functions
-	 * 
-	 * @since 1.5.0
-	 */
-	public function upgrade( $previous_version ) {
-
-		// If the version is below 1.5.0, we need to move the form specific settings
-		if ( version_compare( $previous_version, "1.5.0" ) == -1 ) {
-			$forms = GFAPI::get_forms( true );
-
-			foreach ( $forms as $form ) {
-				$this->upgrade_old_form_settings( $form );	
-			}
-		}
-
-		// If the version is below 1.6.0, we need to convert any form settings to a feed
-		if ( version_compare( $previous_version, "1.6.0" ) == -1 ) {
-			$forms = GFAPI::get_forms( true );
-
-			foreach ( $forms as $form ) {
-				$this->upgrade_settings_to_feed( $form );
-			}
-		}
-
-	}
-
-	/**
-	 * Upgrade old settings created prior to new settings tab
-	 * 
-	 * @since 1.5.0
-	 * @param array $form GF Form Object Array
-	 */
-	public function upgrade_old_form_settings( $form ) {
-		$settings = array( 'gaEventCategory', 'gaEventAction', 'gaEventLabel', 'gaEventValue' );
-
-		foreach( $settings as $key => $setting ) {
-			if ( isset( $form[ $setting ] ) && ( ! isset( $form[ $this->_slug ] ) || ! isset( $form[ $this->_slug ][ $setting ] ) || empty( $form[ $this->_slug ][ $setting ] ) ) ) {
-				$form[ $this->_slug ][ $setting ] = $form[ $setting ];
-			}
-			unset( $form[ $setting ] );
-		}
-
-		GFFormsModel::update_form_meta( $form['id'], $form );
-	}
-
-	/**
-	 * Upgrade settings and convert them into a feed
-	 *
-	 * @since 1.6.0
-	 * @param array $form GF Form object Array
-	 */
-	public function upgrade_settings_to_feed( $form ) {
-		if ( isset( $form['gravity-forms-event-tracking'] ) && $previous_settings = $form['gravity-forms-event-tracking'] ) {
-
-			$field_names = array( 'gaEventCategory', 'gaEventAction', 'gaEventLabel', 'gaEventValue' );
-
-			$previous_was_setup = false;
-
-			$previous_was_enabled = isset( $previous_settings['gaEventTrackingDisabled'] ) ? ! $previous_settings['gaEventTrackingDisabled'] : true;
-
-			$settings = array();
-
-			foreach ($field_names as $field_name) {
-				if ( isset( $previous_settings[ $field_name ] ) && $previous_settings[ $field_name ] ) {
-					$settings[ $field_name ] = $previous_settings[ $field_name ];
-					$previous_was_setup = true;
-				}
-
-				unset( $form['gravity-forms-event-tracking'] );
-
-				GFFormsModel::update_form_meta( $form['id'], $form );
-			}
-
-			if ( ! $previous_was_setup && ! $previous_was_enabled ) {
-				return;
-			}
-
-			$settings['feedName'] = __( 'Event Tracking Feed', 'gravity-forms-google-analytics-event-tracking' );
-			
-			$feed_id = $this->save_feed_settings( 0, $form['id'], $settings );
-			
-			if ( ! $previous_was_enabled ) {
-				$this->update_feed_active( $feed_id, false );
-			}
-			
-		}
-		else {
-			return;
-		}
-		
 	}
 
 }

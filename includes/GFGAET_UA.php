@@ -3,7 +3,7 @@ GFForms::include_addon_framework();
 
 class GFGAET_UA extends GFAddOn {
 	protected $_version = '2.0'; 
-	protected $_min_gravityforms_version = '2.0';
+	protected $_min_gravityforms_version = '1.8.20';
 	protected $_slug = 'GFGAET_UA';
 	protected $_path = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
 	protected $_full_path = __FILE__;
