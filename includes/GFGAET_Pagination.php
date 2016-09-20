@@ -43,5 +43,28 @@ class GFGAET_Pagination {
 		Racecore\GATracking\Autoloader::register( dirname(__FILE__) . '/vendor/ga-mp/src/' );
 		
 		$ua_code = GFGAET::get_ua_code();
+		if ( false !== $ua_code ) {
+			$event = new \Racecore\GATracking\Tracking\Event();
+		
+			$event_category = apply_filters( 'gform_pagination_event_category', 'form', $form, $source_page_number, $current_page_number );
+			$event_action = apply_filters( 'gform_pagination_event_action', 'pagination', $form, $source_page_number, $current_page_number );
+			
+			$event_label = sprintf( '%s::%s::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
+			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
+			
+			// Set the event meta
+			$event->setEventCategory( $event_category );
+			$event->setEventAction( $event_action );
+			$event->setEventLabel( $event_label );
+			
+			// Submit the event
+			$tracking = new \Racecore\GATracking\GATracking( $ua_code );
+			try {
+				$tracking->sendTracking( $event );
+			} catch (Exception $e) {
+				error_log( $e->getMessage() . ' in ' . get_class( $e ) );
+			}
+		}
+		
 	}
 }
