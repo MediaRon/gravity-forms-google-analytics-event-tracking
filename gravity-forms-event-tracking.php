@@ -79,6 +79,24 @@ class GFGAET {
 	}
 	
 	/**
+	 * Checks whether JS only mode is activated for sending events.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool true if JS only, false if not
+	 */
+	public static function is_js_only() {
+		$ga_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', false );
+		if ( ! isset( $ga_options[ 'js_only' ] ) ) {
+			return false;
+		}
+		if ( 'on' == $ga_options[ 'js_only' ] ) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Initialize Gravity Forms related add-ons.
 	 *
 	 * @since 2.0.0
@@ -131,7 +149,7 @@ class GFGAET {
 	 *
 	 * @since 2.0.0
 	 */
-	public function check_plugin() {
+	public static function check_plugin() {
 		if( ! GFGAET::check_php_version() ) {
 			deactivate_plugins( GFGAET::get_plugin_basename() );
 			exit( sprintf( esc_html__( 'Gravity Forms Event Tracking requires PHP version 5.3 and up. You are currently running PHP version %s.', 'gravity-forms-google-analytics-event-tracking' ), esc_html( PHP_VERSION ) ) );
