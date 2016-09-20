@@ -123,6 +123,9 @@ class GFGAET {
 
 		// Initialize pagination
 		add_action( 'gform_post_paging', array( $this, 'pagination'), 10, 3 );
+		
+		// Initialize whether Ajax is on or off
+		add_filter( 'gform_form_args', array( $this, 'maybe_ajax_only' ), 15, 1 );
 	}
 	
 	/**
@@ -177,6 +180,22 @@ class GFGAET {
 		if ( file_exists( $file ) ) {
 			include_once( $file );
 		}
+	}
+
+	/**
+	 * Sets all forms to Ajax only depeneding on settings
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $form_args The form arguments
+	 */
+	public function maybe_ajax_only( $form_args ) {
+		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+
+		if ( isset( $gravity_forms_add_on_settings[ 'ajax_only' ] ) && 'on' == $gravity_forms_add_on_settings[ 'ajax_only' ] ) {
+			$form_args[ 'ajax' ] = true;
+		}
+		return $form_args;
 	}
 
 	/**
