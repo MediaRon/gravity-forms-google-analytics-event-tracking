@@ -279,57 +279,57 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		
 		// Set our event object variables
 		/**
-		* Filter: gform_event_category
-		*
-		* Filter the event category dynamically
-		*
-		* @since 1.6.5
-		*
-		* @param string $category Event Category
-		* @param object $form     Gravity Form form object
-		* @param object $entry    Gravity Form Entry Object
-		*/
+		 * Filter: gform_event_category
+		 *
+		 * Filter the event category dynamically
+		 *
+		 * @since 1.6.5
+		 *
+		 * @param string $category Event Category
+		 * @param object $form     Gravity Form form object
+		 * @param object $entry    Gravity Form Entry Object
+		 */
 		$event_category = apply_filters( 'gform_event_category', $ga_event_data['gaEventCategory'], $form, $entry );
 		$event->setEventCategory( $event_category );
 
 		/**
-		* Filter: gform_event_action
-		*
-		* Filter the event action dynamically
-		*
-		* @since 1.6.5
-		*
-		* @param string $action Event Action
-		* @param object $form   Gravity Form form object
-		* @param object $entry  Gravity Form Entry Object
-		*/
+		 * Filter: gform_event_action
+		 *
+		 * Filter the event action dynamically
+		 *
+		 * @since 1.6.5
+		 *
+		 * @param string $action Event Action
+		 * @param object $form   Gravity Form form object
+		 * @param object $entry  Gravity Form Entry Object
+		 */
 		$event_action = apply_filters( 'gform_event_action', $ga_event_data['gaEventAction'], $form, $entry );
 		$event->setEventAction( $event_action );
 
 		/**
-		* Filter: gform_event_label
-		*
-		* Filter the event label dynamically
-		*
-		* @since 1.6.5
-		*
-		* @param string $label Event Label
-		* @param object $form  Gravity Form form object
-		* @param object $entry Gravity Form Entry Object
-		*/
+		 * Filter: gform_event_label
+		 *
+		 * Filter the event label dynamically
+		 *
+		 * @since 1.6.5
+		 *
+		 * @param string $label Event Label
+		 * @param object $form  Gravity Form form object
+		 * @param object $entry Gravity Form Entry Object
+		 */
 		$event_label = apply_filters( 'gform_event_label', $ga_event_data['gaEventLabel'], $form, $entry );
 		$event->setEventLabel( $event_label );
 
 		/**
-		* Filter: gform_event_value
-		*
-		* Filter the event value dynamically
-		*
-		* @since 1.6.5
-		*
-		* @param object $form Gravity Form form object
-		* @param object $entry Gravity Form Entry Object
-		*/
+		 * Filter: gform_event_value
+		 *
+		 * Filter the event value dynamically
+		 *
+		 * @since 1.6.5
+		 *
+		 * @param object $form Gravity Form form object
+		 * @param object $entry Gravity Form Entry Object
+		 */
 		$event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form, $entry );
 		if ( $event_value ) {
 			// Event value must be a valid float!
