@@ -357,13 +357,18 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						}
 					}
 					if ( typeof window.parent.ga != 'undefined' ) {
+
+						// Try to get original UA code from third-party plugins or tag manager
 						var default_ua_code = null;
 						window.parent.ga(function(tracker) {
 							default_ua_code = tracker.get('trackingId');
 						});
+						
+						// If UA code matches, use that tracker
 						if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
 							window.parent.ga( 'send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
 						} else {
+							// UA code doesn't match, use another tracker
 							window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
 							window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
 						}
@@ -373,6 +378,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 				}
 				
 				<?php
+				$count += 1;
 			}	
 			?>
 			console.log( 'yo' );
