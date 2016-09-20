@@ -297,7 +297,9 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		* @param object $form     Gravity Form form object
 		* @param object $entry    Gravity Form Entry Object
 		*/
-		$event->setEventCategory( apply_filters( 'gform_event_category', $ga_event_data['gaEventCategory'], $form, $entry ) );
+		$event_category = apply_filters( 'gform_event_category', $ga_event_data['gaEventCategory'], $form, $entry );
+		$event->setEventCategory( $event_category );
+
 		/**
 		* Filter: gform_event_action
 		*
@@ -309,7 +311,9 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		* @param object $form   Gravity Form form object
 		* @param object $entry  Gravity Form Entry Object
 		*/
-		$event->setEventAction( apply_filters( 'gform_event_action', $ga_event_data['gaEventAction'], $form, $entry ) );
+		$event_action = apply_filters( 'gform_event_action', $ga_event_data['gaEventAction'], $form, $entry );
+		$event->setEventAction( $event_action );
+
 		/**
 		* Filter: gform_event_label
 		*
@@ -321,8 +325,9 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		* @param object $form  Gravity Form form object
 		* @param object $entry Gravity Form Entry Object
 		*/
-		$event->setEventLabel( apply_filters( 'gform_event_label', $ga_event_data['gaEventLabel'], $form, $entry ) );
-		
+		$event_label = apply_filters( 'gform_event_label', $ga_event_data['gaEventLabel'], $form, $entry );
+		$event->setEventLabel( $event_label );
+
 		/**
 		* Filter: gform_event_value
 		*
@@ -333,7 +338,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		* @param object $form Gravity Form form object
 		* @param object $entry Gravity Form Entry Object
 		*/
-		if ( $event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form, $entry ) ) {
+		$event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form, $entry );
+		if ( $event_value ) {
 			// Event value must be a valid float!
 			$event_value = GFCommon::to_number( $event_value );
 			$event->setEventValue( $event_value );
@@ -366,11 +372,11 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						
 						// If UA code matches, use that tracker
 						if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
-							window.parent.ga( 'send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
+							window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
 						} else {
 							// UA code doesn't match, use another tracker
 							window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
-							window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
+							window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
 						}
 						
 						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
