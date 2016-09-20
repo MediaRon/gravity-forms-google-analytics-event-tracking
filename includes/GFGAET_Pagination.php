@@ -45,10 +45,47 @@ class GFGAET_Pagination {
 		$ua_code = GFGAET::get_ua_code();
 		if ( false !== $ua_code ) {
 			$event = new \Racecore\GATracking\Tracking\Event();
-		
+
+			/**
+			 * Filter: gform_pagination_event_category
+			 *
+			 * Filter the event category dynamically
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param string $category              Event Category
+			 * @param array  $form                  Gravity Form form array
+			 * @param int    $source_page_number    Source page number
+			 * @param int    $current_page_number   Current Page Number
+			 */
 			$event_category = apply_filters( 'gform_pagination_event_category', 'form', $form, $source_page_number, $current_page_number );
+
+			/**
+			 * Filter: gform_pagination_event_action
+			 *
+			 * Filter the event action dynamically
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param string $action                Event Action
+			 * @param array  $form                  Gravity Form form array
+			 * @param int    $source_page_number    Source page number
+			 * @param int    $current_page_number   Current Page Number
+			 */
 			$event_action = apply_filters( 'gform_pagination_event_action', 'pagination', $form, $source_page_number, $current_page_number );
-			
+
+			/**
+			 * Filter: gform_pagination_event_label
+			 *
+			 * Filter the event label dynamically
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param string $label                 Event Label
+			 * @param array  $form                  Gravity Form form array
+			 * @param int    $source_page_number    Source page number
+			 * @param int    $current_page_number   Current Page Number
+			 */
 			$event_label = sprintf( '%s::%s::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
 			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
 			
