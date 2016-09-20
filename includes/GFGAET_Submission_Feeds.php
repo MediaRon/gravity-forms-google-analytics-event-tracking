@@ -357,8 +357,17 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						}
 					}
 					if ( typeof window.parent.ga != 'undefined' ) {
-						window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
-						window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
+						var default_ua_code = null;
+						window.parent.ga(function(tracker) {
+							default_ua_code = tracker.get('trackingId');
+						});
+						if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
+							window.parent.ga( 'send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
+						} else {
+							window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
+							window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
+						}
+						
 						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
 					}
 				}
