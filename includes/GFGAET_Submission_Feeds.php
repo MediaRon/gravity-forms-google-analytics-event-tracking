@@ -415,29 +415,6 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		return false;
 	}
 
-	/**
-	 * Plugin settings fields
-	 * 
-	 * @return array Array of plugin settings
-	 */
-	public function plugin_settings_fields() {
-		return array(
-			array(
-				'title'       => __( 'Google Analytics', 'gravity-forms-google-analytics-event-tracking' ),
-				'description' => __( 'Enter your UA code (UA-XXXX-Y). Find it <a href="https://support.google.com/analytics/answer/1032385" target="_blank">using this guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
-				'fields'      => array(
-					array(
-						'name'              => 'gravity_forms_event_tracking_ua',
-						'label'             => __( 'UA Tracking ID', 'gravity-forms-google-analytics-event-tracking' ),
-						'type'              => 'text',
-						'class'             => 'medium',
-						'tooltip' 			=> 'UA-XXXX-Y',
-					),
-				)
-			),
-		);
-	}
-
 	//---------- Form Settings Pages --------------------------
 
 	/**
