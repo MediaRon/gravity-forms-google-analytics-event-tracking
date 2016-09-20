@@ -103,21 +103,13 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 * @return bool Returns true if UA ID is loaded, false otherwise
 	 */
 	private function load_ua_settings() {
-		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_gravity-forms-event-tracking_settings', array() );
+
+		$this->ua_id = $ua_id = GFGAET::get_ua_code();
 		
-		$this->ua_id = $ua_id = false;
-
-		$ua_id = isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ] ) ? $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ] : '';
-
-		$ua_regex = "/^UA-[0-9]{5,}-[0-9]{1,}$/";
-
-		if ( preg_match( $ua_regex, $ua_id ) ) {
-			$this->ua_id = $ua_id;
+		if ( false !== $this->ua_id ) {
 			return true;
 		}
-
-		if ( ! $this->ua_id )
-			return false;
+		return false;
 	}
 	
 	/**

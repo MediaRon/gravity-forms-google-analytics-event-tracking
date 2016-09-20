@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class GFGAET {
-	
+
 	/**
 	 * Holds the class instance.
 	 *
@@ -27,7 +27,7 @@ class GFGAET {
 	 * @access private
 	 */
 	private static $instance = null;
-	
+
 	/**
 	 * Retrieve a class instance.
 	 *
@@ -39,18 +39,7 @@ class GFGAET {
 		}
 		return self::$instance;
 	} //end get_instance
-	
-	/**
-	 * Retrieve the plugin basename.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @return string plugin basename
-	 */
-	public static function get_plugin_basename() {
-		return plugin_basename( __FILE__ );	
-	}
-	
+
 	/**
 	 * Class constructor.
 	 *
@@ -63,7 +52,7 @@ class GFGAET {
 		
 		add_action( 'gform_loaded', array( $this, 'gforms_loaded' ) );
 	}
-	
+
 	/**
 	 * Check for the minimum supported PHP version.
 	 *
@@ -77,7 +66,84 @@ class GFGAET {
 		}
 		return true;
 	}
+
+	/**
+	 * Check the plugin to make sure it meets the minimum requirements.
+	 *
+	 * @since 2.0.0
+	 */
+	public static function check_plugin() {
+		if( ! GFGAET::check_php_version() ) {
+			deactivate_plugins( GFGAET::get_plugin_basename() );
+			exit( sprintf( esc_html__( 'Gravity Forms Event Tracking requires PHP version 5.3 and up. You are currently running PHP version %s.', 'gravity-forms-google-analytics-event-tracking' ), esc_html( PHP_VERSION ) ) );
+		}
+	}
+
+	/**
+	 * Retrieve the plugin basename.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return string plugin basename
+	 */
+	public static function get_plugin_basename() {
+		return plugin_basename( __FILE__ );	
+	}
+
+	/**
+	 * Return the absolute path to an asset.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param string @path Relative path to the asset.
+	 *
+	 * return string Absolute path to the relative asset.
+	 */
+	public static function get_plugin_dir( $path = '' ) {
+		$dir = rtrim( plugin_dir_path(__FILE__), '/' );
+		if ( !empty( $path ) && is_string( $path) )
+			$dir .= '/' . ltrim( $path, '/' );
+		return $dir;		
+	}
+
+	/**
+	 * Initialize Gravity Forms related add-ons.
+	 *
+	 * @since 2.0.0
+	 */
+	public function gforms_loaded() {
+		if ( ! GFGAET::check_php_version() ) return;
+		if ( ! method_exists( 'GFForms', 'include_feed_addon_framework' ) ) {
+			return;
+		}
+
+		// Initialize settings screen and feeds
+		GFAddOn::register( 'GFGAET_UA' );
+		GFAddOn::register( 'GFGAET_Submission_Feeds' );
+
+		// Initialize pagination
+		add_action( 'gform_post_paging', array( $this, 'pagination'), 10, 3 );
+	}
 	
+	/**
+	 * Get the Google Analytics UA Code
+	 * 
+	 * @since 2.0.0
+	 * @return string/bool Returns string UA code, false otherwise
+	 */
+	public static function get_ua_code() {
+		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+		
+		$ua_id = isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ] ) ? $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua' ] : false;
+
+		$ua_regex = "/^UA-[0-9]{5,}-[0-9]{1,}$/";
+
+		if ( preg_match( $ua_regex, $ua_id ) ) {
+			return $ua_id;
+		}
+		return false;
+	}
+
 	/**
 	 * Checks whether JS only mode is activated for sending events.
 	 *
@@ -95,22 +161,7 @@ class GFGAET {
 		}
 		return false;
 	}
-	
-	/**
-	 * Initialize Gravity Forms related add-ons.
-	 *
-	 * @since 2.0.0
-	 */
-	public function gforms_loaded() {
-		if ( ! GFGAET::check_php_version() ) return;
-		if ( ! method_exists( 'GFForms', 'include_feed_addon_framework' ) ) {
-			return;
-		}
 
-		GFAddOn::register( 'GFGAET_UA' );
-		GFAddOn::register( 'GFGAET_Submission_Feeds' );
-	}
-	
 	/**
 	 * Autoload class files.
 	 *
@@ -127,33 +178,19 @@ class GFGAET {
 			include_once( $file );
 		}
 	}
-	
+
 	/**
-	 * Return the absolute path to an asset.
+	 * Initialize the pagination events.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string @path Relative path to the asset.
-	 *
-	 * return string Absolute path to the relative asset.
+	 * @param array $form                The form arguments
+	 * @param int   @source_page_number  The original page number
+	 * @param int   $current_page_number The new page number
 	 */
-	public static function get_plugin_dir( $path = '' ) {
-		$dir = rtrim( plugin_dir_path(__FILE__), '/' );
-		if ( !empty( $path ) && is_string( $path) )
-			$dir .= '/' . ltrim( $path, '/' );
-		return $dir;		
-	}
-	
-	/**
-	 * Check the plugin to make sure it meets the minimum requirements.
-	 *
-	 * @since 2.0.0
-	 */
-	public static function check_plugin() {
-		if( ! GFGAET::check_php_version() ) {
-			deactivate_plugins( GFGAET::get_plugin_basename() );
-			exit( sprintf( esc_html__( 'Gravity Forms Event Tracking requires PHP version 5.3 and up. You are currently running PHP version %s.', 'gravity-forms-google-analytics-event-tracking' ), esc_html( PHP_VERSION ) ) );
-		}
+	public function pagination( $form, $source_page_number, $current_page_number ) {
+		$pagination = GFGAET_Pagination::get_instance();
+		$pagination->paginate( $form, $source_page_number, $current_page_number );
 	}
 }
 
