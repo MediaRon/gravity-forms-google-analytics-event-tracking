@@ -342,8 +342,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		$feed_id = absint( $ga_event_data[ 'feed_id' ] );
 		$entry_id = $entry['id'];
 		
-		$count = 1;
-		//if ( defined( 'DOING_AJAX' ) && true == DOING_AJAX ) {
+		if ( GFGAET::is_js_only() ) {
+			$count = 1;
 			?>
 			<script>
 			<?php
@@ -357,7 +357,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						}
 					}
 					if ( typeof window.parent.ga != 'undefined' ) {
-
+	
 						// Try to get original UA code from third-party plugins or tag manager
 						var default_ua_code = null;
 						window.parent.ga(function(tracker) {
@@ -381,11 +381,11 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 				$count += 1;
 			}	
 			?>
-			console.log( 'yo' );
 			</script>
 			<?php
-	//	}
-		return;
+			return;
+		}
+
 		//Push out the event to each UA code
 		foreach( $google_analytics_codes as $ua_code ) {
 			
