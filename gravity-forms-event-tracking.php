@@ -126,6 +126,9 @@ class GFGAET {
 		
 		// Initialize whether Ajax is on or off
 		add_filter( 'gform_form_args', array( $this, 'maybe_ajax_only' ), 15, 1 );
+		
+		// Fire a tag manager event
+		add_action( 'gform_after_submission', array( $this, 'tag_manager' ), 10, 2 );
 	}
 	
 	/**
@@ -211,6 +214,21 @@ class GFGAET {
 		$pagination = GFGAET_Pagination::get_instance();
 		$pagination->paginate( $form, $source_page_number, $current_page_number );
 	}
+
+	/**
+	 * Initialize the tag manager push.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $entry   The entry array
+	 * @param array $form    The form array
+	 */
+	public function tag_manager( $entry, $form ) {
+		$tag_manager = GFGAET_Tag_Manager::get_instance();
+		$tag_manager->send( $entry, $form );
+	}
+	
+	
 }
 
 register_activation_hook( __FILE__, array( 'GFGAET', 'check_plugin' ) );
