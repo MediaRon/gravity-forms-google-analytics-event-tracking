@@ -155,6 +155,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		// Store everything we need for later
 		$ga_event_data = array(
+			'feed_id' => $feed['id'],
+			'entry_id' => $entry['id'],
 			'ga_cookie' => $ga_cookie,
 			'document_location' => $document_location,
 			'document_title' => $document_title,
@@ -336,6 +338,10 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			$event_value = GFCommon::to_number( $event_value );
 			$event->setEventValue( $event_value );
 		}
+		
+		$feed_id = absint( $ga_event_data[ 'feed_id' ] );
+		$entry_id = $entry['id'];
+		
 		$count = 1;
 		//if ( defined( 'DOING_AJAX' ) && true == DOING_AJAX ) {
 			?>
@@ -343,8 +349,20 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			<?php
 			foreach( $google_analytics_codes as $ua_code ) {
 				?>
-				window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
-				window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
+				var feed_submission = sessionStorage.getItem('feed_<?php echo absint( $feed_id ); ?>entry_<?php echo absint( $entry[ 'id' ] ); ?>');
+				if ( null == feed_submission ) {
+					if ( typeof window.parent.ga == 'undefined' ) {
+						if ( typeof window.parent.__gaTracker != 'undefined' ) {
+							window.parent.ga = window.parent.__gaTracker;
+						}
+					}
+					if ( typeof window.parent.ga != 'undefined' ) {
+						window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
+						window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo $ga_event_data['gaEventCategory'];?>', '<?php echo $ga_event_data['gaEventAction']; ?>', '<?php echo $ga_event_data['gaEventLabel']; ?>' );
+						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
+					}
+				}
+				
 				<?php
 			}	
 			?>
@@ -352,7 +370,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			</script>
 			<?php
 	//	}
-		
+		return;
 		//Push out the event to each UA code
 		foreach( $google_analytics_codes as $ua_code ) {
 			
