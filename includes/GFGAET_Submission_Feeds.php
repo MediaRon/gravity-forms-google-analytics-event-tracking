@@ -340,14 +340,14 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		$feed_id = absint( $ga_event_data[ 'feed_id' ] );
 		$entry_id = $entry['id'];
 		
-		if ( GFGAET::is_js_only() ) {
+		if ( GFGAET::is_ga_only() ) {
 			$count = 1;
 			?>
 			<script>
 			<?php
 			foreach( $google_analytics_codes as $ua_code ) {
 				?>
-				var feed_submission = sessionStorage.getItem('feed_<?php echo absint( $feed_id ); ?>entry_<?php echo absint( $entry[ 'id' ] ); ?>');
+				var feed_submission = sessionStorage.getItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
 				if ( null == feed_submission ) {
 					if ( typeof window.parent.ga == 'undefined' ) {
 						if ( typeof window.parent.__gaTracker != 'undefined' ) {
@@ -371,7 +371,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 							window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
 						}
 						
-						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
+						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
 					}
 				}
 				
@@ -379,6 +379,24 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 				$count += 1;
 			}	
 			?>
+			</script>
+			<?php
+			return;
+		} else if ( GFGAET::is_gtm_only() ) {
+			?>
+			<script>
+			var form_submission = sessionStorage.getItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
+			if ( null == form_submission ) {
+				if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
+			    	window.parent.dataLayer.push({'event': 'GFTrackEvent',
+						'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
+						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>s',
+						'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
+						'GFEntryData':<?php echo json_encode( $entry ); ?>
+						});
+					sessionStorage.setItem("feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>", "true");
+				}
+			}
 			</script>
 			<?php
 			return;

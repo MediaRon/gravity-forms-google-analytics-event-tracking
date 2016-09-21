@@ -126,9 +126,6 @@ class GFGAET {
 		
 		// Initialize whether Ajax is on or off
 		add_filter( 'gform_form_args', array( $this, 'maybe_ajax_only' ), 15, 1 );
-		
-		// Fire a tag manager event
-		add_action( 'gform_after_submission', array( $this, 'tag_manager' ), 10, 2 );
 	}
 	
 	/**
@@ -151,18 +148,36 @@ class GFGAET {
 	}
 
 	/**
-	 * Checks whether JS only mode is activated for sending events.
+	 * Checks whether Google Analytics mode is activated for sending events.
 	 *
 	 * @since 2.0.0
 	 *
-	 * @return bool true if JS only, false if not
+	 * @return bool true if GA only, false if not
 	 */
-	public static function is_js_only() {
+	public static function is_ga_only() {
 		$ga_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', false );
-		if ( ! isset( $ga_options[ 'js_only' ] ) ) {
+		if ( ! isset( $ga_options[ 'mode' ] ) ) {
 			return false;
 		}
-		if ( 'on' == $ga_options[ 'js_only' ] ) {
+		if ( 'ga' == $ga_options[ 'mode' ] ) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks whether Tag Manager only mode is activated for sending events.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @return bool true if GTM only, false if not
+	 */
+	public static function is_gtm_only() {
+		$ga_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', false );
+		if ( ! isset( $ga_options[ 'mode' ] ) ) {
+			return false;
+		}
+		if ( 'gtm' == $ga_options[ 'mode' ] ) {
 			return true;
 		}
 		return false;
@@ -213,22 +228,7 @@ class GFGAET {
 	public function pagination( $form, $source_page_number, $current_page_number ) {
 		$pagination = GFGAET_Pagination::get_instance();
 		$pagination->paginate( $form, $source_page_number, $current_page_number );
-	}
-
-	/**
-	 * Initialize the tag manager push.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param array $entry   The entry array
-	 * @param array $form    The form array
-	 */
-	public function tag_manager( $entry, $form ) {
-		$tag_manager = GFGAET_Tag_Manager::get_instance();
-		$tag_manager->send( $entry, $form );
-	}
-	
-	
+	}	
 }
 
 register_activation_hook( __FILE__, array( 'GFGAET', 'check_plugin' ) );

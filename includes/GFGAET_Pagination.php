@@ -94,7 +94,7 @@ class GFGAET_Pagination {
 			$event->setEventAction( $event_action );
 			$event->setEventLabel( $event_label );
 			
-			if ( GFGAET::is_js_only() ) {
+			if ( GFGAET::is_ga_only() ) {
 				?>
 				<script>
 				var current_page_number = sessionStorage.getItem( 'form_pagination_<?php echo absint( $form[ 'id' ] ); ?>' );

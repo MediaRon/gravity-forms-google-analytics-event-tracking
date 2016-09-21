@@ -64,22 +64,28 @@ class GFGAET_UA extends GFAddOn {
 				'fields'      => array(
 					array(
 					    'type'          => 'radio',
-					    'name'          => 'js_only',
+					    'name'          => 'mode',
 					    'horizontal'    => false,
-					    'default_value' => 'off',
+					    'default_value' => 'gmp',
 					    'label' => 'How would you like to send events?',
 					    'choices'       => array(
 					        array(
-					            'name'    => 'js_on',
+					            'name'    => 'ga_on',
 					            'tooltip' => esc_html__( 'Forms must be Ajax only', 'sometextdomain' ),
-					            'label'   => esc_html__( 'Client Side', 'gravity-forms-google-analytics-event-tracking' ),
-					            'value'   => 'on'
+					            'label'   => esc_html__( 'Google Analytics (Ajax only)', 'gravity-forms-google-analytics-event-tracking' ),
+					            'value'   => 'ga'
 					        ),
 					        array(
-					            'name'    => 'js_off',
+					            'name'    => 'gtm_on',
+					            'tooltip' => esc_html__( 'Forms must be Ajax only', 'gravity-forms-google-analytics-event-tracking' ),
+					            'label'   => esc_html__( 'Google Tag Manager (Ajax only)', 'gravity-forms-google-analytics-event-tracking' ),
+					            'value'   => 'gtm'
+					        ),
+					        array(
+					            'name'    => 'gmp_on',
 					            'tooltip' => esc_html__( 'Events will be sent using the measurement protocol.', 'sometextdomain' ),
-					            'label'   => esc_html__( 'Server Side (Default)', 'gravity-forms-google-analytics-event-tracking' ),
-					            'value' => 'off'
+					            'label'   => esc_html__( 'Measurement Protocol (Default)', 'gravity-forms-google-analytics-event-tracking' ),
+					            'value' => 'gmp'
 					        ),
 					    ),
 					),
