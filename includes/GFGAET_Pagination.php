@@ -127,6 +127,22 @@ class GFGAET_Pagination {
 				</script>
 				<?php
 				return;
+			} else if ( GFGAET::is_gtm_only() ) {
+				?>
+				<script>
+				var current_page_number = sessionStorage.getItem( 'form_pagination_<?php echo absint( $form[ 'id' ] ); ?>', <?php echo absint( $current_page_number ); ?> );
+				if ( <?php echo absint( $current_page_number ); ?> != current_page_number ) {
+					if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
+				    	window.parent.dataLayer.push({'event': 'GFTrackEvent',
+							'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
+							'GFTrackAction':'<?php echo esc_js( $event_action ); ?>s',
+							'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>'
+							});
+						sessionStorage.setItem( 'form_pagination_<?php echo absint( $form[ 'id' ] ); ?>', <?php echo absint( $current_page_number ); ?> );
+					}
+				}
+				</script>
+				<?php
 			}
 			
 			// Submit the event
