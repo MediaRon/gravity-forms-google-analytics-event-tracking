@@ -19,13 +19,7 @@ Gravity Forms Event Tracker is a free <a href="http://www.gravityforms.com/">Gra
 
 If you meet all the requirements of this plugin, you can simply install this plugin in your WordPress plugins folder.
 
-Once this plugin is activated, you can browse to the Gravity Forms settings and find a new sub-menu item called <strong>Event Tracker</strong>.  There, you will enter your <a href="https://support.google.com/analytics/answer/1032385?hl=en">Google Analytics Tracking Code</a>.
-
-The plugin provides some <a href="http://www.nvisionsolutions.ca/blog/search-engine-optimization/gravity-forms-scalable-event-tracking-google-analytics/">default event categories, labels, and actions</a>.  You can override these per form by going into the individual form's settings. 
-
-Within Google Analytics, you will want to set up an <a href="https://support.google.com/analytics/answer/1032415?hl=en">event-based goal</a> and match the event label, event category, and event action with the ones you set up.
-
-On each form, you need to make sure to setup an Event Tracking Feed. Open each forms settings, go to the "Event Tracking" section, and set one up. Leave the fields blank to use the default values.
+Looking for help setting things up? <a href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics">Read Our Setup Guide</a>.
 
 ## Filters
 
