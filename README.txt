@@ -1,12 +1,11 @@
 === Gravity Forms Google Analytics Event Tracking ===
-Contributors: nmarks, ronalfy
-Tags: gravity forms, google analytics, event tracking
+Contributors: nmarks, ronalfy, bigwing
+Tags: gravity forms, google analytics, google tag manager, event tracking
 Requires at least:4.0
 Tested up to: 4.6
-Stable tag: 1.7.3
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Donate link: https://mediaron.com/contribute/
 
 Add Google Analytics Event Tracking to your Gravity Forms in less than 5 minutes! Requires PHP 5.3+.
 
@@ -14,36 +13,35 @@ Add Google Analytics Event Tracking to your Gravity Forms in less than 5 minutes
 
 This plugin provides an easy way to add Google Analytics event tracking to your Gravity Forms, allowing you to properly track form submissions as events/conversions within Google Analytics.
 
+Also supports:
+
+* Pagination events
+* JS only events
+* Google Tag Manager
+
 = Setup Guide =
-Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
+Looking for help setting things up? [Read Our Setup Guide](https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics)
 
 = Minimum Requirements =
 - PHP 5.3+
 - Gravity Forms 1.8.20+
-- Google Analytics Universal Analytics (classic is not supported by Google's new fancy stuff this plugin leverages)
+- Google Analytics Universal Analytics
+- Google Tag Manager (optional)
 
 = Features =
-- Automatically send form submission events to Google Analytics
+- Submit events to Google Analytics using the Measurement Protocol, JavaScript, or using Google Tag Manager
 - Add multiple event feeds with conditionals
 - Custom event categories, actions, labels and even values
+- Track form pagination events
 - Dynamic event value on payment forms (integration with the payment add-ons including Paypal Standard, PayPal Pro, Stripe, etc...)
-- Awesomeness
-
-= Configuration =
-If you meet all the requirements of this plugin, you can simply install this plugin in your WordPress plugins folder.
-
-Once this plugin is activated, you can browse to the Gravity Forms settings and find a new sub-menu item called <strong>Event Tracker</strong>.  There, you will enter your <a href="https://support.google.com/analytics/answer/1032385?hl=en">Google Analytics Tracking Code</a>.
-
-The plugin provides some <a href="http://www.nvisionsolutions.ca/blog/search-engine-optimization/gravity-forms-scalable-event-tracking-google-analytics/">default event categories, labels, and actions</a>.  You can override these per form by going into the individual form's settings. 
-
-Within Google Analytics, you will want to set up an <a href="https://support.google.com/analytics/answer/1032415?hl=en">event-based goal</a> and match the event label, event category, and event action with the ones you set up.
-
-On each form, you need to make sure to setup an Event Tracking Feed. Open each forms settings, go to the "Event Tracking" section, and set one up. Leave the fields blank to use the default values.
 
 For payment based forms, you can leave the value blank to convert using the total payment amount.
 
-= Hooks/Filters =
-Check out the documentation on [github](https://github.com/ronalfy/wordpress-gravity-forms-event-tracking)
+<h3>Help Contribute</h3>
+
+* Leave a star rating
+* <a href="https://translate.wordpress.org/projects/wp-plugins/gravity-forms-google-analytics-event-tracking">Contribute a translation</a>
+* <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking">Contribute some code</a>
 
 == Installation ==
 
@@ -76,9 +74,17 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Frequently Asked Questions ==
 
-= How do I configure the event category, action and label for the form? =
+= How do I track pagination? =
 
-Looking for help setting things up? [Read My Setup Guide](http://nvis.io/x8fld)
+<a href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics/pagination/">Read our Guide on Pagination</a>.
+
+= How do I track using JavaScript only? =
+
+See <a href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics/advanced/">Going Advanced</a>.
+
+= Does this work with Google Tag Manager =
+
+Yes. <a href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics/google-tag-manager/">Read our Guide on Google Tag Manager</a>.
 
 = Are there any filters/hooks? =
 
@@ -91,6 +97,12 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 3. The feed settings page
 
 == Changelog ==
+
+= 2.0.0 =
+* Released 2016-09-22
+* Enhancement: Can track pagination events
+* Enhancement: Can track events using JavaScript only (a highly requested feature)
+* Enhancement: Can use Google Tag Manager
 
 = 1.7.3 =
 * Bugfix - Some users were experiencing PHP fatal errors upon form submission. Reverting to previously used library.
@@ -174,6 +186,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+Numerous enhancements, including pagination tracking. See the Changelog for more information.
 
 = 1.7.3 =
 Bugfix - Some users were experiencing PHP fatal errors upon form submission. Reverting to previously used library.
