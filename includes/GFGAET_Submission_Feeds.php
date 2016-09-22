@@ -251,11 +251,11 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 * @param array $form Gravity Forms form object
 	 */
 	private function push_event( $entry, $form, $ga_event_data ) {
-        
-        //Get all analytics codes to send
-        $google_analytics_codes = $this->get_ua_codes( $ga_event_data[ 'gaEventUA' ], $this->ua_id );
-        
-        /**
+
+		//Get all analytics codes to send
+		$google_analytics_codes = $this->get_ua_codes( $ga_event_data[ 'gaEventUA' ], $this->get_ga_id() );
+
+		/**
 		* Filter: gform_ua_ids
 		*
 		* Filter all outgoing UA IDs to send events to
@@ -266,12 +266,12 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		* @param object $form Gravity Form form object
 		* @param object $entry Gravity Form Entry Object
 		*/
-        $google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form, $entry );
-        
+		$google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form, $entry );
+
         if ( !is_array( $google_analytics_codes ) || empty( $google_analytics_codes ) ) return; 
-                
+
 		$event = new \Racecore\GATracking\Tracking\Event();
-		
+
 		// Set some defaults
 		$event->setDocumentPath( str_replace( home_url(), '', $entry[ 'source_url' ] ) );
 		$event->setDocumentLocation( $ga_event_data['document_location'] );
@@ -468,7 +468,6 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		
 		//Check for a valid UA code
 		$feed_ua_code = isset( $settings[ 'gaEventUA' ] ) ? $settings[ 'gaEventUA' ] : '';
-		$ua_codes = $this->get_ua_codes( $feed_ua_code, $this->get_ga_id() );
 		if ( empty( $ua_codes ) ) {
 			GFCommon::add_error_message( __( 'You must set a UA code for event tracking to work.', 'gravity-forms-google-analytics-event-tracking' ) );
 			return $feed_id;

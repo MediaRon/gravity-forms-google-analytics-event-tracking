@@ -47,6 +47,7 @@ class GFGAET_UA extends GFAddOn {
 		return array(
 			array(
 				'title'       => __( 'Google Analytics', 'gravity-forms-google-analytics-event-tracking' ),
+				'description' => __( 'Need help? <a target="_blank" href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics/">See our guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
 						'name'              => 'gravity_forms_event_tracking_ua',

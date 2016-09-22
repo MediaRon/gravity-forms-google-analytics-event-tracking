@@ -86,7 +86,7 @@ class GFGAET_Pagination {
 			 * @param int    $source_page_number    Source page number
 			 * @param int    $current_page_number   Current Page Number
 			 */
-			$event_label = sprintf( '%s::%s::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
+			$event_label = sprintf( '%s::%d::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
 			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
 			
 			// Set the event meta
