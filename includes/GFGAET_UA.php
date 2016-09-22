@@ -60,7 +60,7 @@ class GFGAET_UA extends GFAddOn {
 			),
 			array(
 				'title' => __( 'Advanced', 'gravity-forms-google-analytics-event-tracking' ),
-				'description' => 'By default, events are sent server side. You can choose Client Side, but all forms must be Ajax-enabled for JS events to work.',
+				'description' => __( 'By default, events are sent using the measurement protocol. You can change to using pure Google Analytics and Google Tag Manager if your forms are Ajax only.', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
 					    'type'          => 'radio',

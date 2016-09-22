@@ -97,31 +97,26 @@ class GFGAET_Pagination {
 			if ( GFGAET::is_ga_only() ) {
 				?>
 				<script>
-				var current_page_number = sessionStorage.getItem( 'form_pagination_<?php echo absint( $form[ 'id' ] ); ?>' );
-				if ( <?php echo absint( $current_page_number ); ?> != current_page_number ) {
-					if ( typeof window.parent.ga == 'undefined' ) {
-						if ( typeof window.parent.__gaTracker != 'undefined' ) {
-							window.parent.ga = window.parent.__gaTracker;
-						}
+				if ( typeof window.parent.ga == 'undefined' ) {
+					if ( typeof window.parent.__gaTracker != 'undefined' ) {
+						window.parent.ga = window.parent.__gaTracker;
 					}
-					if ( typeof window.parent.ga != 'undefined' ) {
-	
-						// Try to get original UA code from third-party plugins or tag manager
-						var default_ua_code = null;
-						window.parent.ga(function(tracker) {
-							default_ua_code = tracker.get('trackingId');
-						});
-						
-						// If UA code matches, use that tracker
-						if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
-							window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
-						} else {
-							// UA code doesn't match, use another tracker
-							window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker' );
-							window.parent.ga( 'GTGAET_Tracker.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
-						}
-						
-						sessionStorage.setItem( 'form_pagination_<?php echo absint( $form[ 'id' ] ); ?>', <?php echo absint( $current_page_number ); ?> );
+				}
+				if ( typeof window.parent.ga != 'undefined' ) {
+
+					// Try to get original UA code from third-party plugins or tag manager
+					var default_ua_code = null;
+					window.parent.ga(function(tracker) {
+						default_ua_code = tracker.get('trackingId');
+					});
+					
+					// If UA code matches, use that tracker
+					if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
+						window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
+					} else {
+						// UA code doesn't match, use another tracker
+						window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker' );
+						window.parent.ga( 'GTGAET_Tracker.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
 					}
 				}
 				</script>
@@ -130,19 +125,16 @@ class GFGAET_Pagination {
 			} else if ( GFGAET::is_gtm_only() ) {
 				?>
 				<script>
-				var current_page_number = sessionStorage.getItem( 'form_pagination_<?php echo absint( $form[ 'id' ] ); ?>', <?php echo absint( $current_page_number ); ?> );
-				if ( <?php echo absint( $current_page_number ); ?> != current_page_number ) {
-					if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
-				    	window.parent.dataLayer.push({'event': 'GFTrackEvent',
-							'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
-							'GFTrackAction':'<?php echo esc_js( $event_action ); ?>s',
-							'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>'
-							});
-						sessionStorage.setItem( 'form_pagination_<?php echo absint( $form[ 'id' ] ); ?>', <?php echo absint( $current_page_number ); ?> );
-					}
+				if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
+			    	window.parent.dataLayer.push({'event': 'GFTrackEvent',
+						'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
+						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>s',
+						'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>'
+						});
 				}
 				</script>
 				<?php
+				return;
 			}
 			
 			// Submit the event
