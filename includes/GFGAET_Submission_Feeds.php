@@ -468,6 +468,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		
 		//Check for a valid UA code
 		$feed_ua_code = isset( $settings[ 'gaEventUA' ] ) ? $settings[ 'gaEventUA' ] : '';
+		$ua_codes = $this->get_ua_codes( $feed_ua_code, $this->get_ga_id() );
 		if ( empty( $ua_codes ) ) {
 			GFCommon::add_error_message( __( 'You must set a UA code for event tracking to work.', 'gravity-forms-google-analytics-event-tracking' ) );
 			return $feed_id;
