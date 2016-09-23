@@ -390,7 +390,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 				if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
 			    	window.parent.dataLayer.push({'event': 'GFTrackEvent',
 						'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
-						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>s',
+						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
 						'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
 						'GFEntryData':<?php echo json_encode( $entry ); ?>
 						});

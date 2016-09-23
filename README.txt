@@ -3,7 +3,7 @@ Contributors: nmarks, ronalfy, bigwing
 Tags: gravity forms, google analytics, google tag manager, event tracking
 Requires at least:4.0
 Tested up to: 4.6
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -98,6 +98,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Changelog ==
 
+= 2.0.1 =
+* Released 2016-09-23
+* Bug fix: Google Tag Manager had an extra "s" in the action dataLayer variable.
+
 = 2.0.0 =
 * Released 2016-09-22
 * Enhancement: Can track pagination events
@@ -187,7 +191,7 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.0.0 =
+= 2.0.1 =
 Numerous enhancements, including pagination tracking. See the Changelog for more information.
 
 = 1.7.3 =
