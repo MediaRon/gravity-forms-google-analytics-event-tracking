@@ -8,6 +8,12 @@ class GFGAET_UA extends GFAddOn {
 	protected $_full_path = __FILE__;
 	protected $_title = 'Gravity Forms Google Analytics Event Tracking';
 	protected $_short_title = 'Event Tracking';
+	// Members plugin integration
+	protected $_capabilities = array( 'gravityforms_event_tracking', 'gravityforms_event_tracking_uninstall' );
+	// Permissions
+	protected $_capabilities_settings_page = 'gravityforms_event_tracking';
+	protected $_capabilities_form_settings = 'gravityforms_event_tracking';
+	protected $_capabilities_uninstall = 'gravityforms_event_tracking_uninstall';
 	
 	private static $_instance = null;
 
