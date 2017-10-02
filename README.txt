@@ -1,9 +1,9 @@
 === Gravity Forms Google Analytics Event Tracking ===
-Contributors: nmarks, ronalfy, bigwing
+Contributors: ronalfy, bigwing, nmarks
 Tags: gravity forms, google analytics, google tag manager, event tracking
 Requires at least:4.0
 Tested up to: 4.8
-Stable tag: 2.0.3
+Stable tag: 2.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,7 +126,7 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Bug Fix: Plugin will now trigger events if a UA code is set in the feed but not in the settings
 * Enhancement: Document Path will now be set as part of event creation
 * Enhancement: Measurement protocol updated
-* Enhancement: Measurement protocol will not detect SSL and use the appropriate protocol 
+* Enhancement: Measurement protocol will not detect SSL and use the appropriate protocol
 
 = 1.6.5 =
 * Released 2015-12-11
@@ -195,7 +195,7 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.0.3 = 
+= 2.0.3 =
 Numerous enhancements, including pagination tracking. See the Changelog for more information.
 
 = 2.0.1 =
@@ -214,4 +214,4 @@ Updates to measurement protocol. Friendly notices for incompatible PHP versions 
 Ability to add multiple UA codes in the feed settings
 
 = 1.6.4 =
-WordPress 4.3 compatibility and better internationalization. 
+WordPress 4.3 compatibility and better internationalization.
