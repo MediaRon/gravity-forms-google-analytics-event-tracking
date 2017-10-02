@@ -7,7 +7,7 @@ class GFGAET_Pagination {
 	 * @access private
 	 */
 	private static $instance = null;
-	
+
 	/**
 	 * Retrieve a class instance.
 	 *
@@ -19,7 +19,7 @@ class GFGAET_Pagination {
 		}
 		return self::$instance;
 	} //end get_instance
-	
+
 	/**
 	 * Class constructor.
 	 *
@@ -28,7 +28,7 @@ class GFGAET_Pagination {
 	private function __construct() {
 
 	}
-	
+
 	/**
 	 * Send pagination events.
 	 *
@@ -39,13 +39,12 @@ class GFGAET_Pagination {
 	 * @param int   $current_page_number The new page number
 	 */
 	public function paginate( $form, $source_page_number, $current_page_number ) {
-		require_once( 'vendor/ga-mp/src/Racecore/GATracking/Autoloader.php');
-		Racecore\GATracking\Autoloader::register( dirname(__FILE__) . '/vendor/ga-mp/src/' );
-		
+
 		$ua_code = GFGAET::get_ua_code();
 		if ( false !== $ua_code ) {
-			$event = new \Racecore\GATracking\Tracking\Event();
-
+			$event = new GFGAET_Measurement_Protocol();
+			$event->init();
+			
 			/**
 			 * Filter: gform_pagination_event_category
 			 *
@@ -88,12 +87,11 @@ class GFGAET_Pagination {
 			 */
 			$event_label = sprintf( '%s::%d::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
 			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
-			
-			// Set the event meta
-			$event->setEventCategory( $event_category );
-			$event->setEventAction( $event_action );
-			$event->setEventLabel( $event_label );
-			
+
+			$event->set_event_category( $event_category );
+			$event->set_event_action( $event_action );
+			$event->set_event_label( $event_label );
+
 			if ( GFGAET::is_ga_only() ) {
 				?>
 				<script>
@@ -109,7 +107,7 @@ class GFGAET_Pagination {
 					window.parent.ga(function(tracker) {
 						default_ua_code = tracker.get('trackingId');
 					});
-					
+
 					// If UA code matches, use that tracker
 					if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
 						window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
@@ -136,15 +134,10 @@ class GFGAET_Pagination {
 				<?php
 				return;
 			}
-			
+
 			// Submit the event
-			$tracking = new \Racecore\GATracking\GATracking( $ua_code );
-			try {
-				$tracking->sendTracking( $event );
-			} catch (Exception $e) {
-				error_log( $e->getMessage() . ' in ' . get_class( $e ) );
-			}
+			$event->send( $ua_code );
 		}
-		
+
 	}
 }
