@@ -98,6 +98,11 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Changelog ==
 
+= 2.0.5 =
+* Released 2017-10-17
+* Bug fix: events were not being sent using the measurement protocol
+* Bug fix: fixing various conflicts with PHP7.
+
 = 2.0.3 =
 * Released 2016-09-24
 * Bug fix: Conflict with role management plugins
@@ -194,6 +199,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 2.0.5 =
+A fix to the measurement protocol. Please verify your conversions.
 
 = 2.0.3 =
 Numerous enhancements, including pagination tracking. See the Changelog for more information.
