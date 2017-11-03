@@ -2,8 +2,8 @@
 Contributors: ronalfy, bigwing, nmarks
 Tags: gravity forms, google analytics, google tag manager, event tracking
 Requires at least:4.0
-Tested up to: 4.8
-Stable tag: 2.0.5
+Tested up to: 4.9
+Stable tag: 2.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,7 +24,7 @@ Looking for help setting things up? [Read Our Setup Guide](https://bigwing.com/n
 
 = Minimum Requirements =
 - PHP 5.3+
-- Gravity Forms 1.8.20+
+- Gravity Forms 2.0+
 - Google Analytics Universal Analytics
 - Google Tag Manager (optional)
 
@@ -47,7 +47,7 @@ For payment based forms, you can leave the value blank to convert using the tota
 
 = Minimum Requirements =
 - PHP 5.3+
-- Gravity Forms 1.8.20+
+- Gravity Forms 2.0+
 
 = Using The WordPress Dashboard =
 
@@ -97,6 +97,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 3. The feed settings page
 
 == Changelog ==
+
+= 2.0.7 =
+* Released 2017-11-03
+* Bug fix: events were not being sent using the measurement protocol on some installations
 
 = 2.0.5 =
 * Released 2017-10-17
@@ -200,26 +204,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.0.5 =
+= 2.0.7 =
 A fix to the measurement protocol. Please verify your conversions.
-
-= 2.0.3 =
-Numerous enhancements, including pagination tracking. See the Changelog for more information.
-
-= 2.0.1 =
-Numerous enhancements, including pagination tracking. See the Changelog for more information.
-
-= 1.7.3 =
-Bugfix - Some users were experiencing PHP fatal errors upon form submission. Reverting to previously used library.
-
-= 1.7.1 =
-Removing SSL requirement. Needs more testing.
-
-= 1.7.0 =
-Updates to measurement protocol. Friendly notices for incompatible PHP versions and no UA codes.
-
-= 1.6.5 =
-Ability to add multiple UA codes in the feed settings
-
-= 1.6.4 =
-WordPress 4.3 compatibility and better internationalization.

@@ -73,7 +73,7 @@ class GFGAET_Measurement_Protocol {
 		$payload = add_query_arg( $mp_body, $this->endpoint );
 
 		// Perform the POST
-		$response = wp_safe_remote_get( $payload );
+		$response = wp_safe_remote_get( esc_url_raw( $payload ) );
 	}
 
 
