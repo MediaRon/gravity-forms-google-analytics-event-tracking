@@ -13,6 +13,7 @@ class GFGAET_Measurement_Protocol {
 	private $dp = ''; // Document Path
 	private $dl = ''; // Document Location
 	private $dt = ''; // Document Title
+	private $dh = ''; // Document Host Name
 
 	public function init() {
 		$this->cid = $this->create_client_id();
@@ -38,6 +39,10 @@ class GFGAET_Measurement_Protocol {
 		$this->dp = $document_path;
 	}
 
+	public function set_document_host( $document_host ) {
+		$this->dh = $document_host;
+	}
+
 	public function set_document_location( $document_location ) {
 		$this->dl = $document_location;
 	}
@@ -60,6 +65,7 @@ class GFGAET_Measurement_Protocol {
 			'dp',
 			'dl',
 			'dt',
+			'dh',
 		);
 		$mp_body = array(
 			'tid' => $ua_code,
