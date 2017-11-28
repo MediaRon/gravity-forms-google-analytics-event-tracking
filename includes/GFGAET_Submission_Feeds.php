@@ -274,7 +274,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		$event->set_document_path( str_replace( home_url(), '', $entry[ 'source_url' ] ) );
 		$event_url_parsed = parse_url( home_url() );
 		$event->set_document_host( $event_url_parsed[ 'host' ] );
-		$event->set_document_location( $ga_event_data['document_location'] );
+		$event->set_document_location( str_replace( '//', '/', 'http' . ( isset( $_SERVER['HTTPS'] ) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'] ) );
 		$event->set_document_title( $ga_event_data['document_title'] );
 
 		// Set our event object variables
