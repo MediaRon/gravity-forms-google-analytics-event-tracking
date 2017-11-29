@@ -1,17 +1,20 @@
-=== Gravity Forms Google Analytics Event Tracking ===
+=== Event Tracking for Gravity Forms ===
 Contributors: ronalfy, bigwing, nmarks
 Tags: gravity forms, google analytics, google tag manager, event tracking
 Requires at least:4.0
 Tested up to: 4.9
 Stable tag: 2.0.9
+Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add Google Analytics Event Tracking to your Gravity Forms in less than 5 minutes! Requires PHP 5.3+.
+Easily add event tracking using Gravity Forms and your Google Analytics or Google Tag Manager account.
 
 == Description ==
 
-This plugin provides an easy way to add Google Analytics event tracking to your Gravity Forms, allowing you to properly track form submissions as events/conversions within Google Analytics.
+This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics or Google Tag Manager.
+
+Properly track for submissions as events/conversions in Google Analytics.
 
 Also supports:
 
@@ -23,7 +26,6 @@ Also supports:
 Looking for help setting things up? [Read Our Setup Guide](https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics)
 
 = Minimum Requirements =
-- PHP 5.3+
 - Gravity Forms 2.0+
 - Google Analytics Universal Analytics
 - Google Tag Manager (optional)
@@ -46,7 +48,6 @@ For payment based forms, you can leave the value blank to convert using the tota
 == Installation ==
 
 = Minimum Requirements =
-- PHP 5.3+
 - Gravity Forms 2.0+
 
 = Using The WordPress Dashboard =
