@@ -3,7 +3,7 @@ Contributors: ronalfy, bigwing, nmarks
 Tags: gravity forms, google analytics, google tag manager, event tracking
 Requires at least:4.0
 Tested up to: 4.9
-Stable tag: 2.0.7
+Stable tag: 2.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -97,6 +97,12 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 3. The feed settings page
 
 == Changelog ==
+
+= 2.0.9 =
+* Released 2017-11-29
+* Bug fix: added host name to measurement protocol due to filters blocking the conversion.
+* Bug fix: fixed document location using the measurement protocol
+* Bug fix: changed measurement protocol server-to-server call to something less strict to prevent inadvertent blocking on some servers.
 
 = 2.0.7 =
 * Released 2017-11-03
@@ -204,5 +210,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.0.7 =
-A fix to the measurement protocol. Please verify your conversions.
+= 2.0.9 =
+Numerous fixes to the measurement protocol. Please verify your conversions.
