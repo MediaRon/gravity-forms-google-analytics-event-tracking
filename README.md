@@ -2,7 +2,7 @@ Gravity Forms Event Tracker
 ======================
 Gravity Forms Event Tracker for WordPress
 
-## Requirements 
+## Requirements
 To use this WordPress plugin, you will need:
 <ul>
 <li>WordPress 3.5 or greater</li>
@@ -23,7 +23,7 @@ Looking for help setting things up? <a href="https://bigwing.com/nest/gravity-fo
 
 ## Filters
 
-###gform_ua_ids
+### gform_ua_ids
 
 ```php
 /**
@@ -46,7 +46,7 @@ add_filter( 'gform_ua_ids', function( $ga_codes, $form, $entry) {
 }, 10, 3 );
 ```
 
-###gform_event_category
+### gform_event_category
 ```php
 /**
 * Filter: gform_event_category
@@ -68,7 +68,7 @@ add_filter( 'gform_event_category', function( $event_category, $form, $entry) {
 }, 10, 3 );
 ```
 
-###gform_event_action
+### gform_event_action
 ```php
 /**
 * Filter: gform_event_action
@@ -90,7 +90,7 @@ add_filter( 'gform_event_action', function( $event_action, $form, $entry) {
 }, 10, 3 );
 ```
 
-###gform_event_label
+### gform_event_label
 ```php
 /**
 * Filter: gform_event_label
@@ -112,7 +112,7 @@ add_filter( 'gform_event_label', function( $event_label, $form, $entry) {
 }, 10, 3 );
 ```
 
-###gform_event_value
+### gform_event_value
 ```php
 /**
 * Filter: gform_event_value
@@ -133,4 +133,3 @@ add_filter( 'gform_event_value', function( $event_value, $form, $entry) {
 	return 2.0;
 }, 10, 3 );
 ```
-
