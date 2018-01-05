@@ -3,7 +3,7 @@
  * Plugin Name:       Gravity Forms Event Tracking
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking/
  * Description:       Add Google Analytics event tracking to your Gravity Forms with ease.
- * Version:           2.0.9
+ * Version:           2.1.0
  * Author:            Ronald Huereca
  * Author URI:        https://mediaron.com
  * Text Domain:       gravity-forms-google-analytics-event-tracking
@@ -184,6 +184,24 @@ class GFGAET {
 	}
 
 	/**
+	 * Checks whether Piwik JavaScript only mode is activated for sending events.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @return bool true if Piwik JavaScript only, false if not
+	 */
+	public static function is_piwik_js_only() {
+		$ga_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', false );
+		if ( ! isset( $ga_options[ 'piwik_mode' ] ) ) {
+			return false;
+		}
+		if ( 'piwik_js' == $ga_options[ 'piwik_mode' ] ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Autoload class files.
 	 *
 	 * @since 2.0.0
@@ -228,6 +246,7 @@ class GFGAET {
 	public function pagination( $form, $source_page_number, $current_page_number ) {
 		$pagination = GFGAET_Pagination::get_instance();
 		$pagination->paginate( $form, $source_page_number, $current_page_number );
+		$pagination->piwik_paginate( $form, $source_page_number, $current_page_number );
 	}
 }
 
