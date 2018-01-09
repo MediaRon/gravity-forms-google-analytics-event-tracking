@@ -214,8 +214,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		// Push the event to google
 		$this->push_event( $entry, $form, $ga_event_data );
-		// Push the event to piwik
-		$this->push_piwik_event( $entry, $form, $ga_event_data );
+		// Push the event to matomo
+		$this->push_matomo_event( $entry, $form, $ga_event_data );
 	}
 
 	/**
@@ -240,8 +240,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		// Push the event to google
 		$this->push_event( $entry, $form, $ga_event_data );
-		// Push the event to piwik
-		$this->push_piwik_event( $entry, $form, $ga_event_data );
+		// Push the event to matomo
+		$this->push_matomo_event( $entry, $form, $ga_event_data );
 	}
 
 	/**
@@ -414,37 +414,21 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	}
 
 	/**
-	 * Push the Piwik Event!
+	 * Push the Matomo (formerly Piwik) Event!
 	 *
 	 * @since 2.1.0
 	 * @param array $event Gravity Forms event object
 	 * @param array $form Gravity Forms form object
 	 */
-	private function push_piwik_event( $entry, $form, $ga_event_data ) {
+	private function push_matomo_event( $entry, $form, $ga_event_data ) {
 
-		//Get all analytics codes to send
-		$google_analytics_codes = $this->get_ua_codes( $ga_event_data[ 'gaEventUA' ], $this->get_ga_id() );
+        if ( false === GFGAET::is_matomo_configured() ) return;
 
-		/**
-		* Filter: gform_ua_ids
-		*
-		* Filter all outgoing UA IDs to send events to
-		*
-		* @since 1.6.5
-		*
-		* @param array  $google_analytics_codes UA codes
-		* @param object $form Gravity Form form object
-		* @param object $entry Gravity Form Entry Object
-		*/
-		$google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form, $entry );
-
-        if ( !is_array( $google_analytics_codes ) || empty( $google_analytics_codes ) ) return;
-
-		$event = new GFGAET_Piwik_HTTP_API();
+		$event = new GFGAET_Matomo_HTTP_API();
 		$event->init();
 
 		// Set some defaults
-		$event->set_piwik_document_location( 'http' . ( isset( $_SERVER['HTTPS'] ) ? 's' : '' ) . '://' . str_replace( '//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'] ) );
+		$event->set_matomo_document_location( 'http' . ( isset( $_SERVER['HTTPS'] ) ? 's' : '' ) . '://' . str_replace( '//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'] ) );
 
 		// Set our event object variables
 		/**
@@ -459,7 +443,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		 * @param object $entry    Gravity Form Entry Object
 		 */
 		$event_category = apply_filters( 'gform_event_category', $ga_event_data['gaEventCategory'], $form, $entry );
-		$event->set_piwik_event_category( $event_category );
+		$event->set_matomo_event_category( $event_category );
 
 		/**
 		 * Filter: gform_event_action
@@ -473,7 +457,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		 * @param object $entry  Gravity Form Entry Object
 		 */
 		$event_action = apply_filters( 'gform_event_action', $ga_event_data['gaEventAction'], $form, $entry );
-		$event->set_piwik_event_action( $event_action );
+		$event->set_matomo_event_action( $event_action );
 
 		/**
 		 * Filter: gform_event_label
@@ -487,7 +471,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		 * @param object $entry Gravity Form Entry Object
 		 */
 		$event_label = apply_filters( 'gform_event_label', $ga_event_data['gaEventLabel'], $form, $entry );
-		$event->set_piwik_event_label( $event_label );
+		$event->set_matomo_event_label( $event_label );
 
 		/**
 		 * Filter: gform_event_value
@@ -503,30 +487,30 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		if ( $event_value ) {
 			// Event value must be a valid float!
 			$event_value = GFCommon::to_number( $event_value );
-			$event->set_piwik_event_value( $event_value );
+			$event->set_matomo_event_value( $event_value );
 		}
 
 		$feed_id = absint( $ga_event_data[ 'feed_id' ] );
 		$entry_id = $entry['id'];
 
-		if ( GFGAET::is_piwik_js_only() ) {
+		if ( GFGAET::is_matomo_js_only() ) {
 			?>
 			<script>
-			var piwik_feed_submission = sessionStorage.getItem('piwik_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
-			if ( null == piwik_feed_submission ) {
+			var matomo_feed_submission = sessionStorage.getItem('matomo_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
+			if ( null == matomo_feed_submission ) {
 				if ( typeof window.parent._paq != 'undefined' ) {
 
 					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>']);
 
-					sessionStorage.setItem('piwik_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
+					sessionStorage.setItem('matomo_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
 				}
 			}
 			</script>
 			<?php
 			return;
 		}
-		// Submit the Piwik event
-		$event->send_piwik();
+		// Submit the Matomo (formerly Piwik) event
+		$event->send_matomo();
 	}
 
 	/**
