@@ -568,11 +568,6 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		//Check for a valid UA code
 		$feed_ua_code = isset( $settings[ 'gaEventUA' ] ) ? $settings[ 'gaEventUA' ] : '';
 		$ua_codes = $this->get_ua_codes( $feed_ua_code, $this->get_ga_id() );
-		if ( empty( $ua_codes ) ) {
-			GFCommon::add_error_message( __( 'You must set a UA code for event tracking to work.', 'gravity-forms-google-analytics-event-tracking' ) );
-			return $feed_id;
-		}
-
 
 		if ( $is_valid ) {
 			$settings = $this->filter_settings( $sections, $settings );
@@ -648,7 +643,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						"type"    => "text",
 						"name"    => "gaEventUA",
 						"class"   => "medium",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Google Analytics UA Code', 'gravity-forms-google-analytics-event-tracking' ), __( 'Leave empty to use global GA Code. You can enter multiple UA codes as long as they are comma separated.', 'gravity-forms-google-analytics-event-tracking' ) ),
+						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Google Analytics UA Code (Optional)', 'gravity-forms-google-analytics-event-tracking' ), __( 'Leave empty to use global GA Code. You can enter multiple UA codes as long as they are comma separated.', 'gravity-forms-google-analytics-event-tracking' ) ),
 						"placeholder" => $ga_id_placeholder,
 					),
 					array(

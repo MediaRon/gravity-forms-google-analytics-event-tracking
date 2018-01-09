@@ -136,7 +136,7 @@ class GFGAET_UA extends GFAddOn {
 			),
 			array(
 				'title' => __( 'Advanced', 'gravity-forms-google-analytics-event-tracking' ),
-				'description' => __( 'This will make all your forms Ajax only.', 'gravity-forms-google-analytics-event-tracking' ),
+				'description' => __( 'This will make all your forms Ajax only for options that require it.', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields' => array(
 					array(
 					    'type'          => 'radio',
