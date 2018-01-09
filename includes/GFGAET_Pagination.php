@@ -44,7 +44,7 @@ class GFGAET_Pagination {
 		if ( false !== $ua_code ) {
 			$event = new GFGAET_Measurement_Protocol();
 			$event->init();
-			
+
 			/**
 			 * Filter: gform_pagination_event_category
 			 *
@@ -137,6 +137,87 @@ class GFGAET_Pagination {
 
 			// Submit the event
 			$event->send( $ua_code );
+		}
+
+	}
+
+	/**
+	 * Send pagination events.
+	 *
+	 * @since 2.0.0
+	 *
+	 * @param array $form                The form arguments
+	 * @param int   @source_page_number  The original page number
+	 * @param int   $current_page_number The new page number
+	 */
+	public function matomo_paginate( $form, $source_page_number, $current_page_number ) {
+
+		if ( GFGAET::is_matomo_configured() ) {
+			$event = new GFGAET_Matomo_HTTP_API();
+			$event->init();
+
+			/**
+			 * Filter: gform_pagination_event_category
+			 *
+			 * Filter the event category dynamically
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param string $category              Event Category
+			 * @param array  $form                  Gravity Form form array
+			 * @param int    $source_page_number    Source page number
+			 * @param int    $current_page_number   Current Page Number
+			 */
+			$event_category = apply_filters( 'gform_pagination_event_category', 'form', $form, $source_page_number, $current_page_number );
+
+			/**
+			 * Filter: gform_pagination_event_action
+			 *
+			 * Filter the event action dynamically
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param string $action                Event Action
+			 * @param array  $form                  Gravity Form form array
+			 * @param int    $source_page_number    Source page number
+			 * @param int    $current_page_number   Current Page Number
+			 */
+			$event_action = apply_filters( 'gform_pagination_event_action', 'pagination', $form, $source_page_number, $current_page_number );
+
+			/**
+			 * Filter: gform_pagination_event_label
+			 *
+			 * Filter the event label dynamically
+			 *
+			 * @since 2.0.0
+			 *
+			 * @param string $label                 Event Label
+			 * @param array  $form                  Gravity Form form array
+			 * @param int    $source_page_number    Source page number
+			 * @param int    $current_page_number   Current Page Number
+			 */
+			$event_label = sprintf( '%s::%d::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
+			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
+
+			$event->set_matomo_event_category( $event_category );
+			$event->set_matomo_event_action( $event_action );
+			$event->set_matomo_event_label( $event_label );
+
+			if ( GFGAET::is_matomo_js_only() ) {
+				?>
+				<script>
+				if ( typeof window.parent._paq != 'undefined' ) {
+
+					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>']);
+
+				}
+				</script>
+				<?php
+				return;
+			}
+
+			// Submit the Matomo (formerly Piwik) event
+			$event->send_matomo();
 		}
 
 	}

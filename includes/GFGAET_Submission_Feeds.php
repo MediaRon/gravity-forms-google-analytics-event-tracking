@@ -214,6 +214,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		// Push the event to google
 		$this->push_event( $entry, $form, $ga_event_data );
+		// Push the event to matomo
+		$this->push_matomo_event( $entry, $form, $ga_event_data );
 	}
 
 	/**
@@ -238,6 +240,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		// Push the event to google
 		$this->push_event( $entry, $form, $ga_event_data );
+		// Push the event to matomo
+		$this->push_matomo_event( $entry, $form, $ga_event_data );
 	}
 
 	/**
@@ -404,10 +408,109 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		//Push out the event to each UA code
 		foreach( $google_analytics_codes as $ua_code ) {
-
 			// Submit the event
 			$event->send( $ua_code );
 		}
+	}
+
+	/**
+	 * Push the Matomo (formerly Piwik) Event!
+	 *
+	 * @since 2.1.0
+	 * @param array $event Gravity Forms event object
+	 * @param array $form Gravity Forms form object
+	 */
+	private function push_matomo_event( $entry, $form, $ga_event_data ) {
+
+        if ( false === GFGAET::is_matomo_configured() ) return;
+
+		$event = new GFGAET_Matomo_HTTP_API();
+		$event->init();
+
+		// Set some defaults
+		$event->set_matomo_document_location( 'http' . ( isset( $_SERVER['HTTPS'] ) ? 's' : '' ) . '://' . str_replace( '//', '/', $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'] ) );
+
+		// Set our event object variables
+		/**
+		 * Filter: gform_event_category
+		 *
+		 * Filter the event category dynamically
+		 *
+		 * @since 1.6.5
+		 *
+		 * @param string $category Event Category
+		 * @param object $form     Gravity Form form object
+		 * @param object $entry    Gravity Form Entry Object
+		 */
+		$event_category = apply_filters( 'gform_event_category', $ga_event_data['gaEventCategory'], $form, $entry );
+		$event->set_matomo_event_category( $event_category );
+
+		/**
+		 * Filter: gform_event_action
+		 *
+		 * Filter the event action dynamically
+		 *
+		 * @since 1.6.5
+		 *
+		 * @param string $action Event Action
+		 * @param object $form   Gravity Form form object
+		 * @param object $entry  Gravity Form Entry Object
+		 */
+		$event_action = apply_filters( 'gform_event_action', $ga_event_data['gaEventAction'], $form, $entry );
+		$event->set_matomo_event_action( $event_action );
+
+		/**
+		 * Filter: gform_event_label
+		 *
+		 * Filter the event label dynamically
+		 *
+		 * @since 1.6.5
+		 *
+		 * @param string $label Event Label
+		 * @param object $form  Gravity Form form object
+		 * @param object $entry Gravity Form Entry Object
+		 */
+		$event_label = apply_filters( 'gform_event_label', $ga_event_data['gaEventLabel'], $form, $entry );
+		$event->set_matomo_event_label( $event_label );
+
+		/**
+		 * Filter: gform_event_value
+		 *
+		 * Filter the event value dynamically
+		 *
+		 * @since 1.6.5
+		 *
+		 * @param object $form Gravity Form form object
+		 * @param object $entry Gravity Form Entry Object
+		 */
+		$event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form, $entry );
+		if ( $event_value ) {
+			// Event value must be a valid float!
+			$event_value = GFCommon::to_number( $event_value );
+			$event->set_matomo_event_value( $event_value );
+		}
+
+		$feed_id = absint( $ga_event_data[ 'feed_id' ] );
+		$entry_id = $entry['id'];
+
+		if ( GFGAET::is_matomo_js_only() ) {
+			?>
+			<script>
+			var matomo_feed_submission = sessionStorage.getItem('matomo_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
+			if ( null == matomo_feed_submission ) {
+				if ( typeof window.parent._paq != 'undefined' ) {
+
+					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>']);
+
+					sessionStorage.setItem('matomo_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
+				}
+			}
+			</script>
+			<?php
+			return;
+		}
+		// Submit the Matomo (formerly Piwik) event
+		$event->send_matomo();
 	}
 
 	/**

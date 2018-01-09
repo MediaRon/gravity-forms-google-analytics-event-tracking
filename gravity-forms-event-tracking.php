@@ -3,7 +3,7 @@
  * Plugin Name:       Gravity Forms Event Tracking
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking/
  * Description:       Add Google Analytics event tracking to your Gravity Forms with ease.
- * Version:           2.0.9
+ * Version:           2.1.0
  * Author:            Ronald Huereca
  * Author URI:        https://mediaron.com
  * Text Domain:       gravity-forms-google-analytics-event-tracking
@@ -184,6 +184,39 @@ class GFGAET {
 	}
 
 	/**
+	 * Check to see if Matomo (formerly Piwik) has been configured
+	 *
+	 * @since 2.1.0
+	 * @return string/bool Returns string UA code, false otherwise
+	 */
+	public static function is_matomo_configured() {
+		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+		if( isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_matomo_url' ] ) && isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_matomo_siteid' ] ) ){ // Both the Matomo URL and Site ID have been specified
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * Checks whether Matomo (formerly Piwik) JavaScript only mode is activated for sending events.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @return bool true if Matomo JavaScript only, false if not
+	 */
+	public static function is_matomo_js_only() {
+		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_GFGAET_UA_settings', false );
+		if ( ! isset( $gravity_forms_add_on_settings[ 'matomo_mode' ] ) ) {
+			return false;
+		}
+		if ( 'matomo_js' == $gravity_forms_add_on_settings[ 'matomo_mode' ] ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Autoload class files.
 	 *
 	 * @since 2.0.0
@@ -228,6 +261,7 @@ class GFGAET {
 	public function pagination( $form, $source_page_number, $current_page_number ) {
 		$pagination = GFGAET_Pagination::get_instance();
 		$pagination->paginate( $form, $source_page_number, $current_page_number );
+		$pagination->matomo_paginate( $form, $source_page_number, $current_page_number );
 	}
 }
 

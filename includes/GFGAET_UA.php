@@ -1,7 +1,7 @@
 <?php
 GFForms::include_addon_framework();
 class GFGAET_UA extends GFAddOn {
-	protected $_version = '2.0'; 
+	protected $_version = '2.0';
 	protected $_min_gravityforms_version = '1.8.20';
 	protected $_slug = 'GFGAET_UA';
 	protected $_path = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
@@ -14,7 +14,7 @@ class GFGAET_UA extends GFAddOn {
 	protected $_capabilities_settings_page = 'gravityforms_event_tracking';
 	protected $_capabilities_form_settings = 'gravityforms_event_tracking';
 	protected $_capabilities_uninstall = 'gravityforms_event_tracking_uninstall';
-	
+
 	private static $_instance = null;
 
 	/**
@@ -26,13 +26,13 @@ class GFGAET_UA extends GFAddOn {
 	    if ( self::$_instance == null ) {
 	        self::$_instance = new self();
 	    }
-	
+
 	    return self::$_instance;
 	}
-	
+
 	public function init() {
 		parent::init();
-		
+
 		// Migrate old GA Code over to new add-on
 		$ga_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', false );
 		if ( ! $ga_options ) {
@@ -41,18 +41,18 @@ class GFGAET_UA extends GFAddOn {
 				update_option( 'gravityformsaddon_GFGAET_UA_settings', $old_ga_option );
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Plugin settings fields
-	 * 
+	 *
 	 * @return array Array of plugin settings
 	 */
 	public function plugin_settings_fields() {
 		return array(
 			array(
-				'title'       => __( 'Google Analytics', 'gravity-forms-google-analytics-event-tracking' ),
+				'title'       => __( '<a target="_blank" href="https://google.com/analytics">Google Analytics</a>', 'gravity-forms-google-analytics-event-tracking' ),
 				'description' => __( 'Need help? <a target="_blank" href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics/">See our guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
@@ -61,7 +61,28 @@ class GFGAET_UA extends GFAddOn {
 						'label'             => __( 'UA Tracking ID', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'              => 'text',
 						'class'             => 'small',
-						
+
+					),
+				)
+			),
+			array(
+				'title'       => __( '<a target="_blank" href="https://matomo.org">Matomo</a> (formerly Piwik) Open Analytics Platform', 'gravity-forms-google-analytics-event-tracking' ),
+				'fields'      => array(
+					array(
+						'name'              => 'gravity_forms_event_tracking_matomo_url',
+						'tooltip' 			=> __( 'Enter your Matomo (formerly Piwik) URL. This is the same URL you use to access your Matomo instance (ex. http://www.example.com/matomo/.)', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'             => __( 'Matomo URL', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'              => 'text',
+						'class'             => 'small',
+
+					),
+					array(
+						'name'              => 'gravity_forms_event_tracking_matomo_siteid',
+						'tooltip' 			=> __( 'Enter your Site ID (ex. 2 or J2O1NDvxzmMB if using the Protect Track ID plugin.)', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'             => __( 'Site ID', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'              => 'text',
+						'class'             => 'small',
+
 					),
 				)
 			),
@@ -74,11 +95,11 @@ class GFGAET_UA extends GFAddOn {
 					    'name'          => 'mode',
 					    'horizontal'    => false,
 					    'default_value' => 'gmp',
-					    'label' => 'How would you like to send events?',
+					    'label' => 'How would you like to send <strong>Google Analytics</strong> events?',
 					    'choices'       => array(
 					        array(
 					            'name'    => 'ga_on',
-					            'tooltip' => esc_html__( 'Forms must be Ajax only', 'sometextdomain' ),
+					            'tooltip' => esc_html__( 'Forms must be Ajax only', 'gravity-forms-google-analytics-event-tracking' ),
 					            'label'   => esc_html__( 'Google Analytics (Ajax only)', 'gravity-forms-google-analytics-event-tracking' ),
 					            'value'   => 'ga'
 					        ),
@@ -90,9 +111,30 @@ class GFGAET_UA extends GFAddOn {
 					        ),
 					        array(
 					            'name'    => 'gmp_on',
-					            'tooltip' => esc_html__( 'Events will be sent using the measurement protocol.', 'sometextdomain' ),
+					            'tooltip' => esc_html__( 'Events will be sent using the measurement protocol.', 'gravity-forms-google-analytics-event-tracking' ),
 					            'label'   => esc_html__( 'Measurement Protocol (Default)', 'gravity-forms-google-analytics-event-tracking' ),
 					            'value' => 'gmp'
+					        ),
+					    ),
+					),
+					array(
+					    'type'          => 'radio',
+					    'name'          => 'matomo_mode',
+					    'horizontal'    => false,
+					    'default_value' => 'matomo_http',
+					    'label' => 'How would you like to send <strong>Matomo</strong> events?',
+					    'choices'       => array(
+					        array(
+					            'name'    => 'matomo_js_on',
+					            'tooltip' => esc_html__( 'Forms must be Ajax only. Events will be sent using the <a target="_blank" href="https://matomo.org/docs/event-tracking/#javascript-trackevent">`trackEvent` JavaScript function</a>.', 'gravity-forms-google-analytics-event-tracking' ),
+					            'label'   => esc_html__( 'JavaScript `trackEvent` Function (Ajax only)', 'gravity-forms-google-analytics-event-tracking' ),
+					            'value'   => 'matomo_js'
+					        ),
+					        array(
+					            'name'    => 'matomo_http_on',
+					            'tooltip' => esc_html__( 'Events will be sent using the <a target="_blank" href="https://developer.matomo.org/api-reference/tracking-api">Tracking HTTP API</a>.', 'gravity-forms-google-analytics-event-tracking' ),
+					            'label'   => esc_html__( 'Tracking HTTP API (Default)', 'gravity-forms-google-analytics-event-tracking' ),
+					            'value' => 'matomo_http'
 					        ),
 					    ),
 					),
