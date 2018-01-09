@@ -52,7 +52,7 @@ class GFGAET_UA extends GFAddOn {
 	public function plugin_settings_fields() {
 		return array(
 			array(
-				'title'       => __( 'Google Analytics', 'gravity-forms-google-analytics-event-tracking' ),
+				'title'       => __( '<a target="_blank" href="https://google.com/analytics">Google Analytics</a>', 'gravity-forms-google-analytics-event-tracking' ),
 				'description' => __( 'Need help? <a target="_blank" href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics/">See our guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
@@ -66,18 +66,18 @@ class GFGAET_UA extends GFAddOn {
 				)
 			),
 			array(
-				'title'       => __( 'Piwik Open Analytics Platform', 'gravity-forms-google-analytics-event-tracking' ),
+				'title'       => __( '<a target="_blank" href="https://matomo.org">Matomo</a> (formerly Piwik) Open Analytics Platform', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
-						'name'              => 'gravity_forms_event_tracking_piwik_url',
-						'tooltip' 			=> __( 'Enter your Piwik URL. This is the same URL you use to access your Piwik instance (ex. http://www.example.com/piwik/.)', 'gravity-forms-google-analytics-event-tracking' ),
-						'label'             => __( 'Piwik URL', 'gravity-forms-google-analytics-event-tracking' ),
+						'name'              => 'gravity_forms_event_tracking_matomo_url',
+						'tooltip' 			=> __( 'Enter your Matomo (formerly Piwik) URL. This is the same URL you use to access your Matomo instance (ex. http://www.example.com/matomo/.)', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'             => __( 'Matomo URL', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'              => 'text',
 						'class'             => 'small',
 
 					),
 					array(
-						'name'              => 'gravity_forms_event_tracking_piwik_siteid',
+						'name'              => 'gravity_forms_event_tracking_matomo_siteid',
 						'tooltip' 			=> __( 'Enter your Site ID (ex. 2 or J2O1NDvxzmMB if using the Protect Track ID plugin.)', 'gravity-forms-google-analytics-event-tracking' ),
 						'label'             => __( 'Site ID', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'              => 'text',
@@ -119,22 +119,22 @@ class GFGAET_UA extends GFAddOn {
 					),
 					array(
 					    'type'          => 'radio',
-					    'name'          => 'piwik_mode',
+					    'name'          => 'matomo_mode',
 					    'horizontal'    => false,
-					    'default_value' => 'piwik_http',
-					    'label' => 'How would you like to send <strong>Piwik</strong> events?',
+					    'default_value' => 'matomo_http',
+					    'label' => 'How would you like to send <strong>Matomo</strong> events?',
 					    'choices'       => array(
 					        array(
-					            'name'    => 'piwik_js_on',
-					            'tooltip' => esc_html__( 'Forms must be Ajax only. Events will be sent using the <a target="_blank" href="https://piwik.org/docs/event-tracking/#javascript-trackevent">`trackEvent` JavaScript function</a>.', 'gravity-forms-google-analytics-event-tracking' ),
+					            'name'    => 'matomo_js_on',
+					            'tooltip' => esc_html__( 'Forms must be Ajax only. Events will be sent using the <a target="_blank" href="https://matomo.org/docs/event-tracking/#javascript-trackevent">`trackEvent` JavaScript function</a>.', 'gravity-forms-google-analytics-event-tracking' ),
 					            'label'   => esc_html__( 'JavaScript `trackEvent` Function (Ajax only)', 'gravity-forms-google-analytics-event-tracking' ),
-					            'value'   => 'piwik_js'
+					            'value'   => 'matomo_js'
 					        ),
 					        array(
-					            'name'    => 'piwik_http_on',
-					            'tooltip' => esc_html__( 'Events will be sent using the <a target="_blank" href="https://developer.piwik.org/api-reference/tracking-api">Tracking HTTP API</a>.', 'gravity-forms-google-analytics-event-tracking' ),
+					            'name'    => 'matomo_http_on',
+					            'tooltip' => esc_html__( 'Events will be sent using the <a target="_blank" href="https://developer.matomo.org/api-reference/tracking-api">Tracking HTTP API</a>.', 'gravity-forms-google-analytics-event-tracking' ),
 					            'label'   => esc_html__( 'Tracking HTTP API (Default)', 'gravity-forms-google-analytics-event-tracking' ),
-					            'value' => 'piwik_http'
+					            'value' => 'matomo_http'
 					        ),
 					    ),
 					),
