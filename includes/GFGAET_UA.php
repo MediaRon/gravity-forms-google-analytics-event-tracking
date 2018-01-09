@@ -52,8 +52,8 @@ class GFGAET_UA extends GFAddOn {
 	public function plugin_settings_fields() {
 		return array(
 			array(
-				'title'       => __( '<a target="_blank" href="https://google.com/analytics">Google Analytics</a>', 'gravity-forms-google-analytics-event-tracking' ),
-				'description' => __( 'Need help? <a target="_blank" href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics/">See our guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
+				'title' => __( 'Google Analytics and Google Tag Manager', 'gravity-forms-google-analytics-event-tracking' ),
+				'description' => __( 'By default, events are sent using the measurement protocol. You can change to using pure Google Analytics and Google Tag Manager if your forms are Ajax only.', 'gravity-forms-google-analytics-event-tracking' ) . '<br />' . __( 'Need help? <a target="_blank" href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics/">See our guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
 						'name'              => 'gravity_forms_event_tracking_ua',
@@ -63,39 +63,12 @@ class GFGAET_UA extends GFAddOn {
 						'class'             => 'small',
 
 					),
-				)
-			),
-			array(
-				'title'       => __( '<a target="_blank" href="https://matomo.org">Matomo</a> (formerly Piwik) Open Analytics Platform', 'gravity-forms-google-analytics-event-tracking' ),
-				'fields'      => array(
-					array(
-						'name'              => 'gravity_forms_event_tracking_matomo_url',
-						'tooltip' 			=> __( 'Enter your Matomo (formerly Piwik) URL. This is the same URL you use to access your Matomo instance (ex. http://www.example.com/matomo/.)', 'gravity-forms-google-analytics-event-tracking' ),
-						'label'             => __( 'Matomo URL', 'gravity-forms-google-analytics-event-tracking' ),
-						'type'              => 'text',
-						'class'             => 'small',
-
-					),
-					array(
-						'name'              => 'gravity_forms_event_tracking_matomo_siteid',
-						'tooltip' 			=> __( 'Enter your Site ID (ex. 2 or J2O1NDvxzmMB if using the Protect Track ID plugin.)', 'gravity-forms-google-analytics-event-tracking' ),
-						'label'             => __( 'Site ID', 'gravity-forms-google-analytics-event-tracking' ),
-						'type'              => 'text',
-						'class'             => 'small',
-
-					),
-				)
-			),
-			array(
-				'title' => __( 'Advanced', 'gravity-forms-google-analytics-event-tracking' ),
-				'description' => __( 'By default, events are sent using the measurement protocol. You can change to using pure Google Analytics and Google Tag Manager if your forms are Ajax only.', 'gravity-forms-google-analytics-event-tracking' ),
-				'fields'      => array(
 					array(
 					    'type'          => 'radio',
 					    'name'          => 'mode',
 					    'horizontal'    => false,
 					    'default_value' => 'gmp',
-					    'label' => 'How would you like to send <strong>Google Analytics</strong> events?',
+					    'label' => 'How would you like to send events?',
 					    'choices'       => array(
 					        array(
 					            'name'    => 'ga_on',
@@ -116,6 +89,27 @@ class GFGAET_UA extends GFAddOn {
 					            'value' => 'gmp'
 					        ),
 					    ),
+					),
+				),
+			),
+			array(
+				'title'       => __( '<a target="_blank" href="https://matomo.org">Matomo</a> (formerly Piwik) Open Analytics Platform', 'gravity-forms-google-analytics-event-tracking' ),
+				'fields'      => array(
+					array(
+						'name'              => 'gravity_forms_event_tracking_matomo_url',
+						'tooltip' 			=> __( 'Enter your Matomo (formerly Piwik) URL. This is the same URL you use to access your Matomo instance (ex. http://www.example.com/matomo/.)', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'             => __( 'Matomo URL', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'              => 'text',
+						'class'             => 'small',
+
+					),
+					array(
+						'name'              => 'gravity_forms_event_tracking_matomo_siteid',
+						'tooltip' 			=> __( 'Enter your Site ID (ex. 2 or J2O1NDvxzmMB if using the Protect Track ID plugin.)', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'             => __( 'Site ID', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'              => 'text',
+						'class'             => 'small',
+
 					),
 					array(
 					    'type'          => 'radio',
@@ -138,6 +132,12 @@ class GFGAET_UA extends GFAddOn {
 					        ),
 					    ),
 					),
+				)
+			),
+			array(
+				'title' => __( 'Advanced', 'gravity-forms-google-analytics-event-tracking' ),
+				'description' => __( 'This will make all your forms Ajax only.', 'gravity-forms-google-analytics-event-tracking' ),
+				'fields' => array(
 					array(
 					    'type'          => 'radio',
 					    'name'          => 'ajax_only',
@@ -157,8 +157,9 @@ class GFGAET_UA extends GFAddOn {
 					        ),
 					    ),
 					),
-					),
+				)
 			)
+
 		);
 	}
 }
