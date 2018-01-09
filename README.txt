@@ -1,26 +1,25 @@
 === Event Tracking for Gravity Forms ===
-Contributors: ronalfy, bigwing, nmarks
+Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, event tracking
 Requires at least:4.0
 Tested up to: 4.9
-Stable tag: 2.0.9
+Stable tag: 2.1.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily add event tracking using Gravity Forms and your Google Analytics or Google Tag Manager account.
+Easily add event tracking using Gravity Forms and your Google Analytics, Google Tag Manager, or Matomo (formerly Piwik) account.
 
 == Description ==
 
-This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics or Google Tag Manager.
-
-Properly track for submissions as events/conversions in Google Analytics.
+This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics, Google Tag Manager, or Matomo (formerly Piwik).
 
 Also supports:
 
 * Pagination events
 * JS only events
 * Google Tag Manager
+* Matomo (formerly Piwik)
 
 = Setup Guide =
 Looking for help setting things up? [Read Our Setup Guide](https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics)
@@ -29,9 +28,11 @@ Looking for help setting things up? [Read Our Setup Guide](https://bigwing.com/n
 - Gravity Forms 2.0+
 - Google Analytics Universal Analytics
 - Google Tag Manager (optional)
+- Matomo (formerly Piwik) account (optional)
 
 = Features =
 - Submit events to Google Analytics using the Measurement Protocol, JavaScript, or using Google Tag Manager
+- Submit events using Matomo (formerly Piwik)
 - Add multiple event feeds with conditionals
 - Custom event categories, actions, labels and even values
 - Track form pagination events
@@ -98,6 +99,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 3. The feed settings page
 
 == Changelog ==
+
+= 2.1.0 =
+* Released 2018-01-10
+* Enhancement: Added Matomo (formerly Piwik) support
 
 = 2.0.9 =
 * Released 2017-11-29
@@ -211,5 +216,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.0.9 =
-Numerous fixes to the measurement protocol. Please verify your conversions.
+= 2.1.0 =
+Enhancement: Added Matomo (formerly Piwik) support
