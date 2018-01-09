@@ -150,11 +150,10 @@ class GFGAET_Pagination {
 	 * @param int   @source_page_number  The original page number
 	 * @param int   $current_page_number The new page number
 	 */
-	public function piwik_paginate( $form, $source_page_number, $current_page_number ) {
+	public function matomo_paginate( $form, $source_page_number, $current_page_number ) {
 
-		$ua_code = GFGAET::get_ua_code();
-		if ( false !== $ua_code ) {
-			$event = new GFGAET_Piwik_HTTP_API();
+		if ( GFGAET::is_matomo_configured() ) {
+			$event = new GFGAET_Matomo_HTTP_API();
 			$event->init();
 
 			/**
@@ -200,11 +199,11 @@ class GFGAET_Pagination {
 			$event_label = sprintf( '%s::%d::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
 			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
 
-			$event->set_piwik_event_category( $event_category );
-			$event->set_piwik_event_action( $event_action );
-			$event->set_piwik_event_label( $event_label );
+			$event->set_matomo_event_category( $event_category );
+			$event->set_matomo_event_action( $event_action );
+			$event->set_matomo_event_label( $event_label );
 
-			if ( GFGAET::is_piwik_js_only() ) {
+			if ( GFGAET::is_matomo_js_only() ) {
 				?>
 				<script>
 				if ( typeof window.parent._paq != 'undefined' ) {
@@ -217,8 +216,8 @@ class GFGAET_Pagination {
 				return;
 			}
 
-			// Submit the Piwik event
-			$event->send_piwik();
+			// Submit the Matomo (formerly Piwik) event
+			$event->send_matomo();
 		}
 
 	}
