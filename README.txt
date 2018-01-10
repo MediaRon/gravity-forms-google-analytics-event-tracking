@@ -95,7 +95,7 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Screenshots ==
 
-1. The Gravity Forms setting screen where you setup your UA ID.
+1. The Gravity Forms setting screen where you setup your event tracking.
 2. The form settings feed list.
 3. The feed settings page
 
