@@ -1,6 +1,6 @@
 === Event Tracking for Gravity Forms ===
 Contributors: ronalfy, bigwing, nmarks, kzeni
-Tags: gravity forms, google analytics, google tag manager, event tracking
+Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least:4.0
 Tested up to: 4.9
 Stable tag: 2.1.0
