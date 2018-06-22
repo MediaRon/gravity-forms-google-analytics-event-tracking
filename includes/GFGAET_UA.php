@@ -53,7 +53,7 @@ class GFGAET_UA extends GFAddOn {
 		return array(
 			array(
 				'title' => __( 'Google Analytics and Google Tag Manager', 'gravity-forms-google-analytics-event-tracking' ),
-				'description' => '<p>' . __( 'By default, events are sent using the measurement protocol. You can change to using pure Google Analytics and Google Tag Manager if your forms are Ajax only.', 'gravity-forms-google-analytics-event-tracking' ) . '</p><p>' . __( 'Need help? <a target="_blank" href="https://bigwing.com/nest/gravity-forms-event-tracking-google-analytics/">See our guide</a>.</p>', 'gravity-forms-google-analytics-event-tracking' ),
+				'description' => '<p>' . __( 'By default, events are sent using the measurement protocol. You can change to using pure Google Analytics and Google Tag Manager if your forms are Ajax only.', 'gravity-forms-google-analytics-event-tracking' ) . '</p><p>' . __( 'Need help? <a target="_blank" href="https://mediaron.com/event-tracking-for-gravity-forms/">See our guide</a>.</p>', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
 						'name'              => 'gravity_forms_event_tracking_ua',
