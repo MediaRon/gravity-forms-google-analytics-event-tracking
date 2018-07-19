@@ -101,8 +101,11 @@ class GFGAET_Pagination {
 			 * @param int    $current_page_number   Current Page Number
 			 */
 			$event_value = 0;
-			$event_value = absint( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) );
 
+			// Value is rounded up (Google likes integers only) before given an absolute value
+			$event_value = absint( round( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) );
+
+			// Set environmental variables for the measurement protocol
 			$event->set_event_category( $event_category );
 			$event->set_event_action( $event_action );
 			$event->set_event_label( $event_label );
