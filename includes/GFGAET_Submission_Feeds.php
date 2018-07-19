@@ -336,8 +336,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		 */
 		$event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form, $entry );
 		if ( $event_value ) {
-			// Event value must be a valid float!
-			$event_value = GFCommon::to_number( $event_value );
+			// Event value must be a valid integer!
+			$event_value = absint( round( $event_value ) );
 			$event->set_event_value( $event_value );
 		}
 
