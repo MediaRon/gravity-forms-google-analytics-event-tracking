@@ -485,8 +485,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		 */
 		$event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form, $entry );
 		if ( $event_value ) {
-			// Event value must be a valid float!
-			$event_value = GFCommon::to_number( $event_value );
+			// Event value must be a valid integer!
+			$event_value = absint( round( $event_value ) );
 			$event->set_matomo_event_value( $event_value );
 		}
 
@@ -672,7 +672,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						"type"    => "text",
 						"name"    => "gaEventValue",
 						"class"   => "medium merge-tag-support mt-position-right",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event value. Leave blank to omit pushing a value to Google Analytics. Or to use the purchase value of a payment based form. <strong>Note:</strong> This must be a number (int/float).', 'gravity-forms-google-analytics-event-tracking' ) ),
+						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event value. Leave blank to omit pushing a value to Google Analytics. Or to use the purchase value of a payment based form. <strong>Note:</strong> This must be a number (int). Floating numbers (e.g., 20.95) will be rounded up (e.g., 30)', 'gravity-forms-google-analytics-event-tracking' ) ),
 					),
 				)
 			),
