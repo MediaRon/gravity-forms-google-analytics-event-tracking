@@ -88,9 +88,27 @@ class GFGAET_Pagination {
 			$event_label = sprintf( '%s::%d::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
 			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
 
+			/**
+			 * Filter: gform_pagination_event_value
+			 *
+			 * Filter the event value dynamically
+			 *
+			 * @since 2.1.3
+			 *
+			 * @param int    $event_value           Event Value
+			 * @param array  $form                  Gravity Form form array
+			 * @param int    $source_page_number    Source page number
+			 * @param int    $current_page_number   Current Page Number
+			 */
+			$event_value = 0;
+			$event_value = absint( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) );
+
 			$event->set_event_category( $event_category );
 			$event->set_event_action( $event_action );
 			$event->set_event_label( $event_label );
+			if ( 0 !== $event_value ) {
+				$event->set_event_value( $event_value );
+			}
 
 			if ( GFGAET::is_ga_only() ) {
 				?>
