@@ -337,7 +337,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		$event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form, $entry );
 		if ( $event_value ) {
 			// Event value must be a valid integer!
-			$event_value = absint( round( $event_value ) );
+			$event_value = absint( round( GFCommon::to_number( $event_value ) ) );
 			$event->set_event_value( $event_value );
 		}
 
@@ -368,11 +368,11 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 						// If UA code matches, use that tracker
 						if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
-							window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
+							window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
 						} else {
 							// UA code doesn't match, use another tracker
 							window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
-							window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
+							window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
 						}
 
 						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
@@ -396,7 +396,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
 						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
 						'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
-						'GFEntryData':<?php echo json_encode( $entry ); ?>
+						'GFEntryData':<?php echo json_encode( $entry ); ?>,
+						'GFTrackValue': <?php echo absint( $event_value ); ?>
 						});
 					sessionStorage.setItem("feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>", "true");
 				}
@@ -486,7 +487,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		$event_value = apply_filters( 'gform_event_value', $ga_event_data['gaEventValue'], $form, $entry );
 		if ( $event_value ) {
 			// Event value must be a valid integer!
-			$event_value = absint( round( $event_value ) );
+			$event_value = absint( round( GFCommon::to_number( $event_value ) ) );
 			$event->set_matomo_event_value( $event_value );
 		}
 
@@ -500,7 +501,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			if ( null == matomo_feed_submission ) {
 				if ( typeof window.parent._paq != 'undefined' ) {
 
-					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>']);
+					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>]);
 
 					sessionStorage.setItem('matomo_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
 				}

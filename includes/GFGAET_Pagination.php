@@ -102,7 +102,7 @@ class GFGAET_Pagination {
 			 */
 			$event_value = 0;
 			// Value is rounded up (Google likes integers only) before given an absolute value
-			$event_value = absint( round( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) );
+			$event_value = absint( round( GFCommon::to_number( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) ) );
 			
 			// Set environmental variables for the measurement protocol
 			$event->set_event_category( $event_category );
@@ -134,7 +134,7 @@ class GFGAET_Pagination {
 					} else {
 						// UA code doesn't match, use another tracker
 						window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker' );
-						window.parent.ga( 'GTGAET_Tracker.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>;
+						window.parent.ga( 'GTGAET_Tracker.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
 					}
 				}
 				</script>
@@ -234,7 +234,7 @@ class GFGAET_Pagination {
 			 */
 			$event_value = 0;
 			// Value is rounded up (Google likes integers only) before given an absolute value
-			$event_value = absint( round( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) );
+			$event_value = absint( round( GFCommon::to_number( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) ) );
 			if ( 0 !== $event_value ) {
 				$event->set_matomo_event_value( $event_value );
 			}
