@@ -396,8 +396,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
 						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
 						'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
-						'GFEntryData':<?php echo json_encode( $entry ); ?>,
-						'GFTrackValue': <?php echo absint( $event_value ); ?>
+						'GFTrackValue': <?php echo absint( $event_value ); ?>,
+						'GFEntryData':<?php echo json_encode( $entry ); ?>
 						});
 					sessionStorage.setItem("feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>", "true");
 				}
