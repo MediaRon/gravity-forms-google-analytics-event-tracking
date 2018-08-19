@@ -94,6 +94,10 @@ https://www.youtube.com/watch?v=a0Mg5Nw3lxc
 
 Yes. <a href="https://mediaron.com/event-tracking-for-gravity-forms/google-tag-manager/">Read our Guide on Google Tag Manager</a>.
 
+= Can I set a value for pagination =
+
+Yes, check out <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking#gform_pagination_event_action">our filters on GitHub</a>.
+
 = Are there any filters/hooks? =
 
 Check out the documentation on [github](https://github.com/ronalfy/wordpress-gravity-forms-event-tracking)
@@ -110,6 +114,7 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Released 2018-08-19
 * Bug fix: Non-integer values being sent to Google Analytics weren't tracking as conversions
 * Enhancement: Event values are now sent using Google Tag Manager, Matamo, and Google Analytics
+* Enhancement: Can now set event values to pagination <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking#gform_pagination_event_value">using filters</a>
 * Note: Google only accepts integer values, so total fields and such will be rounded up or down when viewing your conversion reports
 
 = 2.1.1 = 
