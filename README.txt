@@ -3,9 +3,9 @@ Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least:4.0
 Tested up to: 4.9
-Stable tag: 2.1.1
+Stable tag: 2.2.0
 Requires PHP: 5.6
-Donate link: https://mediaron.com/contribute/
+Donate link: https://mediaron.com/give/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,11 +43,9 @@ Looking for help setting things up? [Read Our Setup Guide](https://mediaron.com/
 
 For payment based forms, you can leave the value blank to convert using the total payment amount.
 
-<h3>Help Contribute</h3>
+Development happens on <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking/">GitHub</a>.
 
-* Leave a star rating
-* <a href="https://translate.wordpress.org/projects/wp-plugins/gravity-forms-google-analytics-event-tracking">Contribute a translation</a>
-* <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking">Contribute some code</a>
+> Please <a href="https://wordpress.org/support/plugin/gravity-forms-google-analytics-event-tracking/reviews/#new-post">Rate the Plugin</a> or <a href="https://mediaron.com/give/">Give Back</a> to show support.
 
 == Installation ==
 
@@ -57,7 +55,7 @@ For payment based forms, you can leave the value blank to convert using the tota
 = Using The WordPress Dashboard =
 
 1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for gravity-forms-google-analytics-event-tracking
+2. Search for Event Tracking for Gravity Forms
 3. Click 'Install Now'
 4. Activate the plugin on the Plugin dashboard
 
@@ -85,9 +83,14 @@ For payment based forms, you can leave the value blank to convert using the tota
 
 = How do I track using JavaScript only? =
 
+https://www.youtube.com/watch?v=9749XKDOXLw
+
+
 See <a href="https://mediaron.com/event-tracking-for-gravity-forms/google-analytics-mode/">Going Advanced</a>.
 
 = Does this work with Google Tag Manager =
+
+https://www.youtube.com/watch?v=a0Mg5Nw3lxc
 
 Yes. <a href="https://mediaron.com/event-tracking-for-gravity-forms/google-tag-manager/">Read our Guide on Google Tag Manager</a>.
 
@@ -102,6 +105,12 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 3. The feed settings page
 
 == Changelog ==
+
+= 2.2.0 =
+* Released 2018-08-19
+* Bug fix: Non-integer values being sent to Google Analytics weren't tracking as conversions
+* Enhancement: Event values are now sent using Google Tag Manager, Matamo, and Google Analytics
+* Note: Google only accepts integer values, so total fields and such will be rounded up or down when viewing your conversion reports
 
 = 2.1.1 = 
 * Released 2018-06-22
@@ -222,6 +231,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 2.2.0 =
+Event values can now be sent using the Measurement Protocol, Google Analytics, Google Tag Manager, and Matomo. Please double-check your conversions after you update.
 
 = 2.1.0 =
 Enhancement: Added Matomo (formerly Piwik) support

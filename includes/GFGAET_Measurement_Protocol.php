@@ -80,6 +80,7 @@ class GFGAET_Measurement_Protocol {
 
 		// Perform the POST
 		$response = wp_remote_get( esc_url_raw( $payload ) );
+
 	}
 
 

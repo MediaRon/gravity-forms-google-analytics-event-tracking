@@ -88,9 +88,29 @@ class GFGAET_Pagination {
 			$event_label = sprintf( '%s::%d::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
 			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
 
+			/**
+			 * Filter: gform_pagination_event_value
+			 *
+			 * Filter the event value dynamically
+			 *
+			 * @since 2.1.3
+			 *
+			 * @param int    $event_value           Event Value
+			 * @param array  $form                  Gravity Form form array
+			 * @param int    $source_page_number    Source page number
+			 * @param int    $current_page_number   Current Page Number
+			 */
+			$event_value = 0;
+			// Value is rounded up (Google likes integers only) before given an absolute value
+			$event_value = absint( round( GFCommon::to_number( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) ) );
+			
+			// Set environmental variables for the measurement protocol
 			$event->set_event_category( $event_category );
 			$event->set_event_action( $event_action );
 			$event->set_event_label( $event_label );
+			if ( 0 !== $event_value ) {
+				$event->set_event_value( $event_value );
+			}
 
 			if ( GFGAET::is_ga_only() ) {
 				?>
@@ -114,7 +134,7 @@ class GFGAET_Pagination {
 					} else {
 						// UA code doesn't match, use another tracker
 						window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker' );
-						window.parent.ga( 'GTGAET_Tracker.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>' );
+						window.parent.ga( 'GTGAET_Tracker.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
 					}
 				}
 				</script>
@@ -127,7 +147,8 @@ class GFGAET_Pagination {
 			    	window.parent.dataLayer.push({'event': 'GFTrackEvent',
 						'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
 						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
-						'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>'
+						'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
+						'GFTrackValue': <?php echo absint( $event_value ); ?>
 						});
 				}
 				</script>
@@ -199,6 +220,25 @@ class GFGAET_Pagination {
 			$event_label = sprintf( '%s::%d::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
 			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
 
+			/**
+			 * Filter: gform_pagination_event_value
+			 *
+			 * Filter the event value dynamically
+			 *
+			 * @since 2.1.3
+			 *
+			 * @param int    $event_value           Event Value
+			 * @param array  $form                  Gravity Form form array
+			 * @param int    $source_page_number    Source page number
+			 * @param int    $current_page_number   Current Page Number
+			 */
+			$event_value = 0;
+			// Value is rounded up (Google likes integers only) before given an absolute value
+			$event_value = absint( round( GFCommon::to_number( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) ) );
+			if ( 0 !== $event_value ) {
+				$event->set_matomo_event_value( $event_value );
+			}
+
 			$event->set_matomo_event_category( $event_category );
 			$event->set_matomo_event_action( $event_action );
 			$event->set_matomo_event_label( $event_label );
@@ -208,7 +248,7 @@ class GFGAET_Pagination {
 				<script>
 				if ( typeof window.parent._paq != 'undefined' ) {
 
-					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>']);
+					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>]);
 
 				}
 				</script>
