@@ -112,6 +112,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enhancement: Event values are now sent using Google Tag Manager, Matamo, and Google Analytics
 * Note: Google only accepts integer values, so total fields and such will be rounded up or down when viewing your conversion reports
 
+= 2.1.1 = 
+* Released 2018-06-22
+* Documentation update
+
 = 2.1.0 =
 * Released 2018-01-10
 * Enhancement: Added Matomo (formerly Piwik) support
