@@ -88,13 +88,19 @@ https://www.youtube.com/watch?v=9749XKDOXLw
 
 See <a href="https://mediaron.com/event-tracking-for-gravity-forms/google-analytics-mode/">Going Advanced</a>.
 
-= Does this work with Google Tag Manager =
+= Does this work with Google Tag Manager? =
 
 https://www.youtube.com/watch?v=a0Mg5Nw3lxc
 
 Yes. <a href="https://mediaron.com/event-tracking-for-gravity-forms/google-tag-manager/">Read our Guide on Google Tag Manager</a>.
 
-= Can I set a value for pagination =
+= Can I set values for my form conversions? =
+
+https://www.youtube.com/watch?v=GBFOE1QvQeI
+
+Yes, the video above shows you how. Please note that values can be integers only, so the result may be rounded up or down.
+
+= Can I set a value for pagination? =
 
 Yes, check out <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking#gform_pagination_event_action">our filters on GitHub</a>.
 
@@ -113,7 +119,7 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 = 2.2.0 =
 * Released 2018-08-19
 * Bug fix: Non-integer values being sent to Google Analytics weren't tracking as conversions
-* Enhancement: Event values are now sent using Google Tag Manager, Matamo, and Google Analytics
+* Enhancement: Event values are now sent using the Measurement Protocol, Google Tag Manager, Matamo, and Google Analytics
 * Enhancement: Can now set event values to pagination <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking#gform_pagination_event_value">using filters</a>
 * Note: Google only accepts integer values, so total fields and such will be rounded up or down when viewing your conversion reports
 

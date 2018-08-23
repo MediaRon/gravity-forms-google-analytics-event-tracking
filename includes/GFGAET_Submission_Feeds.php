@@ -368,7 +368,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 						// If UA code matches, use that tracker
 						if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
-							window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
+							window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
 						} else {
 							// UA code doesn't match, use another tracker
 							window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
@@ -501,7 +501,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			if ( null == matomo_feed_submission ) {
 				if ( typeof window.parent._paq != 'undefined' ) {
 
-					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>]);
+					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>]);
 
 					sessionStorage.setItem('matomo_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
 				}

@@ -93,7 +93,7 @@ class GFGAET_Pagination {
 			 *
 			 * Filter the event value dynamically
 			 *
-			 * @since 2.1.3
+			 * @since 2.2.0
 			 *
 			 * @param int    $event_value           Event Value
 			 * @param array  $form                  Gravity Form form array
@@ -225,7 +225,7 @@ class GFGAET_Pagination {
 			 *
 			 * Filter the event value dynamically
 			 *
-			 * @since 2.1.3
+			 * @since 2.2.0
 			 *
 			 * @param int    $event_value           Event Value
 			 * @param array  $form                  Gravity Form form array
