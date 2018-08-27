@@ -353,29 +353,42 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 				?>
 				var feed_submission = sessionStorage.getItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
 				if ( null == feed_submission ) {
-					if ( typeof window.parent.ga == 'undefined' ) {
-						if ( typeof window.parent.__gaTracker != 'undefined' ) {
-							window.parent.ga = window.parent.__gaTracker;
-						}
-					}
-					if ( typeof window.parent.ga != 'undefined' ) {
-
-						// Try to get original UA code from third-party plugins or tag manager
-						var default_ua_code = null;
-						window.parent.ga(function(tracker) {
-							default_ua_code = tracker.get('trackingId');
-						});
-
-						// If UA code matches, use that tracker
-						if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
-							window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
-						} else {
-							// UA code doesn't match, use another tracker
-							window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
-							window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
-						}
-
+					
+					// Check for gtab implementation
+					if( typeof window.parent.gtag != 'undefined' ) {
+						window.parent.gtag( 'event', '<?php echo esc_js( $event_action ); ?>', {
+							'event_category': '<?php echo esc_js( $event_category ); ?>',
+							'event_label': '<?php echo esc_js( $event_label ); ?>'
+							<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo sprintf( ",'value': '%s'", esc_js( $event_value ) ); } ?>
+							}
+						);
 						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
+					} else {
+						// Check for GA from Monster Insights Plugin
+						if ( typeof window.parent.ga == 'undefined' ) {
+							if ( typeof window.parent.__gaTracker != 'undefined' ) {
+								window.parent.ga = window.parent.__gaTracker;
+							}
+						}
+						if ( typeof window.parent.ga != 'undefined' ) {
+	
+							// Try to get original UA code from third-party plugins or tag manager
+							var default_ua_code = null;
+							window.parent.ga(function(tracker) {
+								default_ua_code = tracker.get('trackingId');
+							});
+							
+							// If UA code matches, use that tracker
+							if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
+								window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
+							} else {
+								// UA code doesn't match, use another tracker
+								window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
+								window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
+							}
+	
+							sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
+						}	
 					}
 				}
 
