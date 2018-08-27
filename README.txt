@@ -3,7 +3,7 @@ Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least:4.0
 Tested up to: 4.9
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 Requires PHP: 5.6
 Donate link: https://mediaron.com/give/
 License: GPLv2 or later
@@ -115,6 +115,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 3. The feed settings page
 
 == Changelog ==
+
+= 2.2.2 =
+* Released 2018-08-27
+* Adding support for gtag 
 
 = 2.2.1 =
 * Released 2018-08-23
@@ -246,6 +250,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 2.2.2 =
+Adding support for gtag
 
 = 2.2.1 =
 Bug fix: Blank event values were being sent in Google Analytics mode, which resulted in failed conversions. Please double-check your conversions after you update.
