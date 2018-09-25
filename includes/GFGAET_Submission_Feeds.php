@@ -362,14 +362,18 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 							<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo sprintf( ",'value': '%s'", esc_js( $event_value ) ); } ?>
 							}
 						);
+						console.log('gtag tried');
 						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
 					} else {
 						// Check for GA from Monster Insights Plugin
 						if ( typeof window.parent.ga == 'undefined' ) {
+							console.log('ga not found');
 							if ( typeof window.parent.__gaTracker != 'undefined' ) {
+								console.log('monster insights not found');
 								window.parent.ga = window.parent.__gaTracker;
 							}
 						}
+						console.log('try window.parent.ga');
 						if ( typeof window.parent.ga != 'undefined' ) {
 	
 							// Try to get original UA code from third-party plugins or tag manager
@@ -377,12 +381,14 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 							window.parent.ga(function(tracker) {
 								default_ua_code = tracker.get('trackingId');
 							});
+							console.log('default code is ' + default_ua_code);
 							
 							// If UA code matches, use that tracker
 							if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
 								window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
 							} else {
 								// UA code doesn't match, use another tracker
+								console.log('trying alternate tracker');
 								window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
 								window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
 							}
