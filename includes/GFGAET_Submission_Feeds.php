@@ -362,36 +362,46 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 							<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo sprintf( ",'value': '%s'", esc_js( $event_value ) ); } ?>
 							}
 						);
-						console.log('gtag tried');
+						if ( typeof( console ) == 'object' ) {
+							console.log('gtag tried');
+						}
 						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
 					} else {
 						// Check for GA from Monster Insights Plugin
 						if ( typeof window.parent.ga == 'undefined' ) {
 							console.log('ga not found');
 							if ( typeof window.parent.__gaTracker != 'undefined' ) {
-								console.log('monster insights not found');
+								if( typeof( console ) == 'object' ) {
+									console.log('monster insights found');
+								}
 								window.parent.ga = window.parent.__gaTracker;
 							}
 						}
-						console.log('try window.parent.ga');
+						if ( typeof( console ) == 'object' ) {
+							console.log('try window.parent.ga');
+						}
 						if ( typeof window.parent.ga != 'undefined' ) {
-	
-							// Try to get original UA code from third-party plugins or tag manager
-							var default_ua_code = null;
-							window.parent.ga(function(tracker) {
-								default_ua_code = tracker.get('trackingId');
-							});
-							console.log('default code is ' + default_ua_code);
 							
-							// If UA code matches, use that tracker
-							if ( default_ua_code == '<?php echo esc_js( $ua_code ); ?>' ) {
-								window.parent.ga( 'send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
-							} else {
-								// UA code doesn't match, use another tracker
-								console.log('trying alternate tracker');
-								window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker<?php echo absint( $count ); ?>' );
-								window.parent.ga( 'GTGAET_Tracker<?php echo absint( $count ); ?>.send', 'event', '<?php echo esc_js( $event_category );?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
+							var ga_tracker = '';
+							var ga_send = 'send';
+							// Try to get original UA code from third-party plugins or tag manager
+							
+							ga_tracker = '<?php echo esc_js( GFGAET::get_ua_tracker() ); ?>';
+							if ( typeof( console ) == 'object' ) {
+								console.log( 'tracker name' );
+								console.log( ga_tracker );
 							}
+							if( ga_tracker.length > 0 ) {
+								ga_send = ga_tracker + '.' + ga_send;
+							}
+							if ( typeof( console ) == 'object' ) {
+								console.log( 'send command' );
+								console.log( ga_send );
+								console.log( <?php echo $event_value; ?> );
+							}
+							
+							// Use that tracker
+							window.parent.ga( ga_send, 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
 	
 							sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
 						}	
@@ -405,7 +415,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			</script>
 			<?php
 			return;
-		} else if ( GFGAET::is_gtm_only() ) {
+		} elseif ( GFGAET::is_gtm_only() ) {
 			?>
 			<script>
 			var form_submission = sessionStorage.getItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
@@ -424,13 +434,15 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			</script>
 			<?php
 			return;
+		} else {
+			//Push out the event to each UA code
+			foreach( $google_analytics_codes as $ua_code ) {
+				// Submit the event
+				$event->send( $ua_code );
+			}
 		}
 
-		//Push out the event to each UA code
-		foreach( $google_analytics_codes as $ua_code ) {
-			// Submit the event
-			$event->send( $ua_code );
-		}
+		
 	}
 
 	/**
