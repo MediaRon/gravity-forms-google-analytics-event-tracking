@@ -59,7 +59,6 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	public function partial_entry_saved( $partial_entry, $form ) {
 		$form_fields = $this->get_mapped_fields( $partial_entry, $form );
 		foreach( $form_fields as $gform_index => $gform_values ) {
-			$value = $gform_values['value'];
 			if( isset( $gform_values['event_category']) && !empty( $gform_values['event_category'] ) ) {
 
 				// Get defaults
