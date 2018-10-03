@@ -64,6 +64,14 @@ class GFGAET_UA extends GFAddOn {
 
 					),
 					array(
+						'name'              => 'gravity_forms_event_tracking_ua_tracker',
+						'tooltip' 			=> __( 'Enter your Tracker you would like to send events from if you are using a custom Tracker', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'             => __( 'UA Tracker Name', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'              => 'text',
+						'class'             => 'small',
+
+					),
+					array(
 					    'type'          => 'radio',
 					    'name'          => 'mode',
 					    'horizontal'    => false,
