@@ -3,7 +3,7 @@ Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least:4.0
 Tested up to: 4.9
-Stable tag: 2.2.4
+Stable tag: 2.3.0
 Requires PHP: 5.6
 Donate link: https://mediaron.com/give/
 License: GPLv2 or later
@@ -104,6 +104,15 @@ Yes, the video above shows you how. Please note that values can be integers only
 
 Yes, check out <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking#gform_pagination_event_action">our filters on GitHub</a>.
 
+
+= Can I track when a user has filled out a form field, but not submitted? =
+
+Yes, with the <a href="https://www.gravityforms.com/add-ons/partial-entries/">Partial Entries Add-on</a>. Edit your form and go to the 'Advanced' section and fill out your event parameters. If a partial entry is saved, the event will be sent to Google Analytics using the Measurement Protocol.
+
+Check out the video below for an explanation:
+
+https://www.youtube.com/watch?v=x0UpV4RjVAY&rel=0
+
 = Are there any filters/hooks? =
 
 Check out the documentation on [github](https://github.com/ronalfy/wordpress-gravity-forms-event-tracking)
@@ -113,8 +122,13 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 1. The Gravity Forms setting screen where you setup your event tracking.
 2. The form settings feed list.
 3. The feed settings page
+4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.3.0 =
+* Released 2018-10-03
+* Added support for the Partial Entries add-on.
 
 = 2.2.4 =
 * Released 2018-10-02
@@ -254,6 +268,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 2.3.0 =
+Added support for the Partial Entries add-on.
 
 = 2.2.4 =
 Adding support for custom trackers
