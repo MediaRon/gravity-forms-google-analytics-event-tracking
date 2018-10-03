@@ -21,6 +21,8 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	/**
 	 * Returns an instance of this class, and stores it in the $_instance property.
 	 *
+	 * @since 2.3.0
+	 * 
 	 * @return object $_instance An instance of this class.
 	 */
 	public static function get_instance() {
@@ -30,31 +32,136 @@ class GFGAET_Partial_Entries extends GFAddOn {
 
 		return self::$_instance;
 	}
+
+	/**
+	 * Initailizes partial entries updated and saved state
+	 *
+	 * @since 2.3.0
+	 * 
+	 * @return void
+	 */
 	public function init() {
 		parent::init();
 		add_action( 'gform_partialentries_post_entry_saved', array( $this, 'partial_entry_saved' ), 10, 2 );
 		add_action( 'gform_partialentries_post_entry_updated', array( $this, 'partial_entry_saved' ), 10, 2 );
 	}
-
+	
+	/**
+	 * Sends the event via the measurement protocol
+	 *
+	 * @since 2.3.0
+	 * 
+	 * @param array $partial_entry The partial entry to be parsed
+	 * @param array $form          The form to be parsed
+	 * 
+	 * @return void
+	 */
 	public function partial_entry_saved( $partial_entry, $form ) {
-		//error_log( print_r( $form, true ) );
 		$form_fields = $this->get_mapped_fields( $partial_entry, $form );
-		error_log( print_r( $form_fields, true ) );
-		foreach( $form['fields'] as $index => $values ) {
-			if( array_key_exists( 'field_partial_entries_category', $values ) ) {
-				$event_category = $values['field_partial_entries_category'];
-				$event_action = $values['field_partial_entries_action'];
-				$event_label = $values['field_partial_entries_label'];
-				$field_id = $values['id'];
+		foreach( $form_fields as $gform_index => $gform_values ) {
+			$value = $gform_values['value'];
+			if( isset( $gform_values['event_category']) && !empty( $gform_values['event_category'] ) ) {
+
+				// Get defaults
+				$value = $gform_values['value'];
+				$label = strtolower( 'label: ' . $gform_values['label'] ) . " EntryID: {$partial_entry['id']}";
+				
+				// Get category/action/label
+				$event_category = trim( $gform_values['event_category'] );
+				$event_action = ( empty( $gform_values['event_action'] ) ? 'partial' : trim( $gform_values['event_action'] ) );
+				$event_label = ( empty( $gform_values['event_label'] ) ? trim( $label ) : trim( $gform_values['event_label'] ) );
+
+				// Get event value
+				$event_value = ( empty( $gform_values['event_value'] ) ? trim( $value ) : trim( $gform_values['event_value'] ) );
+				if( !is_numeric( $event_value ) ) {
+					$event_value = 0;
+				}
+				$event_value = absint( round( GFCommon::to_number( $event_value ) ) );
+
+
+				/**
+				 * Filter: gform_partial_event_category
+				 *
+				 * Filter the event category dynamically
+				 *
+				 * @since 2.3.0
+				 *
+				 * @param string $event_category Event Category
+				 * @param array  $form           Gravity Form form array
+				 * @param array  $partial_entry  Gravity Form Partial Entry array
+				 * @param string $value          Gravity Forms Field value
+				 * @param string label           Label of the form entry
+				 */
+				$event_category = apply_filters( 'gform_partial_event_category', $event_category, $form, $partial_entry, $value, $label );
+
+				/**
+				 * Filter: gform_partial_event_action
+				 *
+				 * Filter the event action dynamically
+				 *
+				 * @since 2.3.0
+				 *
+				 * @param string $event_action   Event action
+				 * @param array  $form           Gravity Form form array
+				 * @param array  $partial_entry  Gravity Form Partial Entry array
+				 * @param string $value          Gravity Forms Field value
+				 * @param string label           Label of the form entry
+				 */
+				$event_action = apply_filters( 'gform_partial_event_action', $event_action, $form, $partial_entry, $value, $label );
+
+				/**
+				 * Filter: gform_partial_event_label
+				 *
+				 * Filter the event label dynamically
+				 *
+				 * @since 2.3.0
+				 *
+				 * @param string $event_label    Event label
+				 * @param array  $form           Gravity Form form array
+				 * @param array  $partial_entry  Gravity Form Partial Entry array
+				 * @param string $value          Gravity Forms Field value
+				 * @param string label           Label of the form entry
+				 */
+				$event_label = apply_filters( 'gform_partial_event_action', $event_label, $form, $partial_entry, $value, $label );
+
+				/**
+				 * Filter: gform_partial_event_value
+				 *
+				 * Filter the event value dynamically
+				 *
+				 * @since 2.3.0
+				 *
+				 * @param string $event_value    Event value
+				 * @param array  $form           Gravity Form form array
+				 * @param array  $partial_entry  Gravity Form Partial Entry array
+				 * @param string $value          Gravity Forms Field value
+				 * @param string label           Label of the form entry
+				 */
+				$event_value = apply_filters( 'gform_partial_event_action', $event_value, $form, $partial_entry, $value, $label );
+
+				// Let's set up the measurement protocol
+				$ua_code = GFGAET::get_ua_code();
+				$event = new GFGAET_Measurement_Protocol();
+				$event->init();
+				$event->set_event_category( $event_category );
+				$event->set_event_action( $event_action );
+				$event->set_event_label( $event_label );
+				$event->set_event_value( $event_value );
+				$event->send( $ua_code );
 			}
 		}
-		foreach( $partial_entry as $id => $value ) {
-			//error_log( print_r( $this->get_field_value( $form, $partial_entry, $id ), true ) );
-		}
-		//error_log(print_r( $partial_entry, true ) );
-		//error_log(print_r($form, true ) );
 	}
 
+	/**
+	 * Map fields for parsing
+	 *
+	 * @since 2.3.0
+	 * 
+	 * @param array $entry The partial entry to be parsed
+	 * @param array $form  The form to be parsed
+	 * 
+	 * @return array Mapped fields
+	 */
 	public function get_mapped_fields( $entry, $form ) {
 		$mapping = array();
 		
@@ -94,20 +201,22 @@ class GFGAET_Partial_Entries extends GFAddOn {
 					* and $input['id'].
 					*/
 					$mapping[ $field_id ] = array(
-						'value' => $entry[ $input['id'] ],
-						'category' => $event_category,
-						'action' => $event_action,
-						'label' => $event_label,
-						'value' => $event_value
+						'value'          => $entry[ $input['id'] ],
+						'label'          => $field['label'],
+						'event_category' => $event_category,
+						'event_action'   => $event_action,
+						'event_label'    => $event_label,
+						'event_value'    => $event_value
 					);
 				}
 			} else {
 				$mapping[ $field_ids[0] ] = array(
-					'value' => $entry[ $field['id'] ],
-					'category' => $event_category,
-					'action' => $event_action,
-					'label' => $event_label,
-					'value' => $event_value
+					'value'          => $entry[ $field['id'] ],
+					'label'          => $field['label'],
+					'event_category' => $event_category,
+					'event_action'   => $event_action,
+					'event_label'    => $event_label,
+					'event_value'    => $event_value
 				);
 			}
 		}
@@ -115,6 +224,13 @@ class GFGAET_Partial_Entries extends GFAddOn {
 		return $mapping;
 	}
 
+	/**
+	 * Set up actions and filters for the add-on
+	 *
+	 * @since 2.3.0
+	 * 
+	 * @return void
+	 */
 	public function init_admin() {
 		parent::init_admin();
 		add_action( 'gform_field_advanced_settings', array( $this, 'advanced_settings' ), 10, 2 );
@@ -122,13 +238,30 @@ class GFGAET_Partial_Entries extends GFAddOn {
 		add_filter( 'gform_tooltips', array( $this, 'add_tooltips' ) );
 	}
 
+	/**
+	 * Set up tooltips for the advanced settings
+	 *
+	 * @since 2.3.0
+	 * 
+	 * @param array $tooltips Array of tooltips
+	 * 
+	 * @return array Updated Tooltips
+	 */
 	public function add_tooltips( $tooltips ) {
-		$tooltips['gfgaet_category'] = __( 'Event category which you would like to send to Google Analytics using Partial Entries', 'gravity-forms-google-analytics-event-tracking' );
-		$tooltips['gfgaet_action'] = __( 'Event action which you would like to send to Google Analytics using Partial Entries', 'gravity-forms-google-analytics-event-tracking' );
-		$tooltips['gfgaet_label'] = __( 'Event label which you would like to send to Google Analytics using Partial Entries', 'gravity-forms-google-analytics-event-tracking' );
-		$tooltips['gfgaet_value'] = __( 'Event value (Integers only) which you would like to send to Google Analytics using Partial Entries', 'gravity-forms-google-analytics-event-tracking' );
+		$tooltips['gfgaet_category'] = __( 'Event category which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed.', 'gravity-forms-google-analytics-event-tracking' );
+		$tooltips['gfgaet_action'] = __( 'Event action which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed.', 'gravity-forms-google-analytics-event-tracking' );
+		$tooltips['gfgaet_label'] = __( 'Event label which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed. If left blank, the form value will be used.', 'gravity-forms-google-analytics-event-tracking' );
+		$tooltips['gfgaet_value'] = __( 'Event value (Integers only) which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed. If left blank, the form value will be used assuming it is an integer.', 'gravity-forms-google-analytics-event-tracking' );
 		return $tooltips;
 	}
+
+	/**
+	 * Ensure the add-on only works with Partial Entries
+	 *
+	 * @since 2.3.0
+	 * 
+	 * @return array Minimum requirements
+	 */
 	public function minimum_requirements() {
 		return array(
 			// Require other add-ons to be present.
@@ -137,6 +270,14 @@ class GFGAET_Partial_Entries extends GFAddOn {
 			),
 		);
 	}
+
+	/**
+	 * Allow advanced options to be visible and map values to their parameters
+	 * 
+	 * @since 2.3.0 
+	 * 
+	 * @return void
+	 */
 	public function editor_script() {
 		/*
 		 * Add .field_id_setting onto the end of each field
@@ -157,37 +298,48 @@ class GFGAET_Partial_Entries extends GFAddOn {
 		</script>
 		<?php
 	}
+
+	/**
+	 * Set up advanced settings
+	 *
+	 * @since 2.3.0
+	 * 
+	 * @param int $position The position of the advanced settings
+	 * @param int $form_id  The form ID to perform the action on
+	 * 
+	 * @return string HTML for advanced settings
+	 */
 	public function advanced_settings( $position, $form_id ) {
 		if( 100 !== $position ) return;
 		?>
 		<li class="admin_partial_entry_category field_setting">
-            <label for="field_partial_entries_category" class="section_label">
-                <?php _e( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ); ?>
-                <?php gform_tooltip( 'gfgaet_category' ); ?>
-            </label>
-            <input type="text" id="field_partial_entries_category" class="partial-entries-category fieldwidth-2" onChange="SetFieldProperty( 'field_partial_entries_category', this.value );" oninput="SetFieldProperty( 'field_partial_entries_label', this.value );" />
+			<label for="field_partial_entries_category" class="section_label">
+				<?php _e( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ); ?>
+				<?php gform_tooltip( 'gfgaet_category' ); ?>
+			</label>
+			<input type="text" id="field_partial_entries_category" class="partial-entries-category fieldwidth-2" onChange="SetFieldProperty( 'field_partial_entries_category', this.value );" oninput="SetFieldProperty( 'field_partial_entries_category', this.value );" />
 		</li>
 		<li class="admin_partial_entry_action field_setting">
-            <label for="field_partial_entries_action" class="section_label">
-                <?php _e( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ); ?>
-                <?php gform_tooltip( 'gfgaet_action' ); ?>
-            </label>
-            <input type="text" id="field_partial_entries_action" class="partial-entries-action fieldwidth-2" onChange="SetFieldProperty( 'field_partial_entries_action', this.value );" oninput="SetFieldProperty( 'field_partial_entries_label', this.value );" />
+			<label for="field_partial_entries_action" class="section_label">
+				<?php _e( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ); ?>
+				<?php gform_tooltip( 'gfgaet_action' ); ?>
+			</label>
+			<input type="text" id="field_partial_entries_action" class="partial-entries-action fieldwidth-2" onChange="SetFieldProperty( 'field_partial_entries_action', this.value );" oninput="SetFieldProperty( 'field_partial_entries_action', this.value );" />
 		</li>
 		<li class="admin_partial_entry_label field_setting">
-            <label for="field_partial_entries_label" class="section_label">
-                <?php _e( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ); ?>
-                <?php gform_tooltip( 'gfgaet_label' ); ?>
-            </label>
-            <input type="text" id="field_partial_entries_label" class="partial-entries-label fieldwidth-2" onChange="SetFieldProperty( 'field_partial_entries_label', this.value );" oninput="SetFieldProperty( 'field_partial_entries_label', this.value );" />
+			<label for="field_partial_entries_label" class="section_label">
+				<?php _e( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ); ?>
+				<?php gform_tooltip( 'gfgaet_label' ); ?>
+			</label>
+			<input type="text" id="field_partial_entries_label" class="partial-entries-label fieldwidth-2" onChange="SetFieldProperty( 'field_partial_entries_label', this.value );" oninput="SetFieldProperty( 'field_partial_entries_label', this.value );" />
 		</li>
 		<li class="admin_partial_entry_value field_setting">
-            <label for="field_partial_entries_value" class="section_label">
-                <?php _e( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ); ?>
-                <?php gform_tooltip( 'gfgaet_value' ); ?>
-            </label>
-            <input type="text" id="field_partial_entries_value" class="partial-entries-value fieldwidth-2" onChange="SetFieldProperty( 'field_partial_entries_label', this.value );" oninput="SetFieldProperty( 'field_partial_entries_value', this.value );" />
-        </li>
+			<label for="field_partial_entries_value" class="section_label">
+				<?php _e( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ); ?>
+				<?php gform_tooltip( 'gfgaet_value' ); ?>
+			</label>
+			<input type="text" id="field_partial_entries_value" class="partial-entries-value fieldwidth-2" onChange="SetFieldProperty( 'field_partial_entries_value', this.value );" oninput="SetFieldProperty( 'field_partial_entries_value', this.value );" />
+		</li>
 		<?php
 	}
 }
