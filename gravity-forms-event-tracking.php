@@ -120,12 +120,15 @@ class GFGAET {
 		// Initialize settings screen and feeds
 		GFAddOn::register( 'GFGAET_UA' );
 		GFAddOn::register( 'GFGAET_Submission_Feeds' );
+		GFAddOn::register( 'GFGAET_Partial_Entries' );
 
 		// Initialize pagination
 		add_action( 'gform_post_paging', array( $this, 'pagination'), 10, 3 );
 
 		// Initialize whether Ajax is on or off
 		add_filter( 'gform_form_args', array( $this, 'maybe_ajax_only' ), 15, 1 );
+
+
 	}
 
 	/**
