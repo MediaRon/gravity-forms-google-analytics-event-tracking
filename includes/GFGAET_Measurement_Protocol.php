@@ -74,7 +74,6 @@ class GFGAET_Measurement_Protocol {
 			if ( empty( $this->{$mp_vars[$index]} ) ) continue; // Empty params cause the payload to fail in testing
 			$mp_body[$mp_var] = $this->{$mp_vars[$index]};
 		}
-
 		// Add Payload
 		$payload = add_query_arg( $mp_body, $this->endpoint );
 
