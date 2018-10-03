@@ -120,7 +120,9 @@ class GFGAET {
 		// Initialize settings screen and feeds
 		GFAddOn::register( 'GFGAET_UA' );
 		GFAddOn::register( 'GFGAET_Submission_Feeds' );
-		GFAddOn::register( 'GFGAET_Partial_Entries' );
+		if( class_exists( 'GF_Partial_Entries' ) ) {
+			GFAddOn::register( 'GFGAET_Partial_Entries' );
+		}
 
 		// Initialize pagination
 		add_action( 'gform_post_paging', array( $this, 'pagination'), 10, 3 );

@@ -1,6 +1,21 @@
 <?php
 GFForms::include_addon_framework();
 class GFGAET_Partial_Entries extends GFAddOn {
+	protected $_version = '2.0';
+	protected $_min_gravityforms_version = '1.8.20';
+	protected $_slug = 'GFGAET_Partial_Entries';
+	protected $_path = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
+	protected $_full_path = __FILE__;
+	protected $_title = 'Gravity Forms Google Analytics Partial Entries';
+	protected $_short_title = 'Event Tracking';
+	// Members plugin integration
+	protected $_capabilities = array( 'gravityforms_event_tracking', 'gravityforms_event_tracking_uninstall' );
+	// Permissions
+	protected $_capabilities_settings_page = 'gravityforms_event_tracking';
+	protected $_capabilities_form_settings = 'gravityforms_event_tracking';
+	protected $_capabilities_uninstall = 'gravityforms_event_tracking_uninstall';
+
+
 	private static $_instance = null;
 	/**
 	 * Returns an instance of this class, and stores it in the $_instance property.
