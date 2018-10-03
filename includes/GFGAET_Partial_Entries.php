@@ -29,6 +29,28 @@ class GFGAET_Partial_Entries extends GFAddOn {
 
 		return self::$_instance;
 	}
+	public function init() {
+		parent::init();
+		add_action( 'gform_partialentries_post_entry_saved', array( $this, 'partial_entry_saved' ), 10, 2 );
+		add_action( 'gform_partialentries_post_entry_updated', array( $this, 'partial_entry_saved' ), 10, 2 );
+	}
+
+	public function partial_entry_saved( $partial_entry, $form ) {
+		$form_fields = array();
+		foreach( $form['fields'] as $index => $values ) {
+			if( array_key_exists( 'field_partial_entries_category', $values ) ) {
+				$event_category = $values['field_partial_entries_category'];
+				$event_action = $values['field_partial_entries_action'];
+				$event_label = $values['field_partial_entries_label'];
+				$field_id = $values['id'];
+			}
+		}
+		foreach( $partial_entry as $id => $value ) {
+			error_log( print_r( $this->get_field_value( $form, $partial_entry, $id ), true ) );
+		}
+		//error_log(print_r( $partial_entry, true ) );
+		//error_log(print_r($form, true ) );
+	}
 
 	public function init_admin() {
 		parent::init_admin();
