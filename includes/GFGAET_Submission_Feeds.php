@@ -269,7 +269,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		*/
 		$google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form, $entry );
 
-        if ( !is_array( $google_analytics_codes ) || empty( $google_analytics_codes ) ) return;
+		if ( !is_array( $google_analytics_codes ) || empty( $google_analytics_codes ) ) return;
+		$google_analytics_codes = array_unique($google_analytics_codes);
 
 		$event = new GFGAET_Measurement_Protocol();
 		$event->init();
