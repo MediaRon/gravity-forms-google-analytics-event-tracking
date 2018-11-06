@@ -352,61 +352,56 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			<?php
 			foreach( $google_analytics_codes as $ua_code ) {
 				?>
-				var feed_submission = sessionStorage.getItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
-				if ( null == feed_submission ) {
 					
-					// Check for gtab implementation
-					if( typeof window.parent.gtag != 'undefined' ) {
-						window.parent.gtag( 'event', '<?php echo esc_js( $event_action ); ?>', {
-							'event_category': '<?php echo esc_js( $event_category ); ?>',
-							'event_label': '<?php echo esc_js( $event_label ); ?>'
-							<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo sprintf( ",'value': '%s'", esc_js( $event_value ) ); } ?>
-							}
-						);
-						if ( typeof( console ) == 'object' ) {
-							console.log('gtag tried');
+				// Check for gtab implementation
+				if( typeof window.parent.gtag != 'undefined' ) {
+					window.parent.gtag( 'event', '<?php echo esc_js( $event_action ); ?>', {
+						'event_category': '<?php echo esc_js( $event_category ); ?>',
+						'event_label': '<?php echo esc_js( $event_label ); ?>'
+						<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo sprintf( ",'value': '%s'", esc_js( $event_value ) ); } ?>
 						}
-						sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
-					} else {
-						// Check for GA from Monster Insights Plugin
-						if ( typeof window.parent.ga == 'undefined' ) {
-							console.log('ga not found');
-							if ( typeof window.parent.__gaTracker != 'undefined' ) {
-								if( typeof( console ) == 'object' ) {
-									console.log('monster insights found');
-								}
-								window.parent.ga = window.parent.__gaTracker;
-							}
-						}
-						if ( typeof( console ) == 'object' ) {
-							console.log('try window.parent.ga');
-						}
-						if ( typeof window.parent.ga != 'undefined' ) {
-							
-							var ga_tracker = '';
-							var ga_send = 'send';
-							// Try to get original UA code from third-party plugins or tag manager
-							
-							ga_tracker = '<?php echo esc_js( GFGAET::get_ua_tracker() ); ?>';
-							if ( typeof( console ) == 'object' ) {
-								console.log( 'tracker name' );
-								console.log( ga_tracker );
-							}
-							if( ga_tracker.length > 0 ) {
-								ga_send = ga_tracker + '.' + ga_send;
-							}
-							if ( typeof( console ) == 'object' ) {
-								console.log( 'send command' );
-								console.log( ga_send );
-								console.log( <?php echo $event_value; ?> );
-							}
-							
-							// Use that tracker
-							window.parent.ga( ga_send, 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
-	
-							sessionStorage.setItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
-						}	
+					);
+					if ( typeof( console ) == 'object' ) {
+						console.log('gtag tried');
 					}
+				} else {
+					// Check for GA from Monster Insights Plugin
+					if ( typeof window.parent.ga == 'undefined' ) {
+						console.log('ga not found');
+						if ( typeof window.parent.__gaTracker != 'undefined' ) {
+							if( typeof( console ) == 'object' ) {
+								console.log('monster insights found');
+							}
+							window.parent.ga = window.parent.__gaTracker;
+						}
+					}
+					if ( typeof( console ) == 'object' ) {
+						console.log('try window.parent.ga');
+					}
+					if ( typeof window.parent.ga != 'undefined' ) {
+						
+						var ga_tracker = '';
+						var ga_send = 'send';
+						// Try to get original UA code from third-party plugins or tag manager
+						
+						ga_tracker = '<?php echo esc_js( GFGAET::get_ua_tracker() ); ?>';
+						if ( typeof( console ) == 'object' ) {
+							console.log( 'tracker name' );
+							console.log( ga_tracker );
+						}
+						if( ga_tracker.length > 0 ) {
+							ga_send = ga_tracker + '.' + ga_send;
+						}
+						if ( typeof( console ) == 'object' ) {
+							console.log( 'send command' );
+							console.log( ga_send );
+							console.log( <?php echo $event_value; ?> );
+						}
+						
+						// Use that tracker
+						window.parent.ga( ga_send, 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
+
+					}	
 				}
 
 				<?php
@@ -419,18 +414,14 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		} elseif ( GFGAET::is_gtm_only() ) {
 			?>
 			<script>
-			var form_submission = sessionStorage.getItem('feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
-			if ( null == form_submission ) {
-				if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
-			    	window.parent.dataLayer.push({'event': 'GFTrackEvent',
-						'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
-						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
-						'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
-						'GFTrackValue': <?php echo absint( $event_value ); ?>,
-						'GFEntryData':<?php echo json_encode( $entry ); ?>
-						});
-					sessionStorage.setItem("feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>", "true");
-				}
+			if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
+				window.parent.dataLayer.push({'event': 'GFTrackEvent',
+					'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
+					'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
+					'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
+					'GFTrackValue': <?php echo absint( $event_value ); ?>,
+					'GFEntryData':<?php echo json_encode( $entry ); ?>
+					});
 			}
 			</script>
 			<?php
@@ -529,14 +520,10 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		if ( GFGAET::is_matomo_js_only() ) {
 			?>
 			<script>
-			var matomo_feed_submission = sessionStorage.getItem('matomo_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>');
-			if ( null == matomo_feed_submission ) {
-				if ( typeof window.parent._paq != 'undefined' ) {
+			if ( typeof window.parent._paq != 'undefined' ) {
 
-					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>]);
+				window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>]);
 
-					sessionStorage.setItem('matomo_feed_<?php echo absint( $feed_id ); ?>_entry_<?php echo absint( $entry[ 'id' ] ); ?>', true );
-				}
 			}
 			</script>
 			<?php
