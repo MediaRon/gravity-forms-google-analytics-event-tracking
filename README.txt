@@ -129,6 +129,7 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 = 2.3.2 =
 * Released 2018-11-07
 * Removed some checks for better event tracking
+* Updating filter for partial entries
 
 = 2.3.0 =
 * Released 2018-10-03
@@ -274,7 +275,7 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 == Upgrade Notice ==
 
 = 2.3.2 = 
-Removed some checks for better event tracking
+Removed some checks for better event tracking. Updating filter for partial entries.
 
 = 2.3.0 =
 Added support for the Partial Entries add-on.
