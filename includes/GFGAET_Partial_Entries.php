@@ -121,7 +121,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 				 * @param string $value          Gravity Forms Field value
 				 * @param string label           Label of the form entry
 				 */
-				$event_label = apply_filters( 'gform_partial_event_action', $event_label, $form, $partial_entry, $value, $label );
+				$event_label = apply_filters( 'gform_partial_event_label', $event_label, $form, $partial_entry, $value, $label );
 
 				/**
 				 * Filter: gform_partial_event_value
@@ -136,7 +136,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 				 * @param string $value          Gravity Forms Field value
 				 * @param string label           Label of the form entry
 				 */
-				$event_value = apply_filters( 'gform_partial_event_action', $event_value, $form, $partial_entry, $value, $label );
+				$event_value = apply_filters( 'gform_partial_event_value', $event_value, $form, $partial_entry, $value, $label );
 
 				// Let's set up the measurement protocol
 				$ua_code = GFGAET::get_ua_code();
