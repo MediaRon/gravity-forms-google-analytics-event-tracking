@@ -130,13 +130,13 @@ class GFGAET_Partial_Entries extends GFAddOn {
 				 *
 				 * @since 2.3.0
 				 *
-				 * @param string $event_value    Event value
+				 * @param int    $event_value    Event value
 				 * @param array  $form           Gravity Form form array
 				 * @param array  $partial_entry  Gravity Form Partial Entry array
 				 * @param string $value          Gravity Forms Field value
 				 * @param string label           Label of the form entry
 				 */
-				$event_value = apply_filters( 'gform_partial_event_value', $event_value, $form, $partial_entry, $value, $label );
+				$event_value = absint( round( GFCommon::to_number( apply_filters( 'gform_partial_event_value', $event_value, $form, $partial_entry, $value, $label ) ) ) );
 
 				// Let's set up the measurement protocol
 				$ua_code = GFGAET::get_ua_code();

@@ -285,5 +285,106 @@ function gf_form_label_pagination_1_page_3( $value, $form, $source_page_number, 
 	return $value;
 }
 ```
+### gform_partial_event_category
 
+```php
+/**
+ * Filter: gform_partial_event_category
+ *
+ * Filter the event category dynamically
+ *
+ * @since 2.3.0
+ *
+ * @param string $event_category Event Category
+ * @param array  $form           Gravity Form form array
+ * @param array  $partial_entry  Gravity Form Partial Entry array
+ * @param string $value          Gravity Forms Field value
+ * @param string label           Label of the form entry
+ */
+ ```
+
+Example:
+```php
+add_filter( 'gform_partial_event_category', function( $event_category, $form, $partial_entry, $value, $label ) {
+	return 'new_category';
+}, 10, 5 );
+```
+
+### gform_partial_event_action
+
+```php
+/**
+ * Filter: gform_partial_event_action
+ *
+ * Filter the event action dynamically
+ *
+ * @since 2.3.0
+ *
+ * @param string $event_action   Event action
+ * @param array  $form           Gravity Form form array
+ * @param array  $partial_entry  Gravity Form Partial Entry array
+ * @param string $value          Gravity Forms Field value
+ * @param string label           Label of the form entry
+ */
+```
+
+Example: 
+
+```php
+add_filter( 'gform_partial_event_action', function( $event_action, $form, $partial_entry, $value, $label ) {
+	return 'new_action';
+}, 10, 5 );
+```
+
+### gform_partial_event_label
+
+```php
+/**
+ * Filter: gform_partial_event_label
+ *
+ * Filter the event label dynamically
+ *
+ * @since 2.3.0
+ *
+ * @param string $event_label    Event label
+ * @param array  $form           Gravity Form form array
+ * @param array  $partial_entry  Gravity Form Partial Entry array
+ * @param string $value          Gravity Forms Field value
+ * @param string label           Label of the form entry
+ */
+```
+
+Example: 
+
+```php
+add_filter( 'gform_partial_event_label', function( $event_label, $form, $partial_entry, $value, $label ) {
+	return 'new_label';
+}, 10, 5 );
+```
+
+### gform_partial_event_value
+
+```php
+/**
+ * Filter: gform_partial_event_value
+ *
+ * Filter the event value dynamically
+ *
+ * @since 2.3.0
+ *
+ * @param int    $event_value    Event value
+ * @param array  $form           Gravity Form form array
+ * @param array  $partial_entry  Gravity Form Partial Entry array
+ * @param string $value          Gravity Forms Field value
+ * @param string label           Label of the form entry
+ */
+```
+
+Example: 
+
+```php
+add_filter( 'gform_partial_event_value', function( $event_value, $form, $partial_entry, $value, $label ) {
+	return 20;
+}, 10, 5 );
+```
 
