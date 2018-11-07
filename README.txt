@@ -130,6 +130,8 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Released 2018-11-07
 * Removed some checks for better event tracking
 * Updating filter for partial entries
+* Tested successfully with WordPress 5.0 Beta 3
+* Tested successfully with Gravity Forms 2.4 Beta 2
 
 = 2.3.0 =
 * Released 2018-10-03
