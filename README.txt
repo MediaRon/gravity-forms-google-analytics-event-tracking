@@ -2,7 +2,7 @@
 Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least:4.0
-Tested up to: 4.9
+Tested up to: 5.0
 Stable tag: 2.3.2
 Requires PHP: 5.6
 Donate link: https://mediaron.com/give/
