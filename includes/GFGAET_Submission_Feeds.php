@@ -395,7 +395,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						if ( typeof( console ) == 'object' ) {
 							console.log( 'send command' );
 							console.log( ga_send );
-							console.log( <?php echo $event_value; ?> );
+							console.log( '<?php echo $event_value; ?>' );
 						}
 						
 						// Use that tracker
