@@ -177,7 +177,7 @@ add_filter( 'gform_pagination_event_category', function( $category_name, $form, 
 }, 10, 4 );
 ```
 
-From there, modify your conversion goal for category with `begins with`: pagination.
+From there, modify your conversion goal for category with `begins with`: form.
 
 ### gform_pagination_event_action
 
