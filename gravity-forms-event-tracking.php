@@ -120,6 +120,7 @@ class GFGAET {
 		// Initialize settings screen and feeds
 		GFAddOn::register( 'GFGAET_UA' );
 		GFAddOn::register( 'GFGAET_Submission_Feeds' );
+		GFAddOn::register( 'GFGAET_Pagination_Settings' );
 		if( class_exists( 'GF_Partial_Entries' ) ) {
 			GFAddOn::register( 'GFGAET_Partial_Entries' );
 		}
