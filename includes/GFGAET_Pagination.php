@@ -57,7 +57,14 @@ class GFGAET_Pagination {
 			 * @param int    $source_page_number    Source page number
 			 * @param int    $current_page_number   Current Page Number
 			 */
-			$event_category = apply_filters( 'gform_pagination_event_category', 'form', $form, $source_page_number, $current_page_number );
+			$event_category = 'form';
+			if ( isset( $form['pagination_category'] ) ) {
+				$pagination_category = trim( $form['pagination_category'] );
+				if( ! empty( $pagination_category ) ) {
+					$event_category = $pagination_category;
+				}
+			}
+			$event_category = apply_filters( 'gform_pagination_event_category', $event_category, $form, $source_page_number, $current_page_number );
 
 			/**
 			 * Filter: gform_pagination_event_action
@@ -71,7 +78,14 @@ class GFGAET_Pagination {
 			 * @param int    $source_page_number    Source page number
 			 * @param int    $current_page_number   Current Page Number
 			 */
-			$event_action = apply_filters( 'gform_pagination_event_action', 'pagination', $form, $source_page_number, $current_page_number );
+			$event_action = 'pagination';
+			if ( isset( $form['pagination_action'] ) ) {
+				$pagination_action = trim( $form['pagination_action'] );
+				if( ! empty( $pagination_action ) ) {
+					$event_action = $pagination_action;
+				}
+			}
+			$event_action = apply_filters( 'gform_pagination_event_action', $event_action, $form, $source_page_number, $current_page_number );
 
 			/**
 			 * Filter: gform_pagination_event_label
@@ -86,6 +100,12 @@ class GFGAET_Pagination {
 			 * @param int    $current_page_number   Current Page Number
 			 */
 			$event_label = sprintf( '%s::%d::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
+			if ( isset( $form['pagination_label'] ) ) {
+				$pagination_label = trim( $form['pagination_label'] );
+				if( ! empty( $pagination_label ) ) {
+					$event_label = $pagination_label;
+				}
+			}
 			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
 
 			/**
@@ -101,6 +121,12 @@ class GFGAET_Pagination {
 			 * @param int    $current_page_number   Current Page Number
 			 */
 			$event_value = 0;
+			if ( isset( $form['pagination_value'] ) ) {
+				$pagination_value = trim( $form['pagination_value'] );
+				if( ! empty( $pagination_value ) ) {
+					$event_value = $pagination_value;
+				}
+			}
 			// Value is rounded up (Google likes integers only) before given an absolute value
 			$event_value = absint( round( GFCommon::to_number( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) ) );
 			
@@ -189,7 +215,14 @@ class GFGAET_Pagination {
 			 * @param int    $source_page_number    Source page number
 			 * @param int    $current_page_number   Current Page Number
 			 */
-			$event_category = apply_filters( 'gform_pagination_event_category', 'form', $form, $source_page_number, $current_page_number );
+			$event_category = 'form';
+			if ( isset( $form['pagination_category'] ) ) {
+				$pagination_category = trim( $form['pagination_category'] );
+				if( ! empty( $pagination_category ) ) {
+					$event_category = $pagination_category;
+				}
+			}
+			$event_category = apply_filters( 'gform_pagination_event_category', $event_category, $form, $source_page_number, $current_page_number );
 
 			/**
 			 * Filter: gform_pagination_event_action
@@ -203,7 +236,14 @@ class GFGAET_Pagination {
 			 * @param int    $source_page_number    Source page number
 			 * @param int    $current_page_number   Current Page Number
 			 */
-			$event_action = apply_filters( 'gform_pagination_event_action', 'pagination', $form, $source_page_number, $current_page_number );
+			$event_action = 'pagination';
+			if ( isset( $form['pagination_action'] ) ) {
+				$pagination_action = trim( $form['pagination_action'] );
+				if( ! empty( $pagination_action ) ) {
+					$event_action = $pagination_action;
+				}
+			}
+			$event_action = apply_filters( 'gform_pagination_event_action', $event_action, $form, $source_page_number, $current_page_number );
 
 			/**
 			 * Filter: gform_pagination_event_label
@@ -218,6 +258,12 @@ class GFGAET_Pagination {
 			 * @param int    $current_page_number   Current Page Number
 			 */
 			$event_label = sprintf( '%s::%d::%d', esc_html( $form['title'] ), absint( $source_page_number ), absint( $current_page_number ) );
+			if ( isset( $form['pagination_label'] ) ) {
+				$pagination_label = trim( $form['pagination_label'] );
+				if( ! empty( $pagination_label ) ) {
+					$event_label = $pagination_label;
+				}
+			}
 			$event_label = apply_filters( 'gform_pagination_event_label', $event_label, $form, $source_page_number, $current_page_number );
 
 			/**
@@ -233,8 +279,12 @@ class GFGAET_Pagination {
 			 * @param int    $current_page_number   Current Page Number
 			 */
 			$event_value = 0;
-			// Value is rounded up (Google likes integers only) before given an absolute value
-			$event_value = absint( round( GFCommon::to_number( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) ) );
+			if ( isset( $form['pagination_value'] ) ) {
+				$pagination_value = trim( $form['pagination_value'] );
+				if( ! empty( $pagination_value ) ) {
+					$event_value = $pagination_value;
+				}
+			}
 			if ( 0 !== $event_value ) {
 				$event->set_matomo_event_value( $event_value );
 			}
