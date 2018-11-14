@@ -34,15 +34,35 @@ class GFGAET_Pagination_Settings extends GFAddOn {
 		parent::init();
 
 		add_filter( 'gform_form_settings', array( $this, 'add_pagination_form_settings' ), 10, 2 );
+		add_filter( 'gform_pre_form_settings_save', array( $this, 'save_pagination_settings' ), 10, 1 );
+	}
+
+	/**
+	 * Save pagination settings.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @param array $form     The form
+	 * 
+	 * @return array Updated form values
+	 */
+	public function save_pagination_settings( $form ) {
+		$form['pagination_category'] = rgpost( 'pagination_category' );
+		$form['pagination_action'] = rgpost( 'pagination_action' );
+		$form['pagination_label'] = rgpost( 'pagination_label' );
+		$form['pagination_value'] = rgpost( 'pagination_value' );
+		return $form;
 	}
 
 	/**
 	 * Add pagination form settings to Gravity Forms.
 	 *
-	 * @since 2.0.0
+	 * @since 2.3.5
 	 *
 	 * @param array $settings The form settings
 	 * @param array $form     The form
+	 * 
+	 * @return array Updated form settings
 	 */
 	public function add_pagination_form_settings( $settings, $form ) {
 		$settings[ __( 'Pagination Event Tracking', 'gravity-forms-google-analytics-event-tracking' ) ]['pagination_description'] = sprintf( '
