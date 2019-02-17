@@ -28,7 +28,7 @@ Also supports:
 Looking for help setting things up? [Read Our Setup Guide](https://mediaron.com/event-tracking-for-gravity-forms/)
 
 = Minimum Requirements =
-- Gravity Forms 2.0+
+- Gravity Forms 2.3
 - Google Analytics Universal Analytics
 - Google Tag Manager (optional)
 - Matomo (formerly Piwik) account (optional)
