@@ -347,15 +347,23 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		if ( GFGAET::is_ga_only() ) {
 			$count = 1;
+			$is_interactive_hit = 'false';
+			$interactive_hit = GFGAET::get_interactive_hit_tracker();
+			if( 'interactive_off' == $interactive_hit ) {
+				$is_interactive_hit = 'false';
+			} else {
+				$is_interactive_hit = 'true';
+			}
 			?>
 			<script>
 			<?php
 			foreach( $google_analytics_codes as $ua_code ) {
 				?>
-					
+
 				// Check for gtab implementation
 				if( typeof window.parent.gtag != 'undefined' ) {
 					window.parent.gtag( 'event', '<?php echo esc_js( $event_action ); ?>', {
+						nonInteraction: <?php echo esc_js( $is_interactive_hit ); ?>,
 						'event_category': '<?php echo esc_js( $event_category ); ?>',
 						'event_label': '<?php echo esc_js( $event_label ); ?>'
 						<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo sprintf( ",'value': '%s'", esc_js( $event_value ) ); } ?>
@@ -379,11 +387,11 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						console.log('try window.parent.ga');
 					}
 					if ( typeof window.parent.ga != 'undefined' ) {
-						
+
 						var ga_tracker = '';
 						var ga_send = 'send';
 						// Try to get original UA code from third-party plugins or tag manager
-						
+
 						ga_tracker = '<?php echo esc_js( GFGAET::get_ua_tracker() ); ?>';
 						if ( typeof( console ) == 'object' ) {
 							console.log( 'tracker name' );
@@ -397,11 +405,13 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 							console.log( ga_send );
 							console.log( '<?php echo $event_value; ?>' );
 						}
-						
-						// Use that tracker
-						window.parent.ga( ga_send, 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>);
 
-					}	
+						// Use that tracker
+						window.parent.ga( ga_send, 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>, {
+							nonInteraction: <?php echo esc_js( $is_interactive_hit ); ?>
+						});
+
+					}
 				}
 
 				<?php
@@ -434,7 +444,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			}
 		}
 
-		
+
 	}
 
 	/**

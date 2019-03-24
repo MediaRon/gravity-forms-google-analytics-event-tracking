@@ -72,6 +72,28 @@ class GFGAET_UA extends GFAddOn {
 
 					),
 					array(
+						'name'              => 'gravity_forms_event_tracking_ua_interaction_hit',
+						'tooltip' 			=> __( 'Enter whether the hits are interactive or not.', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'             => __( 'Non-interactive hits', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'              => 'radio',
+						'default_value' => 'interactive_on',
+						'choices'       => array(
+					        array(
+					            'name'    => 'interactive_on',
+					            'tooltip' => esc_html__( 'Interaction hits are on', 'gravity-forms-google-analytics-event-tracking' ),
+					            'label'   => esc_html__( 'Turn on Interactive Hits', 'gravity-forms-google-analytics-event-tracking' ),
+					            'value'   => 'interactive_on'
+							),
+							array(
+					            'name'    => 'interactive_off',
+					            'tooltip' => esc_html__( 'Interaction hits are off', 'gravity-forms-google-analytics-event-tracking' ),
+					            'label'   => esc_html__( 'Turn off Interactive Hits', 'gravity-forms-google-analytics-event-tracking' ),
+					            'value'   => 'interactive_off'
+					        ),
+					    ),
+
+					),
+					array(
 					    'type'          => 'radio',
 					    'name'          => 'mode',
 					    'horizontal'    => false,
