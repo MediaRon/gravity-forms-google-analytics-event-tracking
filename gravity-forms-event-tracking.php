@@ -3,7 +3,7 @@
  * Plugin Name:       Gravity Forms Event Tracking
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking/
  * Description:       Add event tracking to your Gravity Forms with ease using Google Analytics, Tag Manager, or Matomo (formerly Piwik).
- * Version:           2.3.2
+ * Version:           2.3.9
  * Author:            Ronald Huereca
  * Author URI:        https://mediaron.com
  * Text Domain:       gravity-forms-google-analytics-event-tracking
@@ -120,6 +120,7 @@ class GFGAET {
 		// Initialize settings screen and feeds
 		GFAddOn::register( 'GFGAET_UA' );
 		GFAddOn::register( 'GFGAET_Submission_Feeds' );
+		GFAddOn::register( 'GFGAET_Pagination_Settings' );
 		if( class_exists( 'GF_Partial_Entries' ) ) {
 			GFAddOn::register( 'GFGAET_Partial_Entries' );
 		}
@@ -151,7 +152,7 @@ class GFGAET {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Get the Google Analytics Tracker
 	 *
@@ -164,6 +165,20 @@ class GFGAET {
 		$tracker = isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua_tracker' ] ) ? trim($gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua_tracker' ]) : '';
 
 		return $tracker;
+	}
+
+	/**
+	 * Get the Google Analytics Tracker
+	 *
+	 * @since 2.3.8
+	 * @return string Returns a custom tracker or empty string if not set
+	 */
+	public static function get_interactive_hit_tracker() {
+		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+
+		$interactive_hit = isset( $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua_interaction_hit' ] ) ? $gravity_forms_add_on_settings[ 'gravity_forms_event_tracking_ua_interaction_hit' ] :  'interactive_off';
+
+		return $interactive_hit;
 	}
 
 	/**

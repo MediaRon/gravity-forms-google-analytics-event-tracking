@@ -137,6 +137,47 @@ add_filter( 'gform_event_value', function( $event_value, $form, $entry) {
 	return 2.0;
 }, 10, 3 );
 ```
+### gform_pagination_event_category
+
+```php
+/**
+ * Filter: gform_pagination_event_category
+ *
+ * Filter the event category dynamically
+ *
+ * @since 2.0.0
+ *
+ * @param string $category              Event Category
+ * @param array  $form                  Gravity Form form array
+ * @param int    $source_page_number    Source page number
+ * @param int    $current_page_number   Current Page Number
+ */
+```
+Example:
+```php
+add_filter( 'gform_pagination_event_category', 'gf_form_category_pagination_1', 10, 4 );
+
+// The 1 at the end is the form ID. Optional, but keep the function name unique
+// $category_name is default as: submission
+function gf_form_category_pagination_1( $category_name, $form, $source_page_number, $current_page_number ) {
+
+	// Ensure the filter is only run on Form ID 1
+	if ( 1 == $form[ 'id' ] ) {
+		return 'custom category name';
+	}
+	return $category_name;
+}
+```
+
+If you have multiple paginated forms, it is recommended that you append the form ID or title to the category. An example is below:
+
+```php
+add_filter( 'gform_pagination_event_category', function( $category_name, $form, $source_page_number, $current_page_number ) {
+	return $category_name . ' ' . $form['title'];
+}, 10, 4 );
+```
+
+From there, modify your conversion goal for category with `begins with`: form.
 
 ### gform_pagination_event_action
 
@@ -167,38 +208,6 @@ function gf_form_action_pagination_1( $action_name, $form, $source_page_number, 
 		return 'pagination' . $current_page_number;
 	}
 	return $action_name;
-}
-```
-
-### gform_pagination_event_category
-
-```php
-/**
- * Filter: gform_pagination_event_category
- *
- * Filter the event category dynamically
- *
- * @since 2.0.0
- *
- * @param string $category              Event Category
- * @param array  $form                  Gravity Form form array
- * @param int    $source_page_number    Source page number
- * @param int    $current_page_number   Current Page Number
- */
-```
-Example:
-```php
-add_filter( 'gform_pagination_event_category', 'gf_form_category_pagination_1', 10, 4 );
-
-// The 1 at the end is the form ID. Optional, but keep the function name unique
-// $category_name is default as: submission
-function gf_form_category_pagination_1( $category_name, $form, $source_page_number, $current_page_number ) {
-
-	// Ensure the filter is only run on Form ID 1
-	if ( 1 == $form[ 'id' ] ) {
-		return 'custom category name';
-	}
-	return $category_name;
 }
 ```
 

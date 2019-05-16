@@ -22,7 +22,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 * Returns an instance of this class, and stores it in the $_instance property.
 	 *
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @return object $_instance An instance of this class.
 	 */
 	public static function get_instance() {
@@ -37,7 +37,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 * Initailizes partial entries updated and saved state
 	 *
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @return void
 	 */
 	public function init() {
@@ -45,15 +45,15 @@ class GFGAET_Partial_Entries extends GFAddOn {
 		add_action( 'gform_partialentries_post_entry_saved', array( $this, 'partial_entry_saved' ), 10, 2 );
 		add_action( 'gform_partialentries_post_entry_updated', array( $this, 'partial_entry_saved' ), 10, 2 );
 	}
-	
+
 	/**
 	 * Sends the event via the measurement protocol
 	 *
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @param array $partial_entry The partial entry to be parsed
 	 * @param array $form          The form to be parsed
-	 * 
+	 *
 	 * @return void
 	 */
 	public function partial_entry_saved( $partial_entry, $form ) {
@@ -64,7 +64,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 				// Get defaults
 				$value = $gform_values['value'];
 				$label = strtolower( 'label: ' . $gform_values['label'] ) . " EntryID: {$partial_entry['id']}";
-				
+
 				// Get category/action/label
 				$event_category = trim( $gform_values['event_category'] );
 				$event_action = ( empty( $gform_values['event_action'] ) ? 'partial' : trim( $gform_values['event_action'] ) );
@@ -155,20 +155,20 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 * Map fields for parsing
 	 *
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @param array $entry The partial entry to be parsed
 	 * @param array $form  The form to be parsed
-	 * 
+	 *
 	 * @return array Mapped fields
 	 */
 	public function get_mapped_fields( $entry, $form ) {
 		$mapping = array();
-		
+
 		foreach ( $form['fields'] as $field ) {
 			if ( ! isset( $field['id'] ) || ! $field['id'] ) {
 			continue;
 			}
-		
+
 			// Explode field IDs.
 			$field_ids = explode( ',', $field['id'] );
 			$field_ids = array_map( 'trim', $field_ids );
@@ -180,21 +180,21 @@ class GFGAET_Partial_Entries extends GFAddOn {
 			$event_action = GFCommon::replace_variables( $event_action, $form, $entry );
 			$event_label = GFCommon::replace_variables( $event_label, $form, $entry );
 			$event_value = GFCommon::replace_variables( $event_value, $form, $entry );
-		
+
 			// We have a complex field, with multiple inputs.
 			if ( ! empty( $field['inputs'] ) ) {
 				foreach ( $field['inputs'] as $input ) {
 					if ( isset( $input['isHidden'] ) && $input['isHidden'] ) {
 					continue;
 					}
-			
+
 					$field_id = array_shift( $field_ids );
-			
+
 					// If $field_id is empty, don't map this input.
 					if ( ! $field_id ) {
 					continue;
 					}
-			
+
 					/*
 					* Finally, map this value based on the $field_id
 					* and $input['id'].
@@ -210,8 +210,8 @@ class GFGAET_Partial_Entries extends GFAddOn {
 				}
 			} else {
 				$mapping[ $field_ids[0] ] = array(
-					'value'          => $entry[ $field['id'] ],
-					'label'          => $field['label'],
+					'value'          => ( isset( $entry[ $field['id'] ] ) ) ? $entry[ $field['id'] ] : '',
+					'label'          => ( isset( $field['label'] ) ) ? $field['label'] : '',
 					'event_category' => $event_category,
 					'event_action'   => $event_action,
 					'event_label'    => $event_label,
@@ -219,7 +219,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 				);
 			}
 		}
-		
+
 		return $mapping;
 	}
 
@@ -227,7 +227,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 * Set up actions and filters for the add-on
 	 *
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @return void
 	 */
 	public function init_admin() {
@@ -241,9 +241,9 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 * Set up tooltips for the advanced settings
 	 *
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @param array $tooltips Array of tooltips
-	 * 
+	 *
 	 * @return array Updated Tooltips
 	 */
 	public function add_tooltips( $tooltips ) {
@@ -258,13 +258,13 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 * Ensure the add-on only works with Partial Entries
 	 *
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @return array Minimum requirements
 	 */
 	public function minimum_requirements() {
 		return array(
 			// Require other add-ons to be present.
-			'add-ons' => array(			
+			'add-ons' => array(
 				'gravityformspartialentries',
 			),
 		);
@@ -272,9 +272,9 @@ class GFGAET_Partial_Entries extends GFAddOn {
 
 	/**
 	 * Allow advanced options to be visible and map values to their parameters
-	 * 
-	 * @since 2.3.0 
-	 * 
+	 *
+	 * @since 2.3.0
+	 *
 	 * @return void
 	 */
 	public function editor_script() {
@@ -302,10 +302,10 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 * Set up advanced settings
 	 *
 	 * @since 2.3.0
-	 * 
+	 *
 	 * @param int $position The position of the advanced settings
 	 * @param int $form_id  The form ID to perform the action on
-	 * 
+	 *
 	 * @return string HTML for advanced settings
 	 */
 	public function advanced_settings( $position, $form_id ) {
