@@ -264,6 +264,9 @@ class GFGAET_Pagination {
 			if ( isset( $form['pagination_label'] ) ) {
 				$pagination_label = trim( $form['pagination_label'] );
 				if( ! empty( $pagination_label ) ) {
+					$pagination_label = str_replace( '{form_title}', esc_html( $form['title'] ), $pagination_label );
+					$pagination_label = str_replace( '{source_page_number}', absint( $source_page_number ), $pagination_label );
+					$pagination_label = str_replace( '{current_page_number}', absint( $current_page_number ), $pagination_label );
 					$event_label = $pagination_label;
 				}
 			}
