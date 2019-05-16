@@ -43,7 +43,7 @@ class GFGAET_Pagination_Settings extends GFAddOn {
 	 * @since 2.3.5
 	 *
 	 * @param array $form     The form
-	 * 
+	 *
 	 * @return array Updated form values
 	 */
 	public function save_pagination_settings( $form ) {
@@ -61,7 +61,7 @@ class GFGAET_Pagination_Settings extends GFAddOn {
 	 *
 	 * @param array $settings The form settings
 	 * @param array $form     The form
-	 * 
+	 *
 	 * @return array Updated form settings
 	 */
 	public function add_pagination_form_settings( $settings, $form ) {
@@ -74,7 +74,7 @@ class GFGAET_Pagination_Settings extends GFAddOn {
 					<strong>%s:</strong> %s<br />
 					<strong>%s:</strong> 0
 			</th>
-		</tr>', __( 'If left blank, the following values are used:', 'gravity-forms-google-analytics-event-tracking' ), __( 'Category', 'gravity-forms-google-analytics-event-tracking' ), __( 'Action', 'gravity-forms-google-analytics-event-tracking' ), __( 'Label', 'gravity-forms-google-analytics-event-tracking' ), __( '{form title}::{source page number}::{current page number}', 'gravity-forms-google-analytics-event-tracking' ), __( 'Value', 'gravity-forms-google-analytics-event-tracking' ) );
+		</tr>', __( 'If left blank, the following values are used:', 'gravity-forms-google-analytics-event-tracking' ), __( 'Category', 'gravity-forms-google-analytics-event-tracking' ), __( 'Action', 'gravity-forms-google-analytics-event-tracking' ), __( 'Label', 'gravity-forms-google-analytics-event-tracking' ), __( '{form_title}::{source_page_number}::{current_page_number}', 'gravity-forms-google-analytics-event-tracking' ), __( 'Value', 'gravity-forms-google-analytics-event-tracking' ) );
 		$settings[ __( 'Pagination Event Tracking', 'gravity-forms-google-analytics-event-tracking' ) ]['pagination_category'] = sprintf( '
 			<tr>
 				<th><label for="pagination_category">%s</label></th>

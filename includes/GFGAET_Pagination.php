@@ -103,6 +103,9 @@ class GFGAET_Pagination {
 			if ( isset( $form['pagination_label'] ) ) {
 				$pagination_label = trim( $form['pagination_label'] );
 				if( ! empty( $pagination_label ) ) {
+					$pagination_label = str_replace( '{form_title}', esc_html( $form['title'] ), $pagination_label );
+					$pagination_label = str_replace( '{source_page_number}', absint( $source_page_number ), $pagination_label );
+					$pagination_label = str_replace( '{current_page_number}', absint( $current_page_number ), $pagination_label );
 					$event_label = $pagination_label;
 				}
 			}
@@ -129,7 +132,7 @@ class GFGAET_Pagination {
 			}
 			// Value is rounded up (Google likes integers only) before given an absolute value
 			$event_value = absint( round( GFCommon::to_number( apply_filters( 'gform_pagination_event_value', $event_value, $form, $source_page_number, $current_page_number  ) ) ) );
-			
+
 			// Set environmental variables for the measurement protocol
 			$event->set_event_category( $event_category );
 			$event->set_event_action( $event_action );
