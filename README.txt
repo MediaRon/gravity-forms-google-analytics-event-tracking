@@ -2,8 +2,8 @@
 Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least:4.9
-Tested up to: 5.2
-Stable tag: 2.3.9
+Tested up to: 5.3
+Stable tag: 2.3.10
 Requires PHP: 5.6
 Donate link: https://mediaron.com/give/
 License: GPLv2 or later
@@ -125,6 +125,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.3.10 =
+* Released 2019-06-17
+* Prevent empty values to be sent to analytics when using partial entries.
 
 = 2.3.9 =
 * Released 2019-05-16
@@ -288,6 +292,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 2.3.10 =
+Prevent empty values to be sent to analytics when using partial entries.
 
 = 2.3.9 =
 Fixing pagination settings for the form with correct default values. Fixed PHP 7.3 error with partial entries add-on showing incorrect offset.

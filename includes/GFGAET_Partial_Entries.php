@@ -63,6 +63,9 @@ class GFGAET_Partial_Entries extends GFAddOn {
 
 				// Get defaults
 				$value = $gform_values['value'];
+				if ( empty( $value ) ) {
+					continue;
+				}
 				$label = strtolower( 'label: ' . $gform_values['label'] ) . " EntryID: {$partial_entry['id']}";
 
 				// Get category/action/label
