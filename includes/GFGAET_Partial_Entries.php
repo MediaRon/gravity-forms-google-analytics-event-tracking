@@ -203,7 +203,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 					* and $input['id'].
 					*/
 					$mapping[ $field_id ] = array(
-						'value'          => $entry[ $input['id'] ],
+						'value'          => ( isset( $entry[ $input['id'] ] ) ) ? $entry[ $input['id'] ] : '',
 						'label'          => $field['label'],
 						'event_category' => $event_category,
 						'event_action'   => $event_action,
