@@ -70,16 +70,24 @@ class GFGAET_UA extends GFAddOn {
 							),
 							array(
 								'name'    => 'ga_on',
-								'label'   => esc_html__( 'Google Analytics (Ajax only)', 'gravity-forms-google-analytics-event-tracking' ),
+								'label'   => esc_html__( 'Google Analytics (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value'   => 'ga',
 								'icon'    => GFGAET::get_plugin_url( '/img/analytics.png' ),
 							),
 							array(
 								'name'    => 'gtm_on',
-								'label'   => esc_html__( 'Google Tag Manager (Ajax only)', 'gravity-forms-google-analytics-event-tracking' ),
+								'label'   => esc_html__( 'Google Tag Manager (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value'   => 'gtm',
 								'icon'    => GFGAET::get_plugin_url( '/img/gtm.png' ),
 							),
+						),
+					),
+					array(
+						'name'    => 'gravity_forms_event_tracking_ua',
+						'type'    => 'hidden',
+						'dependency'    => array(
+							'field'  => 'mode',
+							'values' => array( 'gmp', 'ga', 'gtm' ),
 						),
 					),
 					array(
@@ -96,6 +104,14 @@ class GFGAET_UA extends GFAddOn {
 					),
 					array(
 						'name'    => 'gravity_forms_event_tracking_ua_tracker',
+						'type'    => 'hidden',
+						'dependency'    => array(
+							'field'  => 'mode',
+							'values' => array( 'gmp', 'ga', 'gtm' ),
+						),
+					),
+					array(
+						'name'    => 'gravity_forms_event_tracking_ua_tracker',
 						'tooltip' => __( 'Enter your Tracker you would like to send events from if you are using a custom Tracker (Optional)', 'gravity-forms-google-analytics-event-tracking' ),
 						'label'   => __( 'UA Tracker Name (optional)', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'    => 'text',
@@ -104,24 +120,31 @@ class GFGAET_UA extends GFAddOn {
 							'field'  => 'mode',
 							'values' => array( 'ga'),
 						),
-
 					),
 					array(
 						'name'          => 'gravity_forms_event_tracking_ua_interaction_hit',
-						'tooltip'       => __( 'Enter whether the hits are interactive or not.', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'          => 'hidden',
+						'dependency'    => array(
+							'field'  => 'mode',
+							'values' => array( 'ga', 'gtm', 'gmp' ),
+						),
+					),
+					array(
+						'name'          => 'gravity_forms_event_tracking_ua_interaction_hit',
+						'tooltip'       => __( 'Enter whether the hits are interactive or not. <a href="https://support.google.com/analytics/answer/6086082?hl=en" target="_blank">Find out more</a>.', 'gravity-forms-google-analytics-event-tracking' ),
 						'label'         => __( 'Non-interactive hits', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'          => 'radio',
 						'default_value' => 'interactive_on',
 						'choices'       => array(
 							array(
 								'name'    => 'interactive_on',
-								'tooltip' => esc_html__( 'Interaction hits are on', 'gravity-forms-google-analytics-event-tracking' ),
+								'tooltip' => esc_html__( 'Turn on interaction hits such as event tracking hits.', 'gravity-forms-google-analytics-event-tracking' ),
 								'label'   => esc_html__( 'Turn on Interactive Hits', 'gravity-forms-google-analytics-event-tracking' ),
 								'value'   => 'interactive_on',
 							),
 							array(
 								'name'    => 'interactive_off',
-								'tooltip' => esc_html__( 'Interaction hits are off', 'gravity-forms-google-analytics-event-tracking' ),
+								'tooltip' => esc_html__( 'Turn off interaction hits such as event tracking hits.', 'gravity-forms-google-analytics-event-tracking' ),
 								'label'   => esc_html__( 'Turn off Interactive Hits', 'gravity-forms-google-analytics-event-tracking' ),
 								'value'   => 'interactive_off',
 							),
@@ -132,10 +155,43 @@ class GFGAET_UA extends GFAddOn {
 						),
 
 					),
+					array(
+						'name'          => 'gravity_forms_event_tracking_ua_gtag_install',
+						'type'          => 'hidden',
+						'dependency'    => array(
+							'field'  => 'mode',
+							'values' => array( 'ga', 'gtm', 'gmp' ),
+						),
+					),
+					array(
+						'name'          => 'gravity_forms_event_tracking_ua_gtag_install',
+						'tooltip'       => __( 'Select "Install gtag" if you would like this add-on to install gtag analytics. <a href="https://developers.google.com/analytics/devguides/collection/gtagjs" target="_blank">Find out More</a>.', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'         => __( 'Install GTAG Universal Analytics', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'          => 'radio',
+						'default_value' => 'gtag_off',
+						'choices'       => array(
+							array(
+								'name'    => 'gtag_off',
+								'tooltip' => esc_html__( 'You are using a different tool to add analytics.', 'gravity-forms-google-analytics-event-tracking' ),
+								'label'   => esc_html__( 'Do not install gtag Universal Analytics.', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'gtag_off',
+							),
+							array(
+								'name'    => 'gtag_on',
+								'tooltip' => esc_html__( 'This add-on will install Google Analytics tracking for you using gtag.', 'gravity-forms-google-analytics-event-tracking' ),
+								'label'   => esc_html__( 'Install gtag Universal Analytics', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'gtag_on',
+							),
+						),
+						'dependency'    => array(
+							'field'  => 'mode',
+							'values' => array( 'ga' ),
+						),
+					),
 				),
 			),
 			array(
-				'title'  => __( 'Matomo (formerly Piwik) Open Analytics Platform', 'gravity-forms-google-analytics-event-tracking' ),
+				'title'  => __( 'Matomo Open Analytics Platform', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields' => array(
 					array(
 						'name'    => 'gravity_forms_event_tracking_matomo_url',
