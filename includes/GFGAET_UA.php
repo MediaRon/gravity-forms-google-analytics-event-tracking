@@ -63,68 +63,68 @@ class GFGAET_UA extends GFAddOn {
 						'label'         => 'How would you like to send events?',
 						'choices'       => array(
 							array(
-								'name'    => 'gmp_on',
-								'label'   => esc_html__( 'Measurement Protocol (Default)', 'gravity-forms-google-analytics-event-tracking' ),
-								'value'   => 'gmp',
-								'icon'    => GFGAET::get_plugin_url( '/img/google-brands.png' ),
+								'name'  => 'gmp_on',
+								'label' => esc_html__( 'Measurement Protocol (Default)', 'gravity-forms-google-analytics-event-tracking' ),
+								'value' => 'gmp',
+								'icon'  => GFGAET::get_plugin_url( '/img/google-brands.png' ),
 							),
 							array(
-								'name'    => 'ga_on',
-								'label'   => esc_html__( 'Google Analytics (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
-								'value'   => 'ga',
-								'icon'    => GFGAET::get_plugin_url( '/img/analytics.png' ),
+								'name'  => 'ga_on',
+								'label' => esc_html__( 'Google Analytics (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
+								'value' => 'ga',
+								'icon'  => GFGAET::get_plugin_url( '/img/analytics.png' ),
 							),
 							array(
-								'name'    => 'gtm_on',
-								'label'   => esc_html__( 'Google Tag Manager (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
-								'value'   => 'gtm',
-								'icon'    => GFGAET::get_plugin_url( '/img/gtm.png' ),
+								'name'  => 'gtm_on',
+								'label' => esc_html__( 'Google Tag Manager (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
+								'value' => 'gtm',
+								'icon'  => GFGAET::get_plugin_url( '/img/gtm.png' ),
 							),
 						),
 					),
 					array(
-						'name'    => 'gravity_forms_event_tracking_ua',
-						'type'    => 'hidden',
-						'dependency'    => array(
+						'name'       => 'gravity_forms_event_tracking_ua',
+						'type'       => 'hidden',
+						'dependency' => array(
 							'field'  => 'mode',
 							'values' => array( 'gmp', 'ga', 'gtm' ),
 						),
 					),
 					array(
-						'name'    => 'gravity_forms_event_tracking_ua',
-						'tooltip' => __( 'Enter your UA code (UA-XXXX-Y) Find it <a href="https://support.google.com/analytics/answer/1032385" target="_blank">using this guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
-						'label'   => __( 'UA Tracking ID', 'gravity-forms-google-analytics-event-tracking' ),
-						'type'    => 'text',
-						'class'   => 'small',
-						'dependency'    => array(
+						'name'       => 'gravity_forms_event_tracking_ua',
+						'tooltip'    => __( 'Enter your UA code (UA-XXXX-Y) Find it <a href="https://support.google.com/analytics/answer/1032385" target="_blank">using this guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'      => __( 'UA Tracking ID', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'       => 'text',
+						'class'      => 'small',
+						'dependency' => array(
 							'field'  => 'mode',
 							'values' => array( 'ga', 'gmp' ),
 						),
 
 					),
 					array(
-						'name'    => 'gravity_forms_event_tracking_ua_tracker',
-						'type'    => 'hidden',
-						'dependency'    => array(
+						'name'       => 'gravity_forms_event_tracking_ua_tracker',
+						'type'       => 'hidden',
+						'dependency' => array(
 							'field'  => 'mode',
 							'values' => array( 'gmp', 'ga', 'gtm' ),
 						),
 					),
 					array(
-						'name'    => 'gravity_forms_event_tracking_ua_tracker',
-						'tooltip' => __( 'Enter your Tracker you would like to send events from if you are using a custom Tracker (Optional)', 'gravity-forms-google-analytics-event-tracking' ),
-						'label'   => __( 'UA Tracker Name (optional)', 'gravity-forms-google-analytics-event-tracking' ),
-						'type'    => 'text',
-						'class'   => 'small',
-						'dependency'    => array(
+						'name'       => 'gravity_forms_event_tracking_ua_tracker',
+						'tooltip'    => __( 'Enter your Tracker you would like to send events from if you are using a custom Tracker (Optional)', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'      => __( 'UA Tracker Name (optional)', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'       => 'text',
+						'class'      => 'small',
+						'dependency' => array(
 							'field'  => 'mode',
-							'values' => array( 'ga'),
+							'values' => array( 'ga' ),
 						),
 					),
 					array(
-						'name'          => 'gravity_forms_event_tracking_ua_interaction_hit',
-						'type'          => 'hidden',
-						'dependency'    => array(
+						'name'       => 'gravity_forms_event_tracking_ua_interaction_hit',
+						'type'       => 'hidden',
+						'dependency' => array(
 							'field'  => 'mode',
 							'values' => array( 'ga', 'gtm', 'gmp' ),
 						),
@@ -156,9 +156,9 @@ class GFGAET_UA extends GFAddOn {
 
 					),
 					array(
-						'name'          => 'gravity_forms_event_tracking_ua_gtag_install',
-						'type'          => 'hidden',
-						'dependency'    => array(
+						'name'       => 'gravity_forms_event_tracking_ua_gtag_install',
+						'type'       => 'hidden',
+						'dependency' => array(
 							'field'  => 'mode',
 							'values' => array( 'ga', 'gtm', 'gmp' ),
 						),
