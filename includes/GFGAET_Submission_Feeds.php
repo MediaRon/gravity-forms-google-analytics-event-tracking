@@ -47,6 +47,27 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 */
 	public function init() {
 		parent::init();
+
+		// GTM UTM Variable Tracking Script.
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_utm_gtm_script' ) );
+	}
+
+	/**
+	 * Load a UTM tracking script for Google Tag Manager.
+	 */
+	public function load_utm_gtm_script() {
+		$ua_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+		if ( isset( $ua_options['gravity_forms_event_tracking_gtm_utm_vars'] ) ) {
+			if ( 'utm_on' === $ua_options['gravity_forms_event_tracking_gtm_utm_vars'] ) {
+				wp_enqueue_script(
+					'gforms_event_tracking_utm_gtm',
+					GFGAET::get_plugin_url( '/js/utm-tag-manager.js' ),
+					array( 'jquery', 'wp-ajax-response' ),
+					$this->_version,
+					true
+				);
+			}
+		}
 	}
 
 	/**
