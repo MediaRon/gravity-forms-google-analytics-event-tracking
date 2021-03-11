@@ -188,6 +188,40 @@ class GFGAET_UA extends GFAddOn {
 							'values' => array( 'ga' ),
 						),
 					),
+					array(
+						'name'       => 'gravity_forms_event_tracking_gtm_utm_vars',
+						'type'       => 'hidden',
+						'dependency' => array(
+							'field'  => 'mode',
+							'values' => array( 'ga', 'gtm', 'gmp' ),
+						),
+					),
+					array(
+						'name'          => 'gravity_forms_event_tracking_gtm_utm_vars',
+						'tooltip'       => __( 'Install a script that will monitor UTM variables and pass these along to Tag Manager when a form is submitted. <a href="https://support.google.com/analytics/answer/1033863?hl=en" target="_blank">Find out more</a>.', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'         => __( 'Track UTM variables to send to Tag Manager', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'          => 'radio',
+						'default_value' => 'utm_off',
+						'choices'       => array(
+							array(
+								'name'    => 'utm_off',
+								'tooltip' => esc_html__( 'The script for tracking UTM variables will be off and UTM variables will not be sent to Google Tag Manager.', 'gravity-forms-google-analytics-event-tracking' ),
+								'label'   => esc_html__( 'Do not track UTM variables', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'utm_off',
+							),
+							array(
+								'name'    => 'utm_on',
+								'tooltip' => esc_html__( 'Track UTM variables across your site and send them to Google Tag Manager upon form submission.', 'gravity-forms-google-analytics-event-tracking' ),
+								'label'   => esc_html__( 'Track UTM variables', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'utm_on',
+							),
+						),
+						'dependency'    => array(
+							'field'  => 'mode',
+							'values' => array( 'gtm' ),
+						),
+
+					),
 				),
 			),
 			array(
