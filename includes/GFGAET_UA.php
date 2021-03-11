@@ -65,8 +65,8 @@ class GFGAET_UA extends GFAddOn {
 					),
 					array(
 						'name'    => 'gravity_forms_event_tracking_ua_tracker',
-						'tooltip' => __( 'Enter your Tracker you would like to send events from if you are using a custom Tracker', 'gravity-forms-google-analytics-event-tracking' ),
-						'label'   => __( 'UA Tracker Name', 'gravity-forms-google-analytics-event-tracking' ),
+						'tooltip' => __( 'Enter your Tracker you would like to send events from if you are using a custom Tracker (Optional)', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'   => __( 'UA Tracker Name (optional)', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'    => 'text',
 						'class'   => 'small',
 
@@ -101,22 +101,22 @@ class GFGAET_UA extends GFAddOn {
 						'label'         => 'How would you like to send events?',
 						'choices'       => array(
 							array(
+								'name'    => 'gmp_on',
+								'label'   => esc_html__( 'Measurement Protocol (Default)', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'gmp',
+								'icon'    => GFGAET::get_plugin_url( '/img/google-brands.png' ),
+							),
+							array(
 								'name'    => 'ga_on',
-								'tooltip' => esc_html__( 'Forms must be Ajax only', 'gravity-forms-google-analytics-event-tracking' ),
 								'label'   => esc_html__( 'Google Analytics (Ajax only)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value'   => 'ga',
+								'icon'    => GFGAET::get_plugin_url( '/img/analytics.png' ),
 							),
 							array(
 								'name'    => 'gtm_on',
-								'tooltip' => esc_html__( 'Forms must be Ajax only', 'gravity-forms-google-analytics-event-tracking' ),
 								'label'   => esc_html__( 'Google Tag Manager (Ajax only)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value'   => 'gtm',
-							),
-							array(
-								'name'    => 'gmp_on',
-								'tooltip' => esc_html__( 'Events will be sent using the measurement protocol.', 'gravity-forms-google-analytics-event-tracking' ),
-								'label'   => esc_html__( 'Measurement Protocol (Default)', 'gravity-forms-google-analytics-event-tracking' ),
-								'value'   => 'gmp',
+								'icon'    => GFGAET::get_plugin_url( '/img/gtm.png' ),
 							),
 						),
 					),

@@ -107,6 +107,18 @@ class GFGAET {
 	}
 
 	/**
+	 * Return the URL path to an asset.
+	 *
+	 * @param string $path Path to the asset.
+	 */
+	public static function get_plugin_url( $path = '' ) {
+		$dir = rtrim( plugin_dir_url(__FILE__), '/' );
+		if ( !empty( $path ) && is_string( $path) )
+			$dir .= '/' . ltrim( $path, '/' );
+		return $dir;
+	}
+
+	/**
 	 * Initialize Gravity Forms related add-ons.
 	 *
 	 * @since 2.0.0
