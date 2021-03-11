@@ -56,44 +56,6 @@ class GFGAET_UA extends GFAddOn {
 				'description' => '<p>' . __( 'By default, events are sent using the measurement protocol. You can change to using pure Google Analytics and Google Tag Manager if your forms are Ajax only.', 'gravity-forms-google-analytics-event-tracking' ) . '</p><p>' . __( 'Need help? <a target="_blank" href="https://mediaron.com/event-tracking-for-gravity-forms/">See our guide</a>.</p>', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
-						'name'    => 'gravity_forms_event_tracking_ua',
-						'tooltip' => __( 'Enter your UA code (UA-XXXX-Y) Find it <a href="https://support.google.com/analytics/answer/1032385" target="_blank">using this guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
-						'label'   => __( 'UA Tracking ID', 'gravity-forms-google-analytics-event-tracking' ),
-						'type'    => 'text',
-						'class'   => 'small',
-
-					),
-					array(
-						'name'    => 'gravity_forms_event_tracking_ua_tracker',
-						'tooltip' => __( 'Enter your Tracker you would like to send events from if you are using a custom Tracker (Optional)', 'gravity-forms-google-analytics-event-tracking' ),
-						'label'   => __( 'UA Tracker Name (optional)', 'gravity-forms-google-analytics-event-tracking' ),
-						'type'    => 'text',
-						'class'   => 'small',
-
-					),
-					array(
-						'name'          => 'gravity_forms_event_tracking_ua_interaction_hit',
-						'tooltip'       => __( 'Enter whether the hits are interactive or not.', 'gravity-forms-google-analytics-event-tracking' ),
-						'label'         => __( 'Non-interactive hits', 'gravity-forms-google-analytics-event-tracking' ),
-						'type'          => 'radio',
-						'default_value' => 'interactive_on',
-						'choices'       => array(
-							array(
-								'name'    => 'interactive_on',
-								'tooltip' => esc_html__( 'Interaction hits are on', 'gravity-forms-google-analytics-event-tracking' ),
-								'label'   => esc_html__( 'Turn on Interactive Hits', 'gravity-forms-google-analytics-event-tracking' ),
-								'value'   => 'interactive_on',
-							),
-							array(
-								'name'    => 'interactive_off',
-								'tooltip' => esc_html__( 'Interaction hits are off', 'gravity-forms-google-analytics-event-tracking' ),
-								'label'   => esc_html__( 'Turn off Interactive Hits', 'gravity-forms-google-analytics-event-tracking' ),
-								'value'   => 'interactive_off',
-							),
-						),
-
-					),
-					array(
 						'type'          => 'radio',
 						'name'          => 'mode',
 						'horizontal'    => false,
@@ -119,6 +81,56 @@ class GFGAET_UA extends GFAddOn {
 								'icon'    => GFGAET::get_plugin_url( '/img/gtm.png' ),
 							),
 						),
+					),
+					array(
+						'name'    => 'gravity_forms_event_tracking_ua',
+						'tooltip' => __( 'Enter your UA code (UA-XXXX-Y) Find it <a href="https://support.google.com/analytics/answer/1032385" target="_blank">using this guide</a>.', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'   => __( 'UA Tracking ID', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'    => 'text',
+						'class'   => 'small',
+						'dependency'    => array(
+							'field'  => 'mode',
+							'values' => array( 'ga', 'gmp' ),
+						),
+
+					),
+					array(
+						'name'    => 'gravity_forms_event_tracking_ua_tracker',
+						'tooltip' => __( 'Enter your Tracker you would like to send events from if you are using a custom Tracker (Optional)', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'   => __( 'UA Tracker Name (optional)', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'    => 'text',
+						'class'   => 'small',
+						'dependency'    => array(
+							'field'  => 'mode',
+							'values' => array( 'ga'),
+						),
+
+					),
+					array(
+						'name'          => 'gravity_forms_event_tracking_ua_interaction_hit',
+						'tooltip'       => __( 'Enter whether the hits are interactive or not.', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'         => __( 'Non-interactive hits', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'          => 'radio',
+						'default_value' => 'interactive_on',
+						'choices'       => array(
+							array(
+								'name'    => 'interactive_on',
+								'tooltip' => esc_html__( 'Interaction hits are on', 'gravity-forms-google-analytics-event-tracking' ),
+								'label'   => esc_html__( 'Turn on Interactive Hits', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'interactive_on',
+							),
+							array(
+								'name'    => 'interactive_off',
+								'tooltip' => esc_html__( 'Interaction hits are off', 'gravity-forms-google-analytics-event-tracking' ),
+								'label'   => esc_html__( 'Turn off Interactive Hits', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'interactive_off',
+							),
+						),
+						'dependency'    => array(
+							'field'  => 'mode',
+							'values' => array( 'ga' ),
+						),
+
 					),
 				),
 			),
