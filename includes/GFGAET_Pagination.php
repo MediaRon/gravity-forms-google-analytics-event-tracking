@@ -303,7 +303,6 @@ class GFGAET_Pagination {
 				?>
 				<script>
 				if ( typeof window.parent._paq != 'undefined' ) {
-
 					window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>]);
 
 				}

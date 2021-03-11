@@ -2,18 +2,20 @@
 Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least:4.9
-Tested up to: 5.3
-Stable tag: 2.3.10
+Tested up to: 5.7
+Stable tag: 2.3.12
 Requires PHP: 5.6
-Donate link: https://mediaron.com/give/
+Donate link: https://github.com/mediaron
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily add event tracking using Gravity Forms and your Google Analytics, Google Tag Manager, or Matomo (formerly Piwik) account.
+Easily add event tracking using Gravity Forms and your Google Analytics, Google Tag Manager, or Matomo account. Supports Google Analytics v3 only at this time.
 
 == Description ==
 
 This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics, Google Tag Manager, or Matomo (formerly Piwik).
+
+This plugin only supports Google Analytics v3 only at this time.
 
 https://www.youtube.com/watch?v=rHW3roCuNSI&t=2s
 
@@ -31,7 +33,7 @@ Looking for help setting things up? [Read Our Setup Guide](https://mediaron.com/
 - Gravity Forms 2.4
 - Google Analytics Universal Analytics
 - Google Tag Manager (optional)
-- Matomo (formerly Piwik) account (optional)
+- Matomo account (optional)
 
 = Features =
 - Submit events to Google Analytics using the Measurement Protocol, JavaScript, or using Google Tag Manager
@@ -76,6 +78,10 @@ Development happens on <a href="https://github.com/ronalfy/wordpress-gravity-for
 
 
 == Frequently Asked Questions ==
+
+= Do you support Google Analytics 4? =
+
+At this time, only version 3 of Google Analytics is supported.
 
 = How do I track pagination? =
 
@@ -125,6 +131,12 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.3.12 =
+* Released 2021-03-11
+* Testing Matomo to ensure it is tracked correctly.
+* Testing compatibility with WordPress 5.7.
+* Testing with Gravity Forms 2.5 RC-1.
 
 = 2.3.10 =
 * Released 2019-06-17
@@ -292,6 +304,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 2.3.12 =
+Testing Matomo to ensure it is tracked correctly. Testing compatibility with WordPress 5.7. Testing with Gravity Forms 2.5 RC-1.
 
 = 2.3.10 =
 Prevent empty values to be sent to analytics when using partial entries.
