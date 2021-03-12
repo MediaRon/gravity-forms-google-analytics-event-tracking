@@ -454,13 +454,32 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		} elseif ( GFGAET::is_gtm_only() ) {
 			?>
 			<script>
+			var utmVariables = localStorage.getItem('googleAnalyticsUTM');
+			var utmSource = '',
+				utmMedium = '',
+				utmCampaign = '',
+				utmTerm = '',
+				utmContent = '';
+			if ( null != utmVariables ) {
+				utmVariables = JSON.parse( utmVariables );
+				utmSource = utmVariables.source;
+				utmMedium = utmVariables.medium;
+				utmCampaign = utmVariables.campaign;
+				utmTerm = utmVariables.term;
+				utmContent = utmVariables.content;
+			}
 			if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
 				window.parent.dataLayer.push({'event': 'GFTrackEvent',
 					'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
 					'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
 					'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
 					'GFTrackValue': <?php echo absint( $event_value ); ?>,
-					'GFEntryData':<?php echo json_encode( $entry ); ?>
+					'GFEntryData':<?php echo wp_json_encode( $entry ); ?>,
+					'GFTrackSource': utmSource,
+					'GFTrackMedium': utmMedium,
+					'GFTrackCampaign': utmCampaign,
+					'GFTrackTerm': utmTerm,
+					'GFTrackContent': utmContent,
 					});
 			}
 			</script>
