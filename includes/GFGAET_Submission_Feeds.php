@@ -583,10 +583,10 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			if ( typeof window.parent._paq != 'undefined' ) {
 
 				window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'
-																   <?php
-																	if ( 0 !== $event_value && ! empty( $event_value ) ) {
-																		echo ',' . "'" . esc_js( $event_value ) . "'"; }
-																	?>
+				<?php
+				if ( 0 !== $event_value && ! empty( $event_value ) ) {
+					echo ',' . "'" . esc_js( $event_value ) . "'"; }
+				?>
 				]);
 
 			}
