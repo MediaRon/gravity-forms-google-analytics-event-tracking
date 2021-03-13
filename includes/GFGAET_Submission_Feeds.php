@@ -69,7 +69,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 *
 	 * Load analytics or tag manager in the form preview.
 	 *
-	 * @since 1.0.0
+	 * @since 2.4.0
 	 *
 	 * @param int $form_id The Form ID being previewed.
 	 */
@@ -90,6 +90,170 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		if ( $load_on_preview ) {
 			$this->maybe_install_analytics();
 			$this->maybe_install_tag_manager_header();
+		}
+	}
+
+	/**
+	 * Run after the body tag in preview mode and front-end.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
+	public function tag_manager_after_body( $form_id ) {
+		$this->maybe_install_tag_manager_after_body();
+	}
+
+	/**
+	 * Installs Tag Manager after the body tag if enabled.
+	 *
+	 * @since  2.4.0
+	 *
+	 * @param bool $force Whether to force install tag manager.
+	 */
+	public function maybe_install_tag_manager_after_body( $force = false ) {
+		$ua_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+
+		// Check mode. Return if mode is not set.
+		if ( ! isset( $ua_options['mode'] ) ) {
+			return;
+		}
+
+		// Only load if GA is set in the mode.
+		if ( 'gtm_on' !== $ua_options['mode'] ) {
+			return;
+		}
+
+		// Get GTM container information. Return if not set.
+		$gtm_code = isset( $ua_options['gtm_code'] ) ? sanitize_text_field( $ua_options['gtm_code'] ) : '';
+		if ( empty( $gtm_code ) ) {
+			return;
+		}
+
+		if ( isset( $ua_options['gravity_forms_event_tracking_ua_gtm_install'] ) ) {
+			if ( 'gtm_install_script' === $ua_options['gravity_forms_event_tracking_ua_gtm_install'] ) {
+				/**
+				 * Allow third-parties to enable/disable GTM loading.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param bool  Output GTM script (default: true).
+				 * @param bool  Whether the output is in preview mode.
+				 * @param array Saved settings.
+				 */
+				$enable_gtm_output = apply_filters( 'gform_gtm_script_enable', true, $this->is_preview(), $ua_options );
+
+				if ( ! $enable_gtm_output ) {
+					return;
+				}
+
+				// User has requested GTM installation. Proceed.
+				ob_start();
+				echo "\r\n";
+				?>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?php echo esc_js( $gtm_code ); ?>"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+				<?php
+				/**
+				 * Allow custom scripting for Google Tag Manager
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string $gtm_code Tag Manager code.
+				 */
+				do_action( 'gform_install_tag_manager_after_body', $gtm_code );
+
+				/**
+				 * Allow third-parties to modify the JavaScript that is returned.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string JavaScript to output.
+				 *
+				 * @return string JavaScript to output.
+				 */
+				echo wp_kses( apply_filters( 'gform_output_tag_manager_body', ob_get_clean() ), $this->get_javascript_kses() );
+			}
+		}
+	}
+
+	/**
+	 * Installs Tag Manager if the user has selected that option in settings.
+	 *
+	 * @since  2.4.0
+	 *
+	 * @param bool $force Whether to force install tag manager.
+	 */
+	public function maybe_install_tag_manager_header( $force = false ) {
+		$ua_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+
+		// Check mode. Return if mode is not set.
+		if ( ! isset( $ua_options['mode'] ) ) {
+			return;
+		}
+
+		// Only load if GA is set in the mode.
+		if ( 'gtm_on' !== $ua_options['mode'] ) {
+			return;
+		}
+
+		// Get GTM container information. Return if not set.
+		$gtm_code = isset( $ua_options['gtm_code'] ) ? sanitize_text_field( $ua_options['gtm_code'] ) : '';
+		if ( empty( $gtm_code ) ) {
+			return;
+		}
+
+		if ( isset( $ua_options['gravity_forms_event_tracking_ua_gtm_install'] ) ) {
+			if ( 'gtm_install_script' === $ua_options['gravity_forms_event_tracking_ua_gtm_install'] ) {
+				/**
+				 * Allow third-parties to enable/disable GTM loading.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param bool  Output GTM script (default: true).
+				 * @param bool  Whether the output is in preview mode.
+				 * @param array Saved settings.
+				 */
+				$enable_gtm_output = apply_filters( 'gform_gtm_script_enable', true, $this->is_preview(), $ua_options );
+
+				if ( ! $enable_gtm_output ) {
+					return;
+				}
+
+				// User has requested GTM installation. Proceed.
+				ob_start();
+				echo "\r\n";
+				?>
+	<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','<?php echo esc_js( $gtm_code ); ?>');</script>
+<!-- End Google Tag Manager -->
+				<?php
+				/**
+				 * Allow custom scripting for Google Tag Manager
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string $gtm_code Tag Manager code.
+				 */
+				do_action( 'gform_install_tag_manager_header', $gtm_code );
+
+				/**
+				 * Allow third-parties to modify the JavaScript that is returned.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string JavaScript to output.
+				 *
+				 * @return string JavaScript to output.
+				 */
+				echo wp_kses( apply_filters( 'gform_output_tag_manager_header', ob_get_clean() ), $this->get_javascript_kses() );
+			}
 		}
 	}
 
