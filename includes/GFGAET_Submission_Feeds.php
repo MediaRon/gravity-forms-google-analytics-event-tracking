@@ -368,6 +368,40 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 	}
 
 	/**
+	 * Retrieve KSES allowed tags for Google Analytics and/or Tag Manager.
+	 *
+	 * @since 2.4.0
+	 */
+	public function get_javascript_kses() {
+		$allowed_tags = array(
+			'iframe'   => array(
+				'src'    => true,
+				'style'  => true,
+				'width'  => true,
+				'height' => true,
+			),
+			'noscript' => array(
+			),
+			'script'   => array(
+				'data-cfasync' => true,
+				'async'        => true,
+				'src'          => true,
+			),
+		);
+		/**
+		 * Allow third-parties to add or substract allowed tags.
+		 *
+		 * @since 2.4.0
+		 *
+		 * @param array $allowed_tags KSES allowed tags.
+		 *
+		 * @return array updated KSES allowed tags.
+		 */
+		$allowed_tags = apply_filters( 'gform_ga_gtm_javascript_kses', $allowed_tags );
+		return $allowed_tags;
+	}
+
+	/**
 	 * Public facing init
 	 *
 	 * @since 2.0.0
