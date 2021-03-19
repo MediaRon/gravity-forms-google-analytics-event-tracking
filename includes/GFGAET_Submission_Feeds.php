@@ -331,7 +331,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 				 *
 				 * @param string $ga_code Google Analytics Property ID
 				 */
-				do_action( 'gform_install_analytics', $ga_code );
+				do_action( 'gform_ga_install_analytics', $ga_code );
 				?>
 </script>
 				<?php
@@ -344,7 +344,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 				 *
 				 * @return string JavaScript to output.
 				 */
-				echo wp_kses( apply_filters( 'gform_output_analytics', ob_get_clean() ), $this->get_javascript_kses() );
+				echo wp_kses( apply_filters( 'gform_ga_output_analytics', ob_get_clean() ), $this->get_javascript_kses() );
 			}
 		}
 	}
@@ -397,7 +397,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 		 *
 		 * @return array updated KSES allowed tags.
 		 */
-		$allowed_tags = apply_filters( 'gform_ga_gtm_javascript_kses', $allowed_tags );
+		$allowed_tags = apply_filters( 'gform_ga_javascript_kses', $allowed_tags );
 		return $allowed_tags;
 	}
 
