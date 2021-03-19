@@ -263,6 +263,26 @@ class GFGAET_UA extends GFAddOn {
 							'values' => array( 'gtm' ),
 						),
 					),
+					array(
+						'name'       => 'gravity_forms_event_tracking_gtm_account_id',
+						'type'       => 'hidden',
+						'dependency' => array(
+							'field'  => 'mode',
+							'values' => array( 'ga', 'gtm', 'gmp' ),
+						),
+					),
+					array(
+						'name'       => 'gravity_forms_event_tracking_gtm_account_id',
+						'tooltip'    => __( 'Enter your GTM account ID which can be found in your workspace settings in Tag Manager', 'gravity-forms-google-analytics-event-tracking' ),
+						'label'      => __( 'Tag Manager Account ID', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'       => 'text',
+						'class'      => 'small',
+						'dependency' => array(
+							'field'  => 'gravity_forms_event_tracking_gtm_install',
+							'values' => array( 'gtm_install_on' ),
+						),
+
+					),
 				),
 			),
 			array(
