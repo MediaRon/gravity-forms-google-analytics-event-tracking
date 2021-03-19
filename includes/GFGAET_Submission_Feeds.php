@@ -380,8 +380,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 				'width'  => true,
 				'height' => true,
 			),
-			'noscript' => array(
-			),
+			'noscript' => array(),
 			'script'   => array(
 				'data-cfasync' => true,
 				'async'        => true,
