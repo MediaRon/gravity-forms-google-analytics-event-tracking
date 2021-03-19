@@ -235,7 +235,7 @@ class GFGAET_UA extends GFAddOn {
 						'type'       => 'hidden',
 						'dependency' => array(
 							'field'  => 'mode',
-							'values' => array( 'ga', 'gtm', 'gmp' ),
+							'values' => array( 'gtm', 'gmp', 'ga' ),
 						),
 					),
 					array(
@@ -267,8 +267,8 @@ class GFGAET_UA extends GFAddOn {
 						'name'       => 'gravity_forms_event_tracking_gtm_account_id',
 						'type'       => 'hidden',
 						'dependency' => array(
-							'field'  => 'mode',
-							'values' => array( 'ga', 'gtm', 'gmp' ),
+							'field'  => 'gravity_forms_event_tracking_gtm_install',
+							'values' => array( 'gtm_install_on' ),
 						),
 					),
 					array(
@@ -278,10 +278,18 @@ class GFGAET_UA extends GFAddOn {
 						'type'       => 'text',
 						'class'      => 'small',
 						'dependency' => array(
-							'field'  => 'gravity_forms_event_tracking_gtm_install',
-							'values' => array( 'gtm_install_on' ),
+							'operator' => 'ALL', // Defaults to ALL.
+							'fields'   => array(
+								array(
+									'field'  => 'gravity_forms_event_tracking_gtm_install',
+									'values' => array( 'gtm_install_on' ),
+								),
+								array(
+									'field'  => 'mode',
+									'values' => array( 'gtm' ),
+								),
+							),
 						),
-
 					),
 				),
 			),
