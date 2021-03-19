@@ -13,7 +13,7 @@ GFForms::include_feed_addon_framework();
 
 class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
-	protected $_version                  = '2.3.12';
+	protected $_version                  = '2.4.0';
 	protected $_min_gravityforms_version = '1.8.20';
 	protected $_slug                     = 'gravity-forms-event-tracking';
 	protected $_path                     = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
@@ -120,7 +120,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		}
 
 		// Only load if GA is set in the mode.
-		if ( 'gtm_on' !== $ua_options['mode'] ) {
+		if ( 'gtm_install_on' !== $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
 			return;
 		}
 
@@ -131,7 +131,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		}
 
 		if ( isset( $ua_options['gravity_forms_event_tracking_gtm_install'] ) ) {
-			if ( 'gtm_install_script' === $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
+			if ( 'gtm_install_on' === $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
 				/**
 				 * Allow third-parties to enable/disable GTM loading.
 				 *
