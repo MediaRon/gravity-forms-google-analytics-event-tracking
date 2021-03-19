@@ -125,13 +125,13 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		}
 
 		// Get GTM container information. Return if not set.
-		$gtm_code = isset( $ua_options['gtm_code'] ) ? sanitize_text_field( $ua_options['gtm_code'] ) : '';
+		$gtm_code = isset( $ua_options['gravity_forms_event_tracking_gtm_account_id'] ) ? sanitize_text_field( $ua_options['gravity_forms_event_tracking_gtm_account_id'] ) : '';
 		if ( empty( $gtm_code ) ) {
 			return;
 		}
 
-		if ( isset( $ua_options['gravity_forms_event_tracking_ua_gtm_install'] ) ) {
-			if ( 'gtm_install_script' === $ua_options['gravity_forms_event_tracking_ua_gtm_install'] ) {
+		if ( isset( $ua_options['gravity_forms_event_tracking_gtm_install'] ) ) {
+			if ( 'gtm_install_script' === $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
 				/**
 				 * Allow third-parties to enable/disable GTM loading.
 				 *
@@ -195,18 +195,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		}
 
 		// Only load if GA is set in the mode.
-		if ( 'gtm_on' !== $ua_options['mode'] ) {
+		if ( 'gtm_install_on' !== $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
 			return;
 		}
 
 		// Get GTM container information. Return if not set.
-		$gtm_code = isset( $ua_options['gtm_code'] ) ? sanitize_text_field( $ua_options['gtm_code'] ) : '';
+		$gtm_code = isset( $ua_options['gravity_forms_event_tracking_gtm_account_id'] ) ? sanitize_text_field( $ua_options['gravity_forms_event_tracking_gtm_account_id'] ) : '';
 		if ( empty( $gtm_code ) ) {
 			return;
 		}
 
-		if ( isset( $ua_options['gravity_forms_event_tracking_ua_gtm_install'] ) ) {
-			if ( 'gtm_install_script' === $ua_options['gravity_forms_event_tracking_ua_gtm_install'] ) {
+		if ( isset( $ua_options['gravity_forms_event_tracking_gtm_install'] ) ) {
+			if ( 'gtm_install_on' === $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
 				/**
 				 * Allow third-parties to enable/disable GTM loading.
 				 *
@@ -763,11 +763,11 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 
 						// Use that tracker
 						window.parent.ga( ga_send, 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'
-																		<?php
-																		if ( 0 !== $event_value && ! empty( $event_value ) ) {
-																			echo ',' . "'" . esc_js( $event_value ) . "'"; }
-																		?>
-						, {
+						<?php
+						if ( 0 !== $event_value && ! empty( $event_value ) ) {
+							echo ',' . "'" . esc_js( $event_value ) . "'"; }
+						?>
+						,{
 							nonInteraction: <?php echo esc_js( $is_interactive_hit ); ?>
 						});
 
