@@ -339,14 +339,16 @@ class GFGAET_UA extends GFAddOn {
 						'label'         => 'Make all forms Ajax only?',
 						'choices'       => array(
 							array(
-								'name'  => 'ajax_on',
-								'label' => esc_html__( 'Ajax only', 'gravity-forms-google-analytics-event-tracking' ),
-								'value' => 'on',
+								'name'    => 'ajax_on',
+								'label'   => esc_html__( 'Ajax only', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'on',
+								'tooltip' => esc_html__( 'For Google Analytics and Tag Manager mode, forms need to be Ajax only. Choosing this option will make all forms Ajax only.', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 							array(
-								'name'  => 'ajax_off',
-								'label' => esc_html__( 'Default', 'gravity-forms-google-analytics-event-tracking' ),
-								'value' => 'off',
+								'name'    => 'ajax_off',
+								'label'   => esc_html__( 'Default', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'off',
+								'tooltip' => esc_html__( 'For Google Analytics and Tag Manager mode, forms must be Ajax only. Choose this option if the forms you need Event Tracking on are already using Ajax.', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 						),
 					),
