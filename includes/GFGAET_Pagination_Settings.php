@@ -2,7 +2,7 @@
 GFForms::include_addon_framework();
 class GFGAET_Pagination_Settings extends GFAddOn {
 	protected $_version                  = '2.4.0';
-	protected $_min_gravityforms_version = '1.8.20';
+	protected $_min_gravityforms_version = '2.5.0';
 	protected $_slug                     = 'GFGAET_Pagination_Settings';
 	protected $_path                     = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
 	protected $_full_path                = __FILE__;

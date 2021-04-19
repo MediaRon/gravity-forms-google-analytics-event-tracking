@@ -14,7 +14,7 @@ GFForms::include_feed_addon_framework();
 class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 	protected $_version                  = '2.4.0';
-	protected $_min_gravityforms_version = '1.8.20';
+	protected $_min_gravityforms_version = '2.5.0';
 	protected $_slug                     = 'gravity-forms-event-tracking';
 	protected $_path                     = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
 	protected $_full_path                = __FILE__;
