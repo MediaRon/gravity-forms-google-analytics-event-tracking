@@ -13,8 +13,8 @@ GFForms::include_feed_addon_framework();
 
 class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
-	protected $_version                  = '2.4.0';
-	protected $_min_gravityforms_version = '2.5.0';
+	protected $_version                  = GFGAET_VERSION;
+	protected $_min_gravityforms_version = GFGAET_MIN_GFORMS_VERSION;
 	protected $_slug                     = 'gravity-forms-event-tracking';
 	protected $_path                     = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
 	protected $_full_path                = __FILE__;
@@ -620,7 +620,10 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 		$google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form, $entry );
 
 		if ( ! is_array( $google_analytics_codes ) || empty( $google_analytics_codes ) ) {
-			return;
+			// If GTM, no need to have a GA code.
+			if ( ! GFGAET::is_gtm_only() ) {
+				return;
+			}
 		}
 		$google_analytics_codes = array_unique( $google_analytics_codes );
 
