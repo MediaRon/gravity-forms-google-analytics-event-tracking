@@ -2,8 +2,8 @@
 // Credit: https://stevegrunwell.com/blog/custom-field-ids-gravity-forms/
 GFForms::include_addon_framework();
 class GFGAET_Partial_Entries extends GFAddOn {
-	protected $_version                  = '2.4.0';
-	protected $_min_gravityforms_version = '2.5.0';
+	protected $_version                  = GFGAET_VERSION;
+	protected $_min_gravityforms_version = GFGAET_MIN_GFORMS_VERSION;
 	protected $_slug                     = 'GFGAET_Partial_Entries';
 	protected $_path                     = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
 	protected $_full_path                = __FILE__;

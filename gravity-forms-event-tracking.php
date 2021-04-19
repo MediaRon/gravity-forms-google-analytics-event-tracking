@@ -18,6 +18,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+define( 'GFGAET_MIN_GFORMS_VERSION', '2.4.0' );
+define( 'GFGAET_VERSION', '2.4.0' );
+
 class GFGAET {
 
 	/**
