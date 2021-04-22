@@ -19,7 +19,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	protected $_path                     = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
 	protected $_full_path                = __FILE__;
 	protected $_title                    = 'Gravity Forms Google Analytics Event Tracking';
-	protected $_short_title              = 'Submission Tracking';
+	protected $_short_title              = 'Event Tracking';
 
 	// Members plugin integration
 	protected $_capabilities = array( 'gravityforms_event_tracking', 'gravityforms_event_tracking_uninstall' );
@@ -957,7 +957,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 	 * @return string Form Settings Title
 	 */
 	public function feed_settings_title() {
-		return __( 'Submission Tracking Settings', 'gravity-forms-google-analytics-event-tracking' );
+		return __( 'Event Tracking Settings', 'gravity-forms-google-analytics-event-tracking' );
 	}
 
 	public function maybe_save_feed_settings( $feed_id, $form_id ) {
@@ -1049,7 +1049,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 				),
 			),
 			array(
-				'title'  => __( 'Submission Tracking Settings', 'gravity-forms-google-analytics-event-tracking' ),
+				'title'  => __( 'Event Tracking Settings', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields' => array(
 					array(
 						'label' => '',
