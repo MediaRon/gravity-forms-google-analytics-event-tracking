@@ -2,19 +2,19 @@
 // Credit: https://stevegrunwell.com/blog/custom-field-ids-gravity-forms/
 GFForms::include_addon_framework();
 class GFGAET_Partial_Entries extends GFAddOn {
-	protected $_version = '2.0';
-	protected $_min_gravityforms_version = '1.8.20';
-	protected $_slug = 'GFGAET_Partial_Entries';
-	protected $_path = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
-	protected $_full_path = __FILE__;
-	protected $_title = 'Gravity Forms Google Analytics Partial Entries';
-	protected $_short_title = 'Event Tracking';
+	protected $_version                  = GFGAET_VERSION;
+	protected $_min_gravityforms_version = GFGAET_MIN_GFORMS_VERSION;
+	protected $_slug                     = 'GFGAET_Partial_Entries';
+	protected $_path                     = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
+	protected $_full_path                = __FILE__;
+	protected $_title                    = 'Gravity Forms Google Analytics Partial Entries';
+	protected $_short_title              = 'Event Tracking';
 	// Members plugin integration
 	protected $_capabilities = array( 'gravityforms_event_tracking', 'gravityforms_event_tracking_uninstall' );
 	// Permissions
 	protected $_capabilities_settings_page = 'gravityforms_event_tracking';
 	protected $_capabilities_form_settings = 'gravityforms_event_tracking';
-	protected $_capabilities_uninstall = 'gravityforms_event_tracking_uninstall';
+	protected $_capabilities_uninstall     = 'gravityforms_event_tracking_uninstall';
 
 
 	private static $_instance = null;
@@ -58,8 +58,8 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 */
 	public function partial_entry_saved( $partial_entry, $form ) {
 		$form_fields = $this->get_mapped_fields( $partial_entry, $form );
-		foreach( $form_fields as $gform_index => $gform_values ) {
-			if( isset( $gform_values['event_category']) && !empty( $gform_values['event_category'] ) ) {
+		foreach ( $form_fields as $gform_index => $gform_values ) {
+			if ( isset( $gform_values['event_category'] ) && ! empty( $gform_values['event_category'] ) ) {
 
 				// Get defaults
 				$value = $gform_values['value'];
@@ -70,16 +70,15 @@ class GFGAET_Partial_Entries extends GFAddOn {
 
 				// Get category/action/label
 				$event_category = trim( $gform_values['event_category'] );
-				$event_action = ( empty( $gform_values['event_action'] ) ? 'partial' : trim( $gform_values['event_action'] ) );
-				$event_label = ( empty( $gform_values['event_label'] ) ? trim( $label ) : trim( $gform_values['event_label'] ) );
+				$event_action   = ( empty( $gform_values['event_action'] ) ? 'partial' : trim( $gform_values['event_action'] ) );
+				$event_label    = ( empty( $gform_values['event_label'] ) ? trim( $label ) : trim( $gform_values['event_label'] ) );
 
 				// Get event value
 				$event_value = ( empty( $gform_values['event_value'] ) ? trim( $value ) : trim( $gform_values['event_value'] ) );
-				if( !is_numeric( $event_value ) ) {
+				if ( ! is_numeric( $event_value ) ) {
 					$event_value = 0;
 				}
 				$event_value = absint( round( GFCommon::to_number( $event_value ) ) );
-
 
 				/**
 				 * Filter: gform_partial_event_category
@@ -143,7 +142,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 
 				// Let's set up the measurement protocol
 				$ua_code = GFGAET::get_ua_code();
-				$event = new GFGAET_Measurement_Protocol();
+				$event   = new GFGAET_Measurement_Protocol();
 				$event->init();
 				$event->set_event_category( $event_category );
 				$event->set_event_action( $event_action );
@@ -169,33 +168,33 @@ class GFGAET_Partial_Entries extends GFAddOn {
 
 		foreach ( $form['fields'] as $field ) {
 			if ( ! isset( $field['id'] ) || ! $field['id'] ) {
-			continue;
+				continue;
 			}
 
 			// Explode field IDs.
-			$field_ids = explode( ',', $field['id'] );
-			$field_ids = array_map( 'trim', $field_ids );
-			$event_category = isset( $field['field_partial_entries_category'] ) ? $field['field_partial_entries_category'] : '' ;
-			$event_action = isset( $field['field_partial_entries_action'] ) ? $field['field_partial_entries_action'] : '';
-			$event_label = isset( $field['field_partial_entries_label'] ) ? $field['field_partial_entries_label'] : '';
-			$event_value = isset( $field['field_partial_entries_value'] ) ? $field['field_partial_entries_value'] : '0';
+			$field_ids      = explode( ',', $field['id'] );
+			$field_ids      = array_map( 'trim', $field_ids );
+			$event_category = isset( $field['field_partial_entries_category'] ) ? $field['field_partial_entries_category'] : '';
+			$event_action   = isset( $field['field_partial_entries_action'] ) ? $field['field_partial_entries_action'] : '';
+			$event_label    = isset( $field['field_partial_entries_label'] ) ? $field['field_partial_entries_label'] : '';
+			$event_value    = isset( $field['field_partial_entries_value'] ) ? $field['field_partial_entries_value'] : '0';
 			$event_category = GFCommon::replace_variables( $event_category, $form, $entry );
-			$event_action = GFCommon::replace_variables( $event_action, $form, $entry );
-			$event_label = GFCommon::replace_variables( $event_label, $form, $entry );
-			$event_value = GFCommon::replace_variables( $event_value, $form, $entry );
+			$event_action   = GFCommon::replace_variables( $event_action, $form, $entry );
+			$event_label    = GFCommon::replace_variables( $event_label, $form, $entry );
+			$event_value    = GFCommon::replace_variables( $event_value, $form, $entry );
 
 			// We have a complex field, with multiple inputs.
 			if ( ! empty( $field['inputs'] ) ) {
 				foreach ( $field['inputs'] as $input ) {
 					if ( isset( $input['isHidden'] ) && $input['isHidden'] ) {
-					continue;
+						continue;
 					}
 
 					$field_id = array_shift( $field_ids );
 
 					// If $field_id is empty, don't map this input.
 					if ( ! $field_id ) {
-					continue;
+						continue;
 					}
 
 					/*
@@ -208,7 +207,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 						'event_category' => $event_category,
 						'event_action'   => $event_action,
 						'event_label'    => $event_label,
-						'event_value'    => $event_value
+						'event_value'    => $event_value,
 					);
 				}
 			} else {
@@ -218,7 +217,7 @@ class GFGAET_Partial_Entries extends GFAddOn {
 					'event_category' => $event_category,
 					'event_action'   => $event_action,
 					'event_label'    => $event_label,
-					'event_value'    => $event_value
+					'event_value'    => $event_value,
 				);
 			}
 		}
@@ -251,9 +250,9 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 */
 	public function add_tooltips( $tooltips ) {
 		$tooltips['gfgaet_category'] = __( 'Event category which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed.', 'gravity-forms-google-analytics-event-tracking' );
-		$tooltips['gfgaet_action'] = __( 'Event action which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed.', 'gravity-forms-google-analytics-event-tracking' );
-		$tooltips['gfgaet_label'] = __( 'Event label which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed. If left blank, the form value will be used.', 'gravity-forms-google-analytics-event-tracking' );
-		$tooltips['gfgaet_value'] = __( 'Event value (Integers only) which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed. If left blank, the form value will be used assuming it is an integer.', 'gravity-forms-google-analytics-event-tracking' );
+		$tooltips['gfgaet_action']   = __( 'Event action which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed.', 'gravity-forms-google-analytics-event-tracking' );
+		$tooltips['gfgaet_label']    = __( 'Event label which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed. If left blank, the form value will be used.', 'gravity-forms-google-analytics-event-tracking' );
+		$tooltips['gfgaet_value']    = __( 'Event value (Integers only) which you would like to send to Google Analytics using Partial Entries. Merge tags are not allowed. If left blank, the form value will be used assuming it is an integer.', 'gravity-forms-google-analytics-event-tracking' );
 		return $tooltips;
 	}
 
@@ -312,7 +311,9 @@ class GFGAET_Partial_Entries extends GFAddOn {
 	 * @return string HTML for advanced settings
 	 */
 	public function advanced_settings( $position, $form_id ) {
-		if( 100 !== $position ) return;
+		if ( 100 !== $position ) {
+			return;
+		}
 		?>
 		<li class="admin_partial_entry_category field_setting">
 			<label for="field_partial_entries_category" class="section_label">

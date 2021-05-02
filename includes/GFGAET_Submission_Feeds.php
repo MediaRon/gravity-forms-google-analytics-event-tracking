@@ -13,13 +13,13 @@ GFForms::include_feed_addon_framework();
 
 class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
-	protected $_version = "2.3.12";
-	protected $_min_gravityforms_version = "1.8.20";
-	protected $_slug = "gravity-forms-event-tracking";
-	protected $_path = "gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php";
-	protected $_full_path = __FILE__;
-	protected $_title = "Gravity Forms Google Analytics Event Tracking";
-	protected $_short_title = "Submission Tracking";
+	protected $_version                  = GFGAET_VERSION;
+	protected $_min_gravityforms_version = GFGAET_MIN_GFORMS_VERSION;
+	protected $_slug                     = 'gravity-forms-event-tracking';
+	protected $_path                     = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
+	protected $_full_path                = __FILE__;
+	protected $_title                    = 'Gravity Forms Google Analytics Event Tracking';
+	protected $_short_title              = 'Event Tracking';
 
 	// Members plugin integration
 	protected $_capabilities = array( 'gravityforms_event_tracking', 'gravityforms_event_tracking_uninstall' );
@@ -27,7 +27,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	// Permissions
 	protected $_capabilities_settings_page = 'gravityforms_event_tracking';
 	protected $_capabilities_form_settings = 'gravityforms_event_tracking';
-	protected $_capabilities_uninstall = 'gravityforms_event_tracking_uninstall';
+	protected $_capabilities_uninstall     = 'gravityforms_event_tracking_uninstall';
 
 	public $ua_id = false;
 
@@ -47,6 +47,357 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 */
 	public function init() {
 		parent::init();
+
+		// GTM UTM Variable Tracking Script.
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_utm_gtm_script' ) );
+
+		// Load analytics?
+		add_action( 'wp_head', array( $this, 'maybe_install_analytics' ) );
+
+		// Load tag manager?
+		add_action( 'wp_head', array( $this, 'maybe_install_tag_manager_header' ) );
+		add_action( 'wp_body_open', array( $this, 'tag_manager_after_body' ) );
+
+		if ( $this->is_preview() ) {
+			add_action( 'gform_preview_header', array( $this, 'preview_header' ) );
+			add_action( 'gform_preview_body_open', array( $this, 'tag_manager_after_body' ) );
+		}
+	}
+
+	/**
+	 * Callback for the preview header action.
+	 *
+	 * Load analytics or tag manager in the form preview.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @param int $form_id The Form ID being previewed.
+	 */
+	public function preview_header( $form_id ) {
+
+		/**
+		 * Filter: gform_ua_load_preview
+		 *
+		 * Allow Google Analytics and Tag Manager to load on the preview screen.
+		 *
+		 * @since 2.4.0
+		 *
+		 * @param bool $load_on_preview Whether to load analytics/tag manager on the preview screen.
+		 */
+		$load_on_preview        = true;
+		$google_analytics_codes = (bool) apply_filters( 'gform_ua_load_preview', $load_on_preview );
+
+		if ( $load_on_preview ) {
+			$this->maybe_install_analytics();
+			$this->maybe_install_tag_manager_header();
+		}
+	}
+
+	/**
+	 * Run after the body tag in preview mode and front-end.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @param int $form_id The form ID.
+	 */
+	public function tag_manager_after_body( $form_id ) {
+		$this->maybe_install_tag_manager_after_body();
+	}
+
+	/**
+	 * Installs Tag Manager after the body tag if enabled.
+	 *
+	 * @since  2.4.0
+	 *
+	 * @param bool $force Whether to force install tag manager.
+	 */
+	public function maybe_install_tag_manager_after_body( $force = false ) {
+		$ua_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+
+		// Check mode. Return if mode is not set.
+		if ( ! isset( $ua_options['mode'] ) ) {
+			return;
+		}
+
+		// Only load if GA is set in the mode.
+		if ( 'gtm_install_on' !== $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
+			return;
+		}
+
+		// Get GTM container information. Return if not set.
+		$gtm_code = isset( $ua_options['gravity_forms_event_tracking_gtm_account_id'] ) ? sanitize_text_field( $ua_options['gravity_forms_event_tracking_gtm_account_id'] ) : '';
+		if ( empty( $gtm_code ) ) {
+			return;
+		}
+
+		if ( isset( $ua_options['gravity_forms_event_tracking_gtm_install'] ) ) {
+			if ( 'gtm_install_on' === $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
+				/**
+				 * Allow third-parties to enable/disable GTM loading.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param bool  Output GTM script (default: true).
+				 * @param bool  Whether the output is in preview mode.
+				 * @param array Saved settings.
+				 */
+				$enable_gtm_output = apply_filters( 'gform_gtm_script_enable', true, $this->is_preview(), $ua_options );
+
+				if ( ! $enable_gtm_output ) {
+					return;
+				}
+
+				// User has requested GTM installation. Proceed.
+				ob_start();
+				echo "\r\n";
+				?>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<?php echo esc_js( $gtm_code ); ?>"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+				<?php
+				/**
+				 * Allow custom scripting for Google Tag Manager
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string $gtm_code Tag Manager code.
+				 */
+				do_action( 'gform_install_tag_manager_after_body', $gtm_code );
+
+				/**
+				 * Allow third-parties to modify the JavaScript that is returned.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string JavaScript to output.
+				 *
+				 * @return string JavaScript to output.
+				 */
+				echo wp_kses( apply_filters( 'gform_output_tag_manager_body', ob_get_clean() ), $this->get_javascript_kses() );
+			}
+		}
+	}
+
+	/**
+	 * Installs Tag Manager if the user has selected that option in settings.
+	 *
+	 * @since  2.4.0
+	 *
+	 * @param bool $force Whether to force install tag manager.
+	 */
+	public function maybe_install_tag_manager_header( $force = false ) {
+		$ua_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+
+		// Check mode. Return if mode is not set.
+		if ( ! isset( $ua_options['mode'] ) ) {
+			return;
+		}
+
+		// Only load if GA is set in the mode.
+		if ( 'gtm_install_on' !== $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
+			return;
+		}
+
+		// Get GTM container information. Return if not set.
+		$gtm_code = isset( $ua_options['gravity_forms_event_tracking_gtm_account_id'] ) ? sanitize_text_field( $ua_options['gravity_forms_event_tracking_gtm_account_id'] ) : '';
+		if ( empty( $gtm_code ) ) {
+			return;
+		}
+
+		if ( isset( $ua_options['gravity_forms_event_tracking_gtm_install'] ) ) {
+			if ( 'gtm_install_on' === $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
+				/**
+				 * Allow third-parties to enable/disable GTM loading.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param bool  Output GTM script (default: true).
+				 * @param bool  Whether the output is in preview mode.
+				 * @param array Saved settings.
+				 */
+				$enable_gtm_output = apply_filters( 'gform_gtm_script_enable', true, $this->is_preview(), $ua_options );
+
+				if ( ! $enable_gtm_output ) {
+					return;
+				}
+
+				// User has requested GTM installation. Proceed.
+				ob_start();
+				echo "\r\n";
+				?>
+	<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','<?php echo esc_js( $gtm_code ); ?>');</script>
+<!-- End Google Tag Manager -->
+				<?php
+				/**
+				 * Allow custom scripting for Google Tag Manager
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string $gtm_code Tag Manager code.
+				 */
+				do_action( 'gform_install_tag_manager_header', $gtm_code );
+
+				/**
+				 * Allow third-parties to modify the JavaScript that is returned.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string JavaScript to output.
+				 *
+				 * @return string JavaScript to output.
+				 */
+				echo wp_kses( apply_filters( 'gform_output_tag_manager_header', ob_get_clean() ), $this->get_javascript_kses() );
+			}
+		}
+	}
+
+	/**
+	 * Installs GTAG Google Analytics if user has selected that option in settings.
+	 *
+	 * @since  2.4.0
+	 *
+	 * @param bool $force Whether to force install analytics.
+	 */
+	public function maybe_install_analytics( $force = false ) {
+		$ua_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+
+		// Check mode. Return if mode is not set.
+		if ( ! isset( $ua_options['mode'] ) ) {
+			return;
+		}
+
+		// Only load if GA is set in the mode.
+		if ( 'ga_on' !== $ua_options['mode'] ) {
+			return;
+		}
+
+		if ( isset( $ua_options['gravity_forms_event_tracking_ua_gtag_install'] ) ) {
+			if ( 'gtag_on' === $ua_options['gravity_forms_event_tracking_ua_gtag_install'] ) {
+				/**
+				 * Allow third-parties to enable/disable gtag loading.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param bool  Output gtag analytics (default: true).
+				 * @param bool  Whether the output is in preview mode.
+				 * @param array Saved settings.
+				 *
+				 * @return bool true to force load analytics, false if not.
+				 */
+				$enable_gtag = apply_filters( 'gform_ua_gtag_enable', true, $this->is_preview(), $ua_options );
+
+				// Return early if gtag output is disabled via filter.
+				if ( ! $enable_gtag ) {
+					return;
+				}
+
+				// Return if no Analytics tracking code is active.
+				if ( ! isset( $ua_options['gravity_forms_event_tracking_ua'] ) ) {
+					return;
+				}
+
+				// Return if GA code is empty.
+				$ga_code = $ua_options['gravity_forms_event_tracking_ua'];
+				if ( empty( $ga_code ) ) {
+					return;
+				}
+
+				// Sanitize ga code.
+				$ga_code = sanitize_text_field( $ga_code );
+
+				// User has requested GA installation. Proceed.
+				ob_start();
+				echo "\r\n";
+				?>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_html( $ga_code ); ?>"></script> <?php //phpcs:ignore ?>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', '<?php echo esc_js( $ga_code ); ?>');
+				<?php
+				/**
+				 * Allow custom scripting for Google Analytics GTAG
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string $ga_code Google Analytics Property ID
+				 */
+				do_action( 'gform_ga_install_analytics', $ga_code );
+				?>
+</script>
+				<?php
+				/**
+				 * Allow third-parties to modify the JavaScript that is returned.
+				 *
+				 * @since 2.4.0
+				 *
+				 * @param string JavaScript to output.
+				 *
+				 * @return string JavaScript to output.
+				 */
+				echo wp_kses( apply_filters( 'gform_ga_output_analytics', ob_get_clean() ), $this->get_javascript_kses() );
+			}
+		}
+	}
+
+	/**
+	 * Load a UTM tracking script for Google Tag Manager.
+	 */
+	public function load_utm_gtm_script() {
+		$ua_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+		if ( isset( $ua_options['gravity_forms_event_tracking_gtm_utm_vars'] ) ) {
+			if ( 'utm_on' === $ua_options['gravity_forms_event_tracking_gtm_utm_vars'] ) {
+				wp_enqueue_script(
+					'gforms_event_tracking_utm_gtm',
+					GFGAET::get_plugin_url( '/js/utm-tag-manager.js' ),
+					array( 'jquery', 'wp-ajax-response' ),
+					$this->_version,
+					true
+				);
+			}
+		}
+	}
+
+	/**
+	 * Retrieve KSES allowed tags for Google Analytics and/or Tag Manager.
+	 *
+	 * @since 2.4.0
+	 */
+	public function get_javascript_kses() {
+		$allowed_tags = array(
+			'iframe'   => array(
+				'src'    => true,
+				'style'  => true,
+				'width'  => true,
+				'height' => true,
+			),
+			'noscript' => array(),
+			'script'   => array(
+				'data-cfasync' => true,
+				'async'        => true,
+				'src'          => true,
+			),
+		);
+		/**
+		 * Allow third-parties to add or substract allowed tags.
+		 *
+		 * @since 2.4.0
+		 *
+		 * @param array $allowed_tags KSES allowed tags.
+		 *
+		 * @return array updated KSES allowed tags.
+		 */
+		$allowed_tags = apply_filters( 'gform_ga_javascript_kses', $allowed_tags );
+		return $allowed_tags;
 	}
 
 	/**
@@ -67,17 +418,18 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 	/**
 	 * Process the feed!
+	 *
 	 * @param  array $feed  feed data and settings
 	 * @param  array $entry gf entry object
 	 * @param  array $form  gf form data
 	 */
 	public function process_feed( $feed, $entry, $form ) {
 
-		$paypal_feeds = $this->get_feeds_by_slug( 'gravityformspaypal', $form['id'] );
+		$paypal_feeds    = $this->get_feeds_by_slug( 'gravityformspaypal', $form['id'] );
 		$has_paypal_feed = false;
 
-		foreach ( $paypal_feeds as $paypal_feed ){
-			if ( $paypal_feed['is_active'] && $this->is_feed_condition_met( $paypal_feed, $form, $entry ) ){
+		foreach ( $paypal_feeds as $paypal_feed ) {
+			if ( $paypal_feed['is_active'] && $this->is_feed_condition_met( $paypal_feed, $form, $entry ) ) {
 				$has_paypal_feed = true;
 				break;
 			}
@@ -87,8 +439,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		if ( $has_paypal_feed ) {
 			gform_update_meta( $entry['id'], 'ga_event_data', maybe_serialize( $ga_event_data ) );
-		}
-		else {
+		} else {
 			$this->track_form_after_submission( $entry, $form, $ga_event_data );
 		}
 	}
@@ -115,17 +466,18 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 * @since 1.4.0
 	 * @return bool Returns true if UA ID is loaded, false otherwise
 	 */
-	 private function get_ga_id() {
-        $this->load_ua_settings();
-        if ( $this->ua_id == false ) {
-            return '';
-        } else {
-            return $this->ua_id;
-        }
-     }
+	private function get_ga_id() {
+		$this->load_ua_settings();
+		if ( $this->ua_id == false ) {
+			return '';
+		} else {
+			return $this->ua_id;
+		}
+	}
 
 	/**
 	 * Get data required for processing
+	 *
 	 * @param  array $feed  feed
 	 * @param  array $entry GF Entry object
 	 * @param  array $form  GF Form object
@@ -137,23 +489,23 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		$ga_cookie = isset( $_COOKIE['_ga'] ) ? $_COOKIE['_ga'] : '';
 
 		// Location
-		$document_location = str_replace( home_url(), '', $entry[ 'source_url' ] );
+		$document_location = str_replace( home_url(), '', $entry['source_url'] );
 
 		// Title
 		$document_title = isset( $post ) && get_the_title( $post ) ? get_the_title( $post ) : 'no title';
 
 		// Store everything we need for later
 		$ga_event_data = array(
-			'feed_id' => $feed['id'],
-			'entry_id' => $entry['id'],
-			'ga_cookie' => $ga_cookie,
+			'feed_id'           => $feed['id'],
+			'entry_id'          => $entry['id'],
+			'ga_cookie'         => $ga_cookie,
 			'document_location' => $document_location,
-			'document_title' => $document_title,
-			'gaEventUA' => $this->get_event_var( 'gaEventUA', $feed, $entry, $form ),
-			'gaEventCategory' => $this->get_event_var( 'gaEventCategory', $feed, $entry, $form ),
-			'gaEventAction' => $this->get_event_var( 'gaEventAction', $feed, $entry, $form ),
-			'gaEventLabel' => $this->get_event_var( 'gaEventLabel', $feed, $entry, $form ),
-			'gaEventValue' => $this->get_event_var( 'gaEventValue', $feed, $entry, $form ),
+			'document_title'    => $document_title,
+			'gaEventUA'         => $this->get_event_var( 'gaEventUA', $feed, $entry, $form ),
+			'gaEventCategory'   => $this->get_event_var( 'gaEventCategory', $feed, $entry, $form ),
+			'gaEventAction'     => $this->get_event_var( 'gaEventAction', $feed, $entry, $form ),
+			'gaEventLabel'      => $this->get_event_var( 'gaEventLabel', $feed, $entry, $form ),
+			'gaEventValue'      => $this->get_event_var( 'gaEventValue', $feed, $entry, $form ),
 		);
 
 		return $ga_event_data;
@@ -166,8 +518,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 		if ( isset( $feed['meta'][ $var ] ) && ! empty( $feed['meta'][ $var ] ) ) {
 			return $feed['meta'][ $var ];
-		}
-		else {
+		} else {
 			switch ( $var ) {
 				case 'gaEventCategory':
 					return 'Forms';
@@ -211,7 +562,6 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			}
 		}
 
-
 		// Push the event to google
 		$this->push_event( $entry, $form, $ga_event_data );
 		// Push the event to matomo
@@ -253,8 +603,8 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 */
 	private function push_event( $entry, $form, $ga_event_data ) {
 
-		//Get all analytics codes to send
-		$google_analytics_codes = $this->get_ua_codes( $ga_event_data[ 'gaEventUA' ], $this->get_ga_id() );
+		// Get all analytics codes to send
+		$google_analytics_codes = $this->get_ua_codes( $ga_event_data['gaEventUA'], $this->get_ga_id() );
 
 		/**
 		* Filter: gform_ua_ids
@@ -269,16 +619,21 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		*/
 		$google_analytics_codes = apply_filters( 'gform_ua_ids', $google_analytics_codes, $form, $entry );
 
-		if ( !is_array( $google_analytics_codes ) || empty( $google_analytics_codes ) ) return;
-		$google_analytics_codes = array_unique($google_analytics_codes);
+		if ( ! is_array( $google_analytics_codes ) || empty( $google_analytics_codes ) ) {
+			// If GTM, no need to have a GA code.
+			if ( ! GFGAET::is_gtm_only() ) {
+				return;
+			}
+		}
+		$google_analytics_codes = array_unique( $google_analytics_codes );
 
 		$event = new GFGAET_Measurement_Protocol();
 		$event->init();
 
 		// Set some defaults
-		$event->set_document_path( str_replace( home_url(), '', $entry[ 'source_url' ] ) );
+		$event->set_document_path( str_replace( home_url(), '', $entry['source_url'] ) );
 		$event_url_parsed = parse_url( home_url() );
-		$event->set_document_host( $event_url_parsed[ 'host' ] );
+		$event->set_document_host( $event_url_parsed['host'] );
 		$event->set_document_location( str_replace( '//', '/', 'http' . ( isset( $_SERVER['HTTPS'] ) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . '/' . $_SERVER['REQUEST_URI'] ) );
 		$event->set_document_title( $ga_event_data['document_title'] );
 
@@ -342,14 +697,14 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			$event->set_event_value( $event_value );
 		}
 
-		$feed_id = absint( $ga_event_data[ 'feed_id' ] );
+		$feed_id  = absint( $ga_event_data['feed_id'] );
 		$entry_id = $entry['id'];
 
 		if ( GFGAET::is_ga_only() ) {
-			$count = 1;
+			$count              = 1;
 			$is_interactive_hit = 'false';
-			$interactive_hit = GFGAET::get_interactive_hit_tracker();
-			if( 'interactive_off' == $interactive_hit ) {
+			$interactive_hit    = GFGAET::get_interactive_hit_tracker();
+			if ( 'interactive_off' == $interactive_hit ) {
 				$is_interactive_hit = 'false';
 			} else {
 				$is_interactive_hit = 'true';
@@ -357,7 +712,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			?>
 			<script>
 			<?php
-			foreach( $google_analytics_codes as $ua_code ) {
+			foreach ( $google_analytics_codes as $ua_code ) {
 				?>
 
 				// Check for gtab implementation
@@ -366,7 +721,10 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						nonInteraction: <?php echo esc_js( $is_interactive_hit ); ?>,
 						'event_category': '<?php echo esc_js( $event_category ); ?>',
 						'event_label': '<?php echo esc_js( $event_label ); ?>'
-						<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo sprintf( ",'value': '%s'", esc_js( $event_value ) ); } ?>
+						<?php
+						if ( 0 !== $event_value && ! empty( $event_value ) ) {
+							echo sprintf( ",'value': '%s'", esc_js( $event_value ) ); }
+						?>
 						}
 					);
 					if ( typeof( console ) == 'object' ) {
@@ -407,7 +765,12 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 						}
 
 						// Use that tracker
-						window.parent.ga( ga_send, 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>, {
+						window.parent.ga( ga_send, 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'
+						<?php
+						if ( 0 !== $event_value && ! empty( $event_value ) ) {
+							echo ',' . "'" . esc_js( $event_value ) . "'"; }
+						?>
+						,{
 							nonInteraction: <?php echo esc_js( $is_interactive_hit ); ?>
 						});
 
@@ -424,26 +787,44 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		} elseif ( GFGAET::is_gtm_only() ) {
 			?>
 			<script>
+			var utmVariables = localStorage.getItem('googleAnalyticsUTM');
+			var utmSource = '',
+				utmMedium = '',
+				utmCampaign = '',
+				utmTerm = '',
+				utmContent = '';
+			if ( null != utmVariables ) {
+				utmVariables = JSON.parse( utmVariables );
+				utmSource = utmVariables.source;
+				utmMedium = utmVariables.medium;
+				utmCampaign = utmVariables.campaign;
+				utmTerm = utmVariables.term;
+				utmContent = utmVariables.content;
+			}
 			if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
 				window.parent.dataLayer.push({'event': 'GFTrackEvent',
 					'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
 					'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
 					'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
 					'GFTrackValue': <?php echo absint( $event_value ); ?>,
-					'GFEntryData':<?php echo json_encode( $entry ); ?>
+					'GFEntryData':<?php echo wp_json_encode( $entry ); ?>,
+					'GFTrackSource': utmSource,
+					'GFTrackMedium': utmMedium,
+					'GFTrackCampaign': utmCampaign,
+					'GFTrackTerm': utmTerm,
+					'GFTrackContent': utmContent,
 					});
 			}
 			</script>
 			<?php
 			return;
 		} else {
-			//Push out the event to each UA code
-			foreach( $google_analytics_codes as $ua_code ) {
+			// Push out the event to each UA code
+			foreach ( $google_analytics_codes as $ua_code ) {
 				// Submit the event
 				$event->send( $ua_code );
 			}
 		}
-
 
 	}
 
@@ -456,7 +837,9 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 */
 	private function push_matomo_event( $entry, $form, $ga_event_data ) {
 
-        if ( false === GFGAET::is_matomo_configured() ) return;
+		if ( false === GFGAET::is_matomo_configured() ) {
+			return;
+		}
 
 		$event = new GFGAET_Matomo_HTTP_API();
 		$event->init();
@@ -524,7 +907,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			$event->set_matomo_event_value( $event_value );
 		}
 
-		$feed_id = absint( $ga_event_data[ 'feed_id' ] );
+		$feed_id  = absint( $ga_event_data['feed_id'] );
 		$entry_id = $entry['id'];
 
 		if ( GFGAET::is_matomo_js_only() ) {
@@ -532,7 +915,12 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			<script>
 			if ( typeof window.parent._paq != 'undefined' ) {
 
-				window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'<?php if ( 0 !== $event_value && !empty( $event_value ) ) { echo ',' . "'" . esc_js( $event_value ) . "'"; } ?>]);
+				window.parent._paq.push(['trackEvent', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'
+				<?php
+				if ( 0 !== $event_value && ! empty( $event_value ) ) {
+					echo ',' . "'" . esc_js( $event_value ) . "'"; }
+				?>
+				]);
 
 			}
 			</script>
@@ -560,7 +948,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		return false;
 	}
 
-	//---------- Form Settings Pages --------------------------
+	// ---------- Form Settings Pages --------------------------
 
 	/**
 	 * Form settings page title
@@ -569,7 +957,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 * @return string Form Settings Title
 	 */
 	public function feed_settings_title() {
-		return __( 'Submission Tracking Settings', 'gravity-forms-google-analytics-event-tracking' );
+		return __( 'Event Tracking Settings', 'gravity-forms-google-analytics-event-tracking' );
 	}
 
 	public function maybe_save_feed_settings( $feed_id, $form_id ) {
@@ -595,13 +983,13 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		$is_valid = $this->validate_settings( $sections, $settings );
 		$result   = false;
 
-		//Check for a valid UA code
-		$feed_ua_code = isset( $settings[ 'gaEventUA' ] ) ? $settings[ 'gaEventUA' ] : '';
-		$ua_codes = $this->get_ua_codes( $feed_ua_code, $this->get_ga_id() );
+		// Check for a valid UA code
+		$feed_ua_code = isset( $settings['gaEventUA'] ) ? $settings['gaEventUA'] : '';
+		$ua_codes     = $this->get_ua_codes( $feed_ua_code, $this->get_ga_id() );
 
 		if ( $is_valid ) {
 			$settings = $this->filter_settings( $sections, $settings );
-			$feed_id = $this->save_feed_settings( $feed_id, $form_id, $settings );
+			$feed_id  = $this->save_feed_settings( $feed_id, $form_id, $settings );
 			if ( $feed_id ) {
 				GFCommon::add_message( $this->get_save_success_message( $sections ) );
 			} else {
@@ -622,20 +1010,20 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 */
 	private function get_ua_codes( $feed_ua, $settings_ua ) {
 		$google_analytics_codes = array();
-        if ( !empty( $feed_ua ) ) {
-            $ga_ua = explode( ',', $feed_ua );
-            if ( is_array( $ga_ua ) ) {
-                foreach( $ga_ua as &$value ) {
-                    $value = trim( $value );
-                }
-            }
-            $google_analytics_codes = $ga_ua;
-        }
-        if( $settings_ua ) {
-            $google_analytics_codes[] = $settings_ua;
-        }
-        $google_analytics_codes = array_unique( $google_analytics_codes );
-        return $google_analytics_codes;
+		if ( ! empty( $feed_ua ) ) {
+			$ga_ua = explode( ',', $feed_ua );
+			if ( is_array( $ga_ua ) ) {
+				foreach ( $ga_ua as &$value ) {
+					$value = trim( $value );
+				}
+			}
+			$google_analytics_codes = $ga_ua;
+		}
+		if ( $settings_ua ) {
+			$google_analytics_codes[] = $settings_ua;
+		}
+		$google_analytics_codes = array_unique( $google_analytics_codes );
+		return $google_analytics_codes;
 	}
 
 	/**
@@ -645,77 +1033,77 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 * @return array Array of form settings
 	 */
 	public function feed_settings_fields() {
-    	$ga_id_placeholder = $this->get_ga_id();
+		$ga_id_placeholder = $this->get_ga_id();
 		return array(
 			array(
-				"title"  => __( 'Feed Settings', 'gravity-forms-google-analytics-event-tracking' ),
-				"fields" => array(
+				'title'  => __( 'Feed Settings', 'gravity-forms-google-analytics-event-tracking' ),
+				'fields' => array(
 					array(
 						'label'    => __( 'Feed Name', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'     => 'text',
 						'name'     => 'feedName',
 						'class'    => 'medium',
 						'required' => true,
-						'tooltip'  => '<h6>' . __( 'Feed Name', 'gravity-forms-google-analytics-event-tracking' ) . '</h6>' . __( 'Enter a feed name to uniquely identify this setup.', 'gravity-forms-google-analytics-event-tracking' )
-					)
+						'tooltip'  => '<h6>' . __( 'Feed Name', 'gravity-forms-google-analytics-event-tracking' ) . '</h6>' . __( 'Enter a feed name to uniquely identify this setup.', 'gravity-forms-google-analytics-event-tracking' ),
+					),
 				),
 			),
 			array(
-				"title"  => __( 'Submission Tracking Settings', 'gravity-forms-google-analytics-event-tracking' ),
-				"fields" => array(
+				'title'  => __( 'Event Tracking Settings', 'gravity-forms-google-analytics-event-tracking' ),
+				'fields' => array(
 					array(
-						"label"   => "",
-						"type"    => "instruction_field",
-						"name"    => "instructions"
+						'label' => '',
+						'type'  => 'instruction_field',
+						'name'  => 'instructions',
 					),
 					array(
-						"label"   => __( 'Event UA Code', 'gravity-forms-google-analytics-event-tracking' ),
-						"type"    => "text",
-						"name"    => "gaEventUA",
-						"class"   => "medium",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Google Analytics UA Code (Optional)', 'gravity-forms-google-analytics-event-tracking' ), __( 'Leave empty to use global GA Code. You can enter multiple UA codes as long as they are comma separated.', 'gravity-forms-google-analytics-event-tracking' ) ),
-						"placeholder" => $ga_id_placeholder,
+						'label'       => __( 'Event UA Code', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'        => 'text',
+						'name'        => 'gaEventUA',
+						'class'       => 'medium',
+						'tooltip'     => sprintf( '<h6>%s</h6>%s', __( 'Google Analytics UA Code (Optional)', 'gravity-forms-google-analytics-event-tracking' ), __( 'Leave empty to use global GA Code. You can enter multiple UA codes as long as they are comma separated.', 'gravity-forms-google-analytics-event-tracking' ) ),
+						'placeholder' => $ga_id_placeholder,
 					),
 					array(
-						"label"   => __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ),
-						"type"    => "text",
-						"name"    => "gaEventCategory",
-						"class"   => "medium merge-tag-support mt-position-right",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event category', 'gravity-forms-google-analytics-event-tracking' ) ),
+						'label'   => __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'    => 'text',
+						'name'    => 'gaEventCategory',
+						'class'   => 'medium merge-tag-support mt-position-right',
+						'tooltip' => sprintf( '<h6>%s</h6>%s', __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event category', 'gravity-forms-google-analytics-event-tracking' ) ),
 					),
 					array(
-						"label"   => __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ),
-						"type"    => "text",
-						"name"    => "gaEventAction",
-						"class"   => "medium merge-tag-support mt-position-right",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event action', 'gravity-forms-google-analytics-event-tracking' ) ),
+						'label'   => __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'    => 'text',
+						'name'    => 'gaEventAction',
+						'class'   => 'medium merge-tag-support mt-position-right',
+						'tooltip' => sprintf( '<h6>%s</h6>%s', __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event action', 'gravity-forms-google-analytics-event-tracking' ) ),
 					),
 					array(
-						"label"   => __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ),
-						"type"    => "text",
-						"name"    => "gaEventLabel",
-						"class"   => "medium merge-tag-support mt-position-right",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event label', 'gravity-forms-google-analytics-event-tracking' ) ),
+						'label'   => __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'    => 'text',
+						'name'    => 'gaEventLabel',
+						'class'   => 'medium merge-tag-support mt-position-right',
+						'tooltip' => sprintf( '<h6>%s</h6>%s', __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event label', 'gravity-forms-google-analytics-event-tracking' ) ),
 					),
 					array(
-						"label"   => __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ),
-						"type"    => "text",
-						"name"    => "gaEventValue",
-						"class"   => "medium merge-tag-support mt-position-right",
-						"tooltip" => sprintf( '<h6>%s</h6>%s', __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event value. Leave blank to omit pushing a value to Google Analytics. Or to use the purchase value of a payment based form. <strong>Note:</strong> This must be a number (int). Floating numbers (e.g., 20.95) will be rounded up (e.g., 30)', 'gravity-forms-google-analytics-event-tracking' ) ),
+						'label'   => __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ),
+						'type'    => 'text',
+						'name'    => 'gaEventValue',
+						'class'   => 'medium merge-tag-support mt-position-right',
+						'tooltip' => sprintf( '<h6>%s</h6>%s', __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ), __( 'Enter your Google Analytics event value. Leave blank to omit pushing a value to Google Analytics. Or to use the purchase value of a payment based form. <strong>Note:</strong> This must be a number (int). Floating numbers (e.g., 20.95) will be rounded up (e.g., 30)', 'gravity-forms-google-analytics-event-tracking' ) ),
 					),
-				)
+				),
 			),
 			array(
-				"title"  => __( 'Other Settings', 'gravity-forms-google-analytics-event-tracking' ),
-				"fields" => array(
+				'title'  => __( 'Other Settings', 'gravity-forms-google-analytics-event-tracking' ),
+				'fields' => array(
 					array(
 						'name'    => 'conditionalLogic',
 						'label'   => __( 'Conditional Logic', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'    => 'feed_condition',
-						'tooltip' => '<h6>' . __( 'Conditional Logic', 'gravity-forms-google-analytics-event-tracking' ) . '</h6>' . __( 'When conditions are enabled, events will only be sent to google when the conditions are met. When disabled, all form submissions will trigger an event.', 'gravity-forms-google-analytics-event-tracking' )
-					)
-				)
+						'tooltip' => '<h6>' . __( 'Conditional Logic', 'gravity-forms-google-analytics-event-tracking' ) . '</h6>' . __( 'When conditions are enabled, events will only be sent to google when the conditions are met. When disabled, all form submissions will trigger an event.', 'gravity-forms-google-analytics-event-tracking' ),
+					),
+				),
 			),
 		);
 	}
@@ -725,16 +1113,16 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 	 *
 	 * @since 1.5.0
 	 */
-	public function single_setting_row_instruction_field(){
+	public function single_setting_row_instruction_field() {
 		echo '
 			<tr>
 				<th colspan="2">
-					<p>' . __( "If you leave these blank, the following defaults will be used when the event is tracked", 'gravity-forms-google-analytics-event-tracking' ) . ':</p>
+					<p>' . __( 'If you leave these blank, the following defaults will be used when the event is tracked', 'gravity-forms-google-analytics-event-tracking' ) . ':</p>
 					<p>
-						<strong>' . __( "Event Category", 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Forms<br>
-						<strong>' . __( "Event Action", 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Submission<br>
-						<strong>' . __( "Event Label", 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Form: {form_title} ID: {form_id}<br>
-						<strong>' . __( "Event Value", 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Payment Amount (on payment forms only, otherwise nothing is sent by default)
+						<strong>' . __( 'Event Category', 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Forms<br>
+						<strong>' . __( 'Event Action', 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Submission<br>
+						<strong>' . __( 'Event Label', 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Form: {form_title} ID: {form_id}<br>
+						<strong>' . __( 'Event Value', 'gravity-forms-google-analytics-event-tracking' ) . ':</strong> Payment Amount (on payment forms only, otherwise nothing is sent by default)
 					</p>
 				</td>
 			</tr>';
@@ -742,6 +1130,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 
 	/**
 	 * Return the feed list columns
+	 *
 	 * @return array columns
 	 */
 	public function feed_list_columns() {
