@@ -1,19 +1,19 @@
 === Event Tracking for Gravity Forms ===
 Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
-Requires at least:4.9
+Requires at least:5.5
 Tested up to: 5.7
-Stable tag: 2.3.12
+Stable tag: 2.4.0
 Requires PHP: 5.6
 Donate link: https://github.com/mediaron
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily add event tracking using Gravity Forms and your Google Analytics, Google Tag Manager, or Matomo account. Supports Google Analytics v3 only at this time.
+Easily add event tracking using Gravity Forms and your Google Analytics or Google Tag Manager account. Supports Google Analytics v3 and Gravity Forms 2.5+ only at this time.
 
 == Description ==
 
-This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics, Google Tag Manager, or Matomo (formerly Piwik).
+This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics and Google Tag Manager.
 
 This plugin only supports Google Analytics v3 only at this time.
 
@@ -24,20 +24,17 @@ Also supports:
 * Pagination events
 * JS only events
 * Google Tag Manager
-* Matomo (formerly Piwik)
 
 = Setup Guide =
-Looking for help setting things up? [Read Our Setup Guide](https://mediaron.com/event-tracking-for-gravity-forms/)
+Looking for help setting things up? [Read Our Setup Guide](https://mediaron.com/event-tracking-for-gravity-forms/?utm_source=wordpress_org&utm_medium=documentation&utm_campaign=event_tracking)
 
 = Minimum Requirements =
-- Gravity Forms 2.4
-- Google Analytics Universal Analytics
+- Gravity Forms 2.5
+- Google Analytics Universal Analytics v3
 - Google Tag Manager (optional)
-- Matomo account (optional)
 
 = Features =
 - Submit events to Google Analytics using the Measurement Protocol, JavaScript, or using Google Tag Manager
-- Submit events using Matomo (formerly Piwik)
 - Add multiple event feeds with conditionals
 - Custom event categories, actions, labels and even values
 - Track form pagination events
@@ -52,7 +49,7 @@ Development happens on <a href="https://github.com/ronalfy/wordpress-gravity-for
 == Installation ==
 
 = Minimum Requirements =
-- Gravity Forms 2.4+
+- Gravity Forms 2.5+
 
 = Using The WordPress Dashboard =
 
@@ -113,7 +110,7 @@ Yes, check out <a href="https://github.com/ronalfy/wordpress-gravity-forms-event
 
 = Can I track when a user has filled out a form field, but not submitted? =
 
-Yes, with the <a href="https://www.gravityforms.com/add-ons/partial-entries/">Partial Entries Add-on</a>. Edit your form and go to the 'Advanced' section and fill out your event parameters. If a partial entry is saved, the event will be sent to Google Analytics using the Measurement Protocol.
+You may use the Partial Entries add-on, but it is not recommended. Use pagination events instead.
 
 Check out the video below for an explanation:
 
@@ -131,6 +128,15 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.4.0 =
+* Released 2021-05-01
+* Requires: Gravity Forms 2.5 and above.
+* Feature: Options to install gtag and Tag Manager are available.
+* Bug Fix: Google Tag Manager no longer requires a UA code.
+* Feature: Improved interface inline with Gravity Forms 2.5.
+* Feature: Track UTM variables using Google Tag Manager.
+* Miscelleanous bug fixes and code cleanup.
 
 = 2.3.12 =
 * Released 2021-03-11
@@ -305,11 +311,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.3.12 =
-Testing Matomo to ensure it is tracked correctly. Testing compatibility with WordPress 5.7. Testing with Gravity Forms 2.5 RC-1.
-
-= 2.3.10 =
-Prevent empty values to be sent to analytics when using partial entries.
-
-= 2.3.9 =
-Fixing pagination settings for the form with correct default values. Fixed PHP 7.3 error with partial entries add-on showing incorrect offset.
+= 2.4.0 =
+Requires Gravity Forms 2.5+. Numerous cosmetic changes. Track UTM variables. Install GA or GTM using the add-on as needed.
