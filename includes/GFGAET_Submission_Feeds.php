@@ -119,6 +119,11 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			return;
 		}
 
+		// Prevent index errors.
+		if ( ! isset( $ua_options['gravity_forms_event_tracking_gtm_install'] ) ) {
+			return;
+		}
+
 		// Only load if GA is set in the mode.
 		if ( 'gtm_install_on' !== $ua_options['gravity_forms_event_tracking_gtm_install'] ) {
 			return;
@@ -191,6 +196,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 		// Check mode. Return if mode is not set.
 		if ( ! isset( $ua_options['mode'] ) ) {
+			return;
+		}
+
+		// Prevent index errors.
+		if ( ! isset( $ua_options['gravity_forms_event_tracking_gtm_install'] ) ) {
 			return;
 		}
 
