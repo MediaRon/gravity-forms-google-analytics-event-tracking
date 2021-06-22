@@ -1,9 +1,9 @@
 === Event Tracking for Gravity Forms ===
 Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
-Requires at least:5.5
+Requires at least: 5.5
 Tested up to: 5.7
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 Requires PHP: 5.6
 Donate link: https://github.com/mediaron
 License: GPLv2 or later
@@ -128,6 +128,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.4.2 =
+* Released 2021-06-22
+* Fixing preview and ajax-only forms.
 
 = 2.4.1 =
 * Released 2021-05-12
@@ -314,6 +318,9 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 * Enabled custom category/action/label on a per form basis.
 
 == Upgrade Notice ==
+
+= 2.4.2 =
+Fixing preview and ajax-only forms.
 
 = 2.4.1 =
 Fixing index errors in PHP logs.
