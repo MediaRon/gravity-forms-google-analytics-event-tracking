@@ -290,6 +290,9 @@ class GFGAET {
 	 * @param array $form_args The form arguments
 	 */
 	public function maybe_ajax_only( $form_args ) {
+		if ( class_exists( 'GFCommon' ) && GFCommon::is_preview() ) {
+			return $form_args;
+		}
 		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
 
 		if ( isset( $gravity_forms_add_on_settings[ 'ajax_only' ] ) && 'on' == $gravity_forms_add_on_settings[ 'ajax_only' ] ) {
