@@ -20,6 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 define( 'GFGAET_MIN_GFORMS_VERSION', '2.2.0' );
 define( 'GFGAET_VERSION', '2.4.2' );
+define( 'GFGAET_FILE', __FILE__ );
 
 class GFGAET {
 

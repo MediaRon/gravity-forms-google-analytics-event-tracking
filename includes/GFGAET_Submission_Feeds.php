@@ -62,6 +62,37 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			add_action( 'gform_preview_header', array( $this, 'preview_header' ) );
 			add_action( 'gform_preview_body_open', array( $this, 'tag_manager_after_body' ) );
 		}
+
+		add_filter(
+			'plugin_action_links_' . plugin_basename( GFGAET_FILE ),
+			array( $this, 'add_settings_link' )
+		);
+	}
+
+	/**
+	 * Add a settings link to the plugin's options.
+	 *
+	 * Add a settings link on the WordPress plugin's page.
+	 *
+	 * @since 2.4.5
+	 * @access public
+	 *
+	 * @see init
+	 *
+	 * @param array $links Array of plugin options.
+	 * @return array $links Array of plugin options
+	 */
+	public function add_settings_link( $links ) {
+
+		$settings_url = admin_url( 'admin.php?page=gf_settings&subview=GFGAET_UA');
+		if ( current_user_can( 'manage_options' ) ) {
+			$options_link = sprintf( '<a href="%s">%s</a>', esc_url( $settings_url ), _x( 'Settings', 'Gravity Forms Event Tracking Settings page', 'gravity-forms-google-analytics-event-tracking' ) );
+			$links[]      = $options_link;
+		}
+		$docs_link = sprintf( '<a href="%s" target="_blank">%s</a>', esc_url( 'https://mediaron.com/event-tracking-for-gravity-forms/?utm_source=wordpress_plugins_page&utm_medium=documentation&utm_campaign=event_tracking' ), _x( 'Documentation', 'Gravity Forms Event Tracking Documentation page', 'gravity-forms-google-analytics-event-tracking' ) );
+		$links[]   = $docs_link;
+
+		return $links;
 	}
 
 	/**
