@@ -409,6 +409,27 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 	}
 
 	/**
+	 * Outputs admin scripts to handle form submission in back-end.
+	 *
+	 * @since  2.4.5
+	 *
+	 * @return array
+	 */
+	public function styles() {
+		$min    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || rgget( 'gform_debug' ) ? '' : '.min';
+		$styles = array(
+			array(
+				'handle'  => 'gfgaet_admin',
+				'enqueue' => array(
+					array( 'query' => 'page=gf_settings&subview=GFGAET_UA' ),
+				),
+				'src'     => esc_url( GFGAET::get_plugin_url( '/css/admin.css' ) ),
+			),
+		);
+		return array_merge( parent::styles(), $styles );
+	}
+
+	/**
 	 * Retrieve KSES allowed tags for Google Analytics and/or Tag Manager.
 	 *
 	 * @since 2.4.0

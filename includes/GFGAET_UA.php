@@ -67,7 +67,7 @@ class GFGAET_UA extends GFAddOn {
 					array(
 						'type'          => 'radio',
 						'name'          => 'mode',
-						'horizontal'    => false,
+						'horizontal'    => true,
 						'default_value' => 'gmp',
 						'label'         => 'How would you like to send events?',
 						'choices'       => array(
@@ -76,18 +76,21 @@ class GFGAET_UA extends GFAddOn {
 								'label' => esc_html__( 'Measurement Protocol (Default)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value' => 'gmp',
 								'icon'  => GFGAET::get_plugin_url( '/img/google-brands.png' ),
+								'tooltip' => esc_html__( 'This option will send analytics server-to-server using the measurement protocol', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 							array(
 								'name'  => 'ga_on',
 								'label' => esc_html__( 'Google Analytics (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value' => 'ga',
 								'icon'  => GFGAET::get_plugin_url( '/img/analytics.png' ),
+								'tooltip' => esc_html__( 'Send form data via JavaScript using an existing Google Analytics account.', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 							array(
 								'name'  => 'gtm_on',
 								'label' => esc_html__( 'Google Tag Manager (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value' => 'gtm',
 								'icon'  => GFGAET::get_plugin_url( '/img/gtm.png' ),
+								'tooltip' => esc_html__( 'Send form data via JavaScript using an existing Google Tag Manager account.', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 						),
 					),
