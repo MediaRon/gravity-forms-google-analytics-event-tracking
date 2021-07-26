@@ -51,3 +51,8 @@
 	vertical-align: middle;
 	margin-bottom: 0;
 }
+
+.gform-settings-choice.gform-settings-choice--visual.gform-settings-choice--inline label {
+	display: inline-block;
+	min-height: 175px;
+}
