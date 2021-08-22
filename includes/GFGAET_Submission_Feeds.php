@@ -852,6 +852,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 			?>
 			</script>
 			<?php
+			$this->add_note( $entry['id'], __( 'An event has been sent using Google Analytics.', 'gravity-forms-google-analytics-event-tracking' ), 'success' );
 			return;
 		} elseif ( GFGAET::is_gtm_only() ) {
 			?>
@@ -886,6 +887,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 			}
 			</script>
 			<?php
+			$this->add_note( $entry['id'], __( 'An event has been sent using Google Google Tag Manager.', 'gravity-forms-google-analytics-event-tracking' ), 'success' );
 			return;
 		} else {
 			// Push out the event to each UA code
@@ -893,6 +895,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 				// Submit the event
 				$event->send( $ua_code );
 			}
+			$this->add_note( $entry['id'], __( 'An event has been sent using the Google Analytics Measurement Protocol.', 'gravity-forms-google-analytics-event-tracking' ), 'success' );
 		}
 
 	}

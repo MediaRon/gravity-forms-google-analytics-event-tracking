@@ -3,7 +3,7 @@ Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least: 5.5
 Tested up to: 5.8
-Stable tag: 2.4.6
+Stable tag: 2.4.8
 Requires PHP: 5.6
 Donate link: https://github.com/mediaron
 License: GPLv2 or later
@@ -128,6 +128,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.4.8 =
+* Released 2021-07-29
+* When a feed is successful, it'll show up under the Form entry notes.
 
 = 2.4.6 =
 * Released 2021-07-26
@@ -329,5 +333,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.4.6 =
-Safari style fixes. Adding payment deferred to payment gateways.
+= 2.4.8 =
+When a feed is successful, it'll show up under the Form entry notes.
