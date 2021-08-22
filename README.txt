@@ -3,7 +3,7 @@ Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least: 5.5
 Tested up to: 5.8
-Stable tag: 2.4.8
+Stable tag: 2.4.9
 Requires PHP: 5.6
 Donate link: https://github.com/mediaron
 License: GPLv2 or later
@@ -15,9 +15,11 @@ Easily add event tracking using Gravity Forms and your Google Analytics or Googl
 
 This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics and Google Tag Manager.
 
-This plugin only supports Google Analytics v3 only at this time.
+This plugin support Google Analytics 3 and <a href="https://mediaron.com/event-tracking-with-gravity-forms-and-google-analytics-4/">Google Analytics 4</a>.
 
 https://www.youtube.com/watch?v=rHW3roCuNSI&t=2s
+
+https://youtube.com/playlist?list=PLw2fSxxzure57usQNLMZrIAwn3DbRmaaF
 
 Also supports:
 
@@ -78,7 +80,9 @@ Development happens on <a href="https://github.com/ronalfy/wordpress-gravity-for
 
 = Do you support Google Analytics 4? =
 
-At this time, only version 3 of Google Analytics is supported.
+Check out <a href="https://mediaron.com/event-tracking-with-gravity-forms-and-google-analytics-4/">this post</a> and YouTube Playlist for how to integrate with Google Analytics 4.
+
+https://youtube.com/playlist?list=PLw2fSxxzure57usQNLMZrIAwn3DbRmaaF
 
 = How do I track pagination? =
 
@@ -128,6 +132,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.4.9 =
+* Released 2021=08-22
+* Prevent GTM from sending events more than once (props @zahadum).
 
 = 2.4.8 =
 * Released 2021-07-29
@@ -333,5 +341,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.4.8 =
-When a feed is successful, it'll show up under the Form entry notes.
+= 2.4.9 =
+Prevent GTM from sending events more than once (props @zahadum)
