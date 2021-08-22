@@ -872,18 +872,25 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 				utmContent = utmVariables.content;
 			}
 			if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
-				window.parent.dataLayer.push({'event': 'GFTrackEvent',
-					'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
-					'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
-					'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
-					'GFTrackValue': <?php echo absint( $event_value ); ?>,
-					'GFEntryData':<?php echo wp_json_encode( $entry ); ?>,
-					'GFTrackSource': utmSource,
-					'GFTrackMedium': utmMedium,
-					'GFTrackCampaign': utmCampaign,
-					'GFTrackTerm': utmTerm,
-					'GFTrackContent': utmContent,
-					});
+				if (typeof(window.parent.gfaetTagManagerSent) != 'undefined' ) {
+					window.parent.dataLayer.push({'event': 'GFTrackEvent',
+						'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
+						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
+						'GFTrackLabel':'<?php echo esc_js( $event_label ); ?>',
+						'GFTrackValue': <?php echo absint( $event_value ); ?>,
+						'GFEntryData':<?php echo wp_json_encode( $entry ); ?>,
+						'GFTrackSource': utmSource,
+						'GFTrackMedium': utmMedium,
+						'GFTrackCampaign': utmCampaign,
+						'GFTrackTerm': utmTerm,
+						'GFTrackContent': utmContent,
+						});
+					}
+			}
+			try {
+				window.parent.gfaetTagManagerSent = true; <?php // Prevent tag manager from sending multiple events. ?>
+			} catch ( e ) {
+				// Catch error.
 			}
 			</script>
 			<?php
