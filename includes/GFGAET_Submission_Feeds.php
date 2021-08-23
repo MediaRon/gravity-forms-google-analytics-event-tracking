@@ -872,7 +872,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 				utmContent = utmVariables.content;
 			}
 			if ( typeof( window.parent.dataLayer ) != 'undefined' ) {
-				if (typeof(window.parent.gfaetTagManagerSent) != 'undefined' ) {
+				if (typeof(window.parent.gfaetTagManagerSent) == 'undefined' ) {
 					window.parent.dataLayer.push({'event': 'GFTrackEvent',
 						'GFTrackCategory':'<?php echo esc_js( $event_category ); ?>',
 						'GFTrackAction':'<?php echo esc_js( $event_action ); ?>',
