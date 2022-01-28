@@ -97,7 +97,10 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 			$links[]      = $options_link;
 		}
 		$docs_link = sprintf( '<a href="%s" target="_blank">%s</a>', esc_url( 'https://mediaron.com/event-tracking-for-gravity-forms/?utm_source=wordpress_plugins_page&utm_medium=documentation&utm_campaign=event_tracking' ), _x( 'Documentation', 'Gravity Forms Event Tracking Documentation page', 'gravity-forms-google-analytics-event-tracking' ) );
+
+	 	$beta_link = sprintf( '<a href="%s" target="_blank" style="color: green; font-weight: 700;">%s</a>', esc_url( 'https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/' ), _x( 'Join the Beta!', 'Gravity Forms Google Analytics Page', 'gravity-forms-google-analytics-event-tracking' ) );
 		$links[]   = $docs_link;
+		$links[]   = $beta_link;
 
 		return $links;
 	}
@@ -1118,6 +1121,10 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 				'title'  => __( 'Feed Settings', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields' => array(
 					array(
+						'name'       => 'gravityforms_ga',
+						'type'       => 'gforms_beta_cta',
+					),
+					array(
 						'label'    => __( 'Feed Name', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'     => 'text',
 						'name'     => 'feedName',
@@ -1185,6 +1192,19 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 				),
 			),
 		);
+	}
+
+	public function settings_gforms_beta_cta() {
+		ob_start();
+		?>
+		
+		<div class="alert info">
+		<div style="padding-top: 25px; padding-bottom: 25px"><a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="_blank"><img src="<?php echo esc_url( GFGAET::get_plugin_url( '/img/gravity-forms-logo-horizontal.svg' ) ); ?>" width="800" height="103" /></a></div>
+			<h3 style="font-size: 18px; line-height: 1.2; font-weight: 400">The team behind Gravity Forms is releasing their own Google Analytics plugin soon. Currently it is in beta and you are invited to try it out. It should make things so much easier.</h3>
+			<p><a class="button primary" href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="_blank">Check out the Beta Today</a>
+		</div>
+		<?php
+		echo wp_kses_post( ob_get_clean() );
 	}
 
 	/**

@@ -44,6 +44,19 @@ class GFGAET_UA extends GFAddOn {
 
 	}
 
+	public function settings_gforms_beta_cta() {
+		ob_start();
+		?>
+		
+		<div class="alert info">
+		<div style="padding-top: 25px; padding-bottom: 25px"><a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="_blank"><img src="<?php echo esc_url( GFGAET::get_plugin_url( '/img/gravity-forms-logo-horizontal.svg' ) ); ?>" width="800" height="103" /></a></div>
+			<h3 style="font-size: 18px; line-height: 1.2; font-weight: 400">The team behind Gravity Forms is releasing their own Google Analytics plugin soon. Currently it is in beta and you are invited to try it out. It should make things so much easier.</h3>
+			<p><a class="button primary" href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="_blank">Check out the Beta Today</a>
+		</div>
+		<?php
+		echo wp_kses_post( ob_get_clean() );
+	}
+
 	/**
 	 * Settings icon for Form settings.
 	 *
@@ -64,6 +77,10 @@ class GFGAET_UA extends GFAddOn {
 				'title'       => __( 'Google Analytics and Google Tag Manager', 'gravity-forms-google-analytics-event-tracking' ),
 				'description' => '<p>' . __( 'By default, events are sent using the measurement protocol. You can change to using pure Google Analytics and Google Tag Manager if your forms are Ajax only.', 'gravity-forms-google-analytics-event-tracking' ) . '</p><p>' . __( 'Need help? <a target="_blank" href="https://mediaron.com/event-tracking-for-gravity-forms/?utm_source=wordpress_admin&utm_medium=documentation&utm_campaign=event_tracking">See our guide</a>.</p>', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
+					array(
+						'name'       => 'gravityforms_ga',
+						'type'       => 'gforms_beta_cta',
+					),
 					array(
 						'type'          => 'radio',
 						'name'          => 'mode',

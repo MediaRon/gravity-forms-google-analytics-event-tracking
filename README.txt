@@ -2,8 +2,8 @@
 Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least: 5.5
-Tested up to: 5.8
-Stable tag: 2.4.10
+Tested up to: 5.9
+Stable tag: 2.4.11
 Requires PHP: 5.6
 Donate link: https://github.com/mediaron
 License: GPLv2 or later
@@ -12,6 +12,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Easily add event tracking using Gravity Forms and your Google Analytics or Google Tag Manager account. Supports Google Analytics v3 and Gravity Forms 2.5+ only at this time.
 
 == Description ==
+
+> Gravity Forms is launching their own <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">official Google Analytics plugin</a>. It will be the successor to this plugin. <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">Join the official beta.</a>
 
 This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics and Google Tag Manager.
 
@@ -47,6 +49,12 @@ For payment based forms, you can leave the value blank to convert using the tota
 Development happens on <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking/">GitHub</a>.
 
 > Please <a href="https://wordpress.org/support/plugin/gravity-forms-google-analytics-event-tracking/reviews/#new-post">Rate the Plugin</a> or <a href="https://mediaron.com/give/">Give Back</a> to show support.
+
+<h2>Join the Gravity Forms Google Analytics Beta</h2>
+
+The official Gravity Forms add-on is coming and will be the successor to this plugin.
+
+Find out more details about the <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">Gravity Forms Google Analytics Beta</a>.
 
 == Installation ==
 
@@ -132,6 +140,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.4.11 =
+* Released 2022-01-28
+* WordPress 5.9 testing/compatibility
 
 = 2.4.10
 * Released 2021-08-23
