@@ -80,6 +80,12 @@ class GFGAET_UA extends GFAddOn {
 					array(
 						'name'       => 'gravityforms_ga',
 						'type'       => 'gforms_beta_cta',
+						'dependency' => array(
+							'field' => 'beta_notification',
+							'values' => array(
+								'on',
+							),
+						),
 					),
 					array(
 						'type'          => 'radio',
@@ -377,6 +383,27 @@ class GFGAET_UA extends GFAddOn {
 								'label'   => esc_html__( 'Default', 'gravity-forms-google-analytics-event-tracking' ),
 								'value'   => 'off',
 								'tooltip' => esc_html__( 'For Google Analytics and Tag Manager mode, forms must be Ajax only. Choose this option if the forms you need Event Tracking on are already using Ajax.', 'gravity-forms-google-analytics-event-tracking' ),
+							),
+						),
+					),
+					array(
+						'type'          => 'radio',
+						'name'          => 'beta_notification',
+						'horizontal'    => false,
+						'default_value' => 'on',
+						'label'         => 'Beta Banner.',
+						'choices'       => array(
+							array(
+								'name'    => 'beta_notifications_on',
+								'label'   => esc_html__( 'Turn On', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'on',
+								'tooltip' => 'If you would like to join the beta, <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="blank">please click here</a>.',
+							),
+							array(
+								'name'    => 'beta_notifications_off',
+								'label'   => esc_html__( 'Turn Off', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'off',
+								'tooltip' => esc_html__( 'Turn off the beta notifications banner.', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 						),
 					),

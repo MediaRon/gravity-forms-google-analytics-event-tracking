@@ -1116,14 +1116,17 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 	 */
 	public function feed_settings_fields() {
 		$ga_id_placeholder = $this->get_ga_id();
+		$ua_options = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
+		$beta_notification = rgar( $ua_options, 'beta_notification');
+		$beta_field = array(
+			'name'       => 'gravityforms_ga',
+			'type'       => $beta_notification === 'on' ? 'gforms_beta_cta' : 'hidden',
+		);
 		return array(
 			array(
 				'title'  => __( 'Feed Settings', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields' => array(
-					array(
-						'name'       => 'gravityforms_ga',
-						'type'       => 'gforms_beta_cta',
-					),
+					$beta_field,
 					array(
 						'label'    => __( 'Feed Name', 'gravity-forms-google-analytics-event-tracking' ),
 						'type'     => 'text',
