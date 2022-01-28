@@ -144,8 +144,10 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 = 2.4.11 =
 * Released 2022-01-28
 * WordPress 5.9 testing/compatibility
+* Testing with Gravity Forms 2.6 beta
+* Add option to disable beta banner under Advanced settings.
 
-= 2.4.10
+= 2.4.10 =
 * Released 2021-08-23
 * Fixing a bug caused another. Fixing GTM not sending any events.
 
@@ -357,5 +359,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.4.10 =
-Fixing a bug caused another. Fixing GTM not sending any events.
+= 2.4.11 =
+Tested with WP 5.9, Gravity Forms 2.6. <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">Try out the official Google Analytics beta from Gravity Forms</a>.
