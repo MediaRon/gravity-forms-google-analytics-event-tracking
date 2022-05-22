@@ -44,13 +44,26 @@ class GFGAET_UA extends GFAddOn {
 
 	}
 
+	public function settings_gforms_beta_cta() {
+		ob_start();
+		?>
+		
+		<div class="alert info">
+		<div style="padding-top: 25px; padding-bottom: 25px"><a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="_blank"><img src="<?php echo esc_url( GFGAET::get_plugin_url( '/img/gravity-forms-logo-horizontal.svg' ) ); ?>" width="800" height="103" /></a></div>
+			<h3 style="font-size: 18px; line-height: 1.2; font-weight: 400">The team behind Gravity Forms is releasing their own Google Analytics plugin soon. Currently it is in beta and you are invited to try it out. It should make things so much easier.</h3>
+			<p><a class="button primary" href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="_blank">Check out the Beta Today</a>
+		</div>
+		<?php
+		echo wp_kses_post( ob_get_clean() );
+	}
+
 	/**
 	 * Settings icon for Form settings.
 	 *
 	 * @since 2.4.0
 	 */
 	public function get_menu_icon() {
-		return '<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="analytics" class="svg-inline--fa fa-analytics fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M510.62 92.63C516.03 94.74 521.85 96 528 96c26.51 0 48-21.49 48-48S554.51 0 528 0s-48 21.49-48 48c0 2.43.37 4.76.71 7.09l-95.34 76.27c-5.4-2.11-11.23-3.37-17.38-3.37s-11.97 1.26-17.38 3.37L255.29 55.1c.35-2.33.71-4.67.71-7.1 0-26.51-21.49-48-48-48s-48 21.49-48 48c0 4.27.74 8.34 1.78 12.28l-101.5 101.5C56.34 160.74 52.27 160 48 160c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-4.27-.74-8.34-1.78-12.28l101.5-101.5C199.66 95.26 203.73 96 208 96c6.15 0 11.97-1.26 17.38-3.37l95.34 76.27c-.35 2.33-.71 4.67-.71 7.1 0 26.51 21.49 48 48 48s48-21.49 48-48c0-2.43-.37-4.76-.71-7.09l95.32-76.28zM400 320h-64c-8.84 0-16 7.16-16 16v160c0 8.84 7.16 16 16 16h64c8.84 0 16-7.16 16-16V336c0-8.84-7.16-16-16-16zm160-128h-64c-8.84 0-16 7.16-16 16v288c0 8.84 7.16 16 16 16h64c8.84 0 16-7.16 16-16V208c0-8.84-7.16-16-16-16zm-320 0h-64c-8.84 0-16 7.16-16 16v288c0 8.84 7.16 16 16 16h64c8.84 0 16-7.16 16-16V208c0-8.84-7.16-16-16-16zM80 352H16c-8.84 0-16 7.16-16 16v128c0 8.84 7.16 16 16 16h64c8.84 0 16-7.16 16-16V368c0-8.84-7.16-16-16-16z"></path></svg>';
+		return '<svg width="22" height="20" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="analytics" class="svg-inline--fa fa-analytics fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M510.62 92.63C516.03 94.74 521.85 96 528 96c26.51 0 48-21.49 48-48S554.51 0 528 0s-48 21.49-48 48c0 2.43.37 4.76.71 7.09l-95.34 76.27c-5.4-2.11-11.23-3.37-17.38-3.37s-11.97 1.26-17.38 3.37L255.29 55.1c.35-2.33.71-4.67.71-7.1 0-26.51-21.49-48-48-48s-48 21.49-48 48c0 4.27.74 8.34 1.78 12.28l-101.5 101.5C56.34 160.74 52.27 160 48 160c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-4.27-.74-8.34-1.78-12.28l101.5-101.5C199.66 95.26 203.73 96 208 96c6.15 0 11.97-1.26 17.38-3.37l95.34 76.27c-.35 2.33-.71 4.67-.71 7.1 0 26.51 21.49 48 48 48s48-21.49 48-48c0-2.43-.37-4.76-.71-7.09l95.32-76.28zM400 320h-64c-8.84 0-16 7.16-16 16v160c0 8.84 7.16 16 16 16h64c8.84 0 16-7.16 16-16V336c0-8.84-7.16-16-16-16zm160-128h-64c-8.84 0-16 7.16-16 16v288c0 8.84 7.16 16 16 16h64c8.84 0 16-7.16 16-16V208c0-8.84-7.16-16-16-16zm-320 0h-64c-8.84 0-16 7.16-16 16v288c0 8.84 7.16 16 16 16h64c8.84 0 16-7.16 16-16V208c0-8.84-7.16-16-16-16zM80 352H16c-8.84 0-16 7.16-16 16v128c0 8.84 7.16 16 16 16h64c8.84 0 16-7.16 16-16V368c0-8.84-7.16-16-16-16z"></path></svg>';
 	}
 
 	/**
@@ -65,9 +78,19 @@ class GFGAET_UA extends GFAddOn {
 				'description' => '<p>' . __( 'By default, events are sent using the measurement protocol. You can change to using pure Google Analytics and Google Tag Manager if your forms are Ajax only.', 'gravity-forms-google-analytics-event-tracking' ) . '</p><p>' . __( 'Need help? <a target="_blank" href="https://mediaron.com/event-tracking-for-gravity-forms/?utm_source=wordpress_admin&utm_medium=documentation&utm_campaign=event_tracking">See our guide</a>.</p>', 'gravity-forms-google-analytics-event-tracking' ),
 				'fields'      => array(
 					array(
+						'name'       => 'gravityforms_ga',
+						'type'       => 'gforms_beta_cta',
+						'dependency' => array(
+							'field' => 'beta_notification',
+							'values' => array(
+								'on',
+							),
+						),
+					),
+					array(
 						'type'          => 'radio',
 						'name'          => 'mode',
-						'horizontal'    => false,
+						'horizontal'    => true,
 						'default_value' => 'gmp',
 						'label'         => 'How would you like to send events?',
 						'choices'       => array(
@@ -76,18 +99,21 @@ class GFGAET_UA extends GFAddOn {
 								'label' => esc_html__( 'Measurement Protocol (Default)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value' => 'gmp',
 								'icon'  => GFGAET::get_plugin_url( '/img/google-brands.png' ),
+								'tooltip' => esc_html__( 'This option will send analytics server-to-server using the measurement protocol', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 							array(
 								'name'  => 'ga_on',
 								'label' => esc_html__( 'Google Analytics (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value' => 'ga',
 								'icon'  => GFGAET::get_plugin_url( '/img/analytics.png' ),
+								'tooltip' => esc_html__( 'Send form data via JavaScript using an existing Google Analytics account.', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 							array(
 								'name'  => 'gtm_on',
 								'label' => esc_html__( 'Google Tag Manager (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
 								'value' => 'gtm',
 								'icon'  => GFGAET::get_plugin_url( '/img/gtm.png' ),
+								'tooltip' => esc_html__( 'Send form data via JavaScript using an existing Google Tag Manager account.', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 						),
 					),
@@ -357,6 +383,27 @@ class GFGAET_UA extends GFAddOn {
 								'label'   => esc_html__( 'Default', 'gravity-forms-google-analytics-event-tracking' ),
 								'value'   => 'off',
 								'tooltip' => esc_html__( 'For Google Analytics and Tag Manager mode, forms must be Ajax only. Choose this option if the forms you need Event Tracking on are already using Ajax.', 'gravity-forms-google-analytics-event-tracking' ),
+							),
+						),
+					),
+					array(
+						'type'          => 'radio',
+						'name'          => 'beta_notification',
+						'horizontal'    => false,
+						'default_value' => 'on',
+						'label'         => 'Beta Banner.',
+						'choices'       => array(
+							array(
+								'name'    => 'beta_notifications_on',
+								'label'   => esc_html__( 'Turn On', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'on',
+								'tooltip' => 'If you would like to join the beta, <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="blank">please click here</a>.',
+							),
+							array(
+								'name'    => 'beta_notifications_off',
+								'label'   => esc_html__( 'Turn Off', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'off',
+								'tooltip' => esc_html__( 'Turn off the beta notifications banner.', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 						),
 					),

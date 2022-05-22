@@ -3,7 +3,7 @@
  * Plugin Name:       Gravity Forms Event Tracking
  * Plugin URI:        https://wordpress.org/plugins/gravity-forms-google-analytics-event-tracking/
  * Description:       Add event tracking to your Gravity Forms with ease using Google Analytics, Tag Manager, or Matomo
- * Version:           2.4.0
+ * Version:           2.4.11
  * Author:            Ronald Huereca
  * Author URI:        https://mediaron.com
  * Text Domain:       gravity-forms-google-analytics-event-tracking
@@ -19,7 +19,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 define( 'GFGAET_MIN_GFORMS_VERSION', '2.2.0' );
-define( 'GFGAET_VERSION', '2.4.0' );
+define( 'GFGAET_VERSION', '2.4.11' );
+define( 'GFGAET_FILE', __FILE__ );
 
 class GFGAET {
 
@@ -290,6 +291,9 @@ class GFGAET {
 	 * @param array $form_args The form arguments
 	 */
 	public function maybe_ajax_only( $form_args ) {
+		if ( class_exists( 'GFCommon' ) && GFCommon::is_preview() ) {
+			return $form_args;
+		}
 		$gravity_forms_add_on_settings = get_option( 'gravityformsaddon_GFGAET_UA_settings', array() );
 
 		if ( isset( $gravity_forms_add_on_settings[ 'ajax_only' ] ) && 'on' == $gravity_forms_add_on_settings[ 'ajax_only' ] ) {

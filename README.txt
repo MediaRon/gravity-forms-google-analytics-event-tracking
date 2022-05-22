@@ -1,9 +1,9 @@
 === Event Tracking for Gravity Forms ===
 Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
-Requires at least:5.5
-Tested up to: 5.7
-Stable tag: 2.4.0
+Requires at least: 5.5
+Tested up to: 6.0
+Stable tag: 2.4.11
 Requires PHP: 5.6
 Donate link: https://github.com/mediaron
 License: GPLv2 or later
@@ -13,11 +13,15 @@ Easily add event tracking using Gravity Forms and your Google Analytics or Googl
 
 == Description ==
 
+> Gravity Forms is launching their own <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">official Google Analytics plugin</a>. It will be the successor to this plugin. <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">Join the official beta.</a>
+
 This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics and Google Tag Manager.
 
-This plugin only supports Google Analytics v3 only at this time.
+This plugin support Google Analytics 3 and <a href="https://mediaron.com/event-tracking-with-gravity-forms-and-google-analytics-4/">Google Analytics 4</a>.
 
 https://www.youtube.com/watch?v=rHW3roCuNSI&t=2s
+
+https://youtube.com/playlist?list=PLw2fSxxzure57usQNLMZrIAwn3DbRmaaF
 
 Also supports:
 
@@ -45,6 +49,12 @@ For payment based forms, you can leave the value blank to convert using the tota
 Development happens on <a href="https://github.com/ronalfy/wordpress-gravity-forms-event-tracking/">GitHub</a>.
 
 > Please <a href="https://wordpress.org/support/plugin/gravity-forms-google-analytics-event-tracking/reviews/#new-post">Rate the Plugin</a> or <a href="https://mediaron.com/give/">Give Back</a> to show support.
+
+<h2>Join the Gravity Forms Google Analytics Beta</h2>
+
+The official Gravity Forms add-on is coming and will be the successor to this plugin.
+
+Find out more details about the <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">Gravity Forms Google Analytics Beta</a>.
 
 == Installation ==
 
@@ -78,7 +88,9 @@ Development happens on <a href="https://github.com/ronalfy/wordpress-gravity-for
 
 = Do you support Google Analytics 4? =
 
-At this time, only version 3 of Google Analytics is supported.
+Check out <a href="https://mediaron.com/event-tracking-with-gravity-forms-and-google-analytics-4/">this post</a> and YouTube Playlist for how to integrate with Google Analytics 4.
+
+https://youtube.com/playlist?list=PLw2fSxxzure57usQNLMZrIAwn3DbRmaaF
 
 = How do I track pagination? =
 
@@ -128,6 +140,42 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.4.11 =
+* Released 2022-01-28
+* WordPress 5.9 testing/compatibility
+* Testing with Gravity Forms 2.6 beta
+* Add option to disable beta banner under Advanced settings.
+
+= 2.4.10 =
+* Released 2021-08-23
+* Fixing a bug caused another. Fixing GTM not sending any events.
+
+= 2.4.9 =
+* Released 2021=08-22
+* Prevent GTM from sending events more than once (props @zahadum).
+
+= 2.4.8 =
+* Released 2021-07-29
+* When a feed is successful, it'll show up under the Form entry notes.
+
+= 2.4.6 =
+* Released 2021-07-26
+* Fixing SVG width/height in Safari.
+* Fixing height of labels in Safari.
+* Adding payment deferred option for feed settings (Stripe, PayPal, etc).
+
+= 2.4.5 =
+* Released 2021-07-26
+* Cleaning up settings page.
+
+= 2.4.2 =
+* Released 2021-06-22
+* Fixing preview and ajax-only forms.
+
+= 2.4.1 =
+* Released 2021-05-12
+* Fixing index errors in PHP logs related to GTM.
 
 = 2.4.0 =
 * Released 2021-05-01
@@ -311,5 +359,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.4.0 =
-Requires Gravity Forms 2.5+. Numerous cosmetic changes. Track UTM variables. Install GA or GTM using the add-on as needed.
+= 2.4.11 =
+Tested with WP 5.9, Gravity Forms 2.6. <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">Try out the official Google Analytics beta from Gravity Forms</a>.

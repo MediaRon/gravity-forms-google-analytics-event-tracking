@@ -1,0 +1,58 @@
+.gform-settings-choice.gform-settings-choice--visual.gform-settings-choice--inline {
+	display: inline-block;
+}
+/* Fix tooltips in Gforms 2.5 for Visual Horizontal mode */
+.gform-settings-choice.gform-settings-choice--visual.gform-settings-choice--inline
+	.gf_tooltip.tooltip {
+	align-items: center;
+	background: #ecedf8;
+	border: none;
+	border-radius: 50%;
+	box-sizing: border-box;
+	color: #242748;
+	display: inline-flex;
+	font-size: 0.5rem;
+	height: 1rem;
+	justify-content: center;
+	margin-left: 0.25rem;
+	position: relative;
+	text-decoration: none;
+	vertical-align: middle;
+	width: 1rem;
+}
+.gform-settings-choice.gform-settings-choice--visual.gform-settings-choice--inline
+	.gf_tooltip.tooltip:before {
+	border: 0.0625rem solid transparent;
+	border-radius: 100%;
+	content: ' ';
+	display: block;
+	height: 0.875rem;
+	left: 0;
+	position: absolute;
+	top: 0;
+	transition: border-color 200ms ease-in-out, box-shadow 200ms ease-in-out;
+	transition-delay: 100ms;
+	width: 0.875rem;
+}
+.gform-settings-choice.gform-settings-choice--visual.gform-settings-choice--inline .gf_tooltip.tooltip .gform-icon--question-mark {
+	font-family: 'gform-icons-admin' !important;
+	font-style: normal;
+	font-weight: normal;
+	font-feature-settings: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.gform-settings-choice.gform-settings-choice--visual.gform-settings-choice--inline .gform-icon.gform-icon--question-mark {
+	color: #242748;
+	font-size: 0.5rem;
+	vertical-align: middle;
+	margin-bottom: 0;
+}
+
+.gform-settings-choice.gform-settings-choice--visual.gform-settings-choice--inline label {
+	display: inline-block;
+	min-height: 175px;
+}

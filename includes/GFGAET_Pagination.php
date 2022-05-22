@@ -164,10 +164,10 @@ class GFGAET_Pagination {
 						// UA code doesn't match, use another tracker
 						window.parent.ga( 'create', '<?php echo esc_js( $ua_code ); ?>', 'auto', 'GTGAET_Tracker' );
 						window.parent.ga( 'GTGAET_Tracker.send', 'event', '<?php echo esc_js( $event_category ); ?>', '<?php echo esc_js( $event_action ); ?>', '<?php echo esc_js( $event_label ); ?>'
-																					  <?php
-																						if ( 0 !== $event_value ) {
-																							echo ',' . "'" . esc_js( $event_value ) . "'"; }
-																						?>
+						<?php
+						if ( 0 !== $event_value ) {
+							echo ',' . "'" . esc_js( $event_value ) . "'"; }
+						?>
 						);
 					}
 				}
