@@ -1120,7 +1120,7 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 		$beta_notification = rgar( $ua_options, 'beta_notification');
 		$beta_field = array(
 			'name'       => 'gravityforms_ga',
-			'type'       => $beta_notification === 'on' ? 'gforms_beta_cta' : 'hidden',
+			'type'       => $beta_notification === 'on' || rgblank( $beta_notification ) ? 'gforms_beta_cta' : 'hidden',
 		);
 		return array(
 			array(
