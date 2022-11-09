@@ -1202,9 +1202,9 @@ gtag('config', '<?php echo esc_js( $ga_code ); ?>');
 		?>
 		
 		<div class="alert info">
-		<div style="padding-top: 25px; padding-bottom: 25px"><a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="_blank"><img src="<?php echo esc_url( GFGAET::get_plugin_url( '/img/gravity-forms-logo-horizontal.svg' ) ); ?>" width="800" height="103" /></a></div>
-			<h3 style="font-size: 18px; line-height: 1.2; font-weight: 400">The team behind Gravity Forms is releasing their own Google Analytics plugin soon. Currently it is in beta and you are invited to try it out. It should make things so much easier.</h3>
-			<p><a class="button primary" href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta" target="_blank">Check out the Beta Today</a>
+		<div style="padding-top: 25px; padding-bottom: 25px"><a href="https://www.gravityforms.com/add-ons/google-analytics/" target="_blank"><img src="<?php echo esc_url( GFGAET::get_plugin_url( '/img/gravity-forms-ga-addon-horizontal.png' ) ); ?>" width="800" height="214" /></a></div>
+			<h3 style="font-size: 18px; line-height: 1.2; font-weight: 400">The team behind Gravity Forms has developed and released an official Google Analytics Add-on.</h3>
+			<p><a class="button primary" href="https://www.gravityforms.com/add-ons/google-analytics/" target="_blank">Check out the new Google Analytics Add-On</a>
 		</div>
 		<?php
 		echo wp_kses_post( ob_get_clean() );
