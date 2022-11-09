@@ -2,8 +2,8 @@
 Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least: 5.5
-Tested up to: 6.0
-Stable tag: 2.4.11
+Tested up to: 6.1
+Stable tag: 2.4.12
 Requires PHP: 5.6
 Donate link: https://github.com/mediaron
 License: GPLv2 or later
@@ -13,7 +13,7 @@ Easily add event tracking using Gravity Forms and your Google Analytics or Googl
 
 == Description ==
 
-> Gravity Forms is launching their own <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">official Google Analytics plugin</a>. It will be the successor to this plugin. <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">Join the official beta.</a>
+> Gravity Forms has launched <a href="https://www.gravityforms.com/add-ons/google-analytics/">an official Google Analytics Add-on</a>. It is the successor to this plugin.
 
 This plugin provides an easy way to add event tracking to your Gravity Forms using Google Analytics and Google Tag Manager.
 
@@ -50,11 +50,11 @@ Development happens on <a href="https://github.com/ronalfy/wordpress-gravity-for
 
 > Please <a href="https://wordpress.org/support/plugin/gravity-forms-google-analytics-event-tracking/reviews/#new-post">Rate the Plugin</a> or <a href="https://mediaron.com/give/">Give Back</a> to show support.
 
-<h2>Join the Gravity Forms Google Analytics Beta</h2>
+<h2>Get the official Gravity Forms Google Analytics Add-on</h2>
 
-The official Gravity Forms add-on is coming and will be the successor to this plugin.
+The official Gravity Forms add-on is here and is the successor to this plugin.
 
-Find out more details about the <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">Gravity Forms Google Analytics Beta</a>.
+Find out more details about the <a href="https://www.gravityforms.com/add-ons/google-analytics/">Gravity Forms Google Analytics Add-on</a>.
 
 == Installation ==
 
@@ -86,7 +86,11 @@ Find out more details about the <a href="https://www.gravityforms.com/blog/googl
 
 == Frequently Asked Questions ==
 
-= Do you support Google Analytics 4? =
+= What are the plans for this plugin now that an official Add-on is out? =
+
+This plugin will continue to be maintained. No new features are planned, however. Users are encouraged to use the official <a href="https://www.gravityforms.com/add-ons/google-analytics/">Gravity Forms Google Analytics Add-on</a> for more up-to-date features and support.
+
+= Do this plugin support Google Analytics 4? =
 
 Check out <a href="https://mediaron.com/event-tracking-with-gravity-forms-and-google-analytics-4/">this post</a> and YouTube Playlist for how to integrate with Google Analytics 4.
 
@@ -140,6 +144,12 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.4.12 =
+* Released 2022-11-09
+* Updating Google Analytics Add-on banners.
+* Cleaning up documentation.
+* Testing with latest Gravity Forms and WordPress 6.1.
 
 = 2.4.11 =
 * Released 2022-01-28
@@ -359,5 +369,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.4.11 =
-Tested with WP 5.9, Gravity Forms 2.6. <a href="https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/">Try out the official Google Analytics beta from Gravity Forms</a>.
+= 2.4.12 =
+Tested with WP 6.1 and Gravity Forms 2.6. Cleaning up documentation and updating links to the official Google Analytics Add-on.
