@@ -98,7 +98,7 @@ class GFGAET_Submission_Feeds extends GFFeedAddOn {
 		}
 		$docs_link = sprintf( '<a href="%s" target="_blank">%s</a>', esc_url( 'https://mediaron.com/event-tracking-for-gravity-forms/?utm_source=wordpress_plugins_page&utm_medium=documentation&utm_campaign=event_tracking' ), _x( 'Documentation', 'Gravity Forms Event Tracking Documentation page', 'gravity-forms-google-analytics-event-tracking' ) );
 
-	 	$beta_link = sprintf( '<a href="%s" target="_blank" style="color: green; font-weight: 700;">%s</a>', esc_url( 'https://www.gravityforms.com/blog/google-analytics-add-on-install-the-beta/' ), _x( 'Join the Beta!', 'Gravity Forms Google Analytics Page', 'gravity-forms-google-analytics-event-tracking' ) );
+	 	$beta_link = sprintf( '<a href="%s" target="_blank" style="color: green; font-weight: 700;">%s</a>', esc_url( 'https://www.gravityforms.com/add-ons/google-analytics/' ), _x( 'Get the Google Analytics Add-on', 'Gravity Forms Google Analytics Page', 'gravity-forms-google-analytics-event-tracking' ) );
 		$links[]   = $docs_link;
 		$links[]   = $beta_link;
 
