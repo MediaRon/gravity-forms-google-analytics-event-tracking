@@ -201,8 +201,9 @@ class GFGAET_Partial_Entries extends GFAddOn {
 					* Finally, map this value based on the $field_id
 					* and $input['id'].
 					*/
+					$value                = $entry[ $input['id'] ] ?? '';
 					$mapping[ $field_id ] = array(
-						'value'          => $entry[ $input['id'] ],
+						'value'          => $value,
 						'label'          => $field['label'],
 						'event_category' => $event_category,
 						'event_action'   => $event_action,
