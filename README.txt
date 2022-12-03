@@ -3,7 +3,7 @@ Contributors: ronalfy, bigwing, nmarks, kzeni
 Tags: gravity forms, google analytics, google tag manager, matomo, piwik, event tracking
 Requires at least: 5.5
 Tested up to: 6.1
-Stable tag: 2.4.12
+Stable tag: 2.4.14
 Requires PHP: 5.6
 Donate link: https://github.com/mediaron
 License: GPLv2 or later
@@ -144,6 +144,11 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 4. Partial entries add-on section
 
 == Changelog ==
+
+= 2.4.14 =
+* Released 2022-12-02
+* Minifying UTM script for performance.
+* Only load UTM script when UTM variables are present or a form is present.
 
 = 2.4.12 =
 * Released 2022-11-09
@@ -369,5 +374,5 @@ Check out the documentation on [github](https://github.com/ronalfy/wordpress-gra
 
 == Upgrade Notice ==
 
-= 2.4.12 =
-Tested with WP 6.1 and Gravity Forms 2.6. Cleaning up documentation and updating links to the official Google Analytics Add-on.
+= 2.4.14 =
+Minifying GTM/UTM script and only load when UTM variables or a form is present.
