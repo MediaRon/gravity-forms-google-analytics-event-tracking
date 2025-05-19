@@ -57,6 +57,211 @@ class GFGAET_UA extends GFAddOn {
 	public function init_ajax() {
 		add_action( 'wp_ajax_gfgaet_install_plugin', array( $this, 'ajax_install_ga_plugin' ) );
 		add_action( 'wp_ajax_gfgaet_activate_plugin', array( $this, 'ajax_activate_ga_plugin' ) );
+		add_action( 'wp_ajax_gfgaet_migrate_data', array( $this, 'ajax_migrate_data' ) );
+		add_action( 'wp_ajax_gfgaet_deactivate_addon', array( $this, 'ajax_deactivate_addon' ) );
+	}
+
+	public function ajax_deactivate_addon() {
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'gfgaet_deactivate_addon' ) ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid nonce.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'You do not have permission to deactivate the addon.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		delete_option( 'gfgaet_ua_migrated_data' );
+
+		deactivate_plugins( plugin_basename( GFGAET_FILE ), true );
+
+		wp_send_json_success(
+			array(
+				'success' => true,
+				'message' => __( 'Add-on deactivated successfully.', 'gravity-forms-google-analytics-event-tracking' ),
+			)
+		);
+	}
+
+	/**
+	 * Migrates the data from the old add-on to the new add-on.
+	 */
+	public function ajax_migrate_data() {
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'gfgaet_migrate_data' ) ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid nonce.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'You do not have permission to migrate data.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		$is_gtm_installed = false;
+		if ( function_exists( 'gf_google_analytics' ) && class_exists( '\GFAPI' ) ) {
+			$google_analytics = gf_google_analytics();
+			$options          = $google_analytics::get_options();
+			$is_connected     = ! empty( $options['connected'] ) && $options['connected'] === true;
+			$is_gtm_installed = (bool) ( rgar( $options, 'mode', '' ) === 'gtm' );
+		} else {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Google Analytics is not installed, or the Gravity Forms API is not available.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+		if ( ! $is_gtm_installed ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Google Tag Manager is not selected as the mode in the Google Analytics settings.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		// Minimum tags to check for:
+		$tags_to_check = array(
+			'GFTrackCategory',
+			'GFTrackAction',
+			'GFTrackLabel',
+			'GFTrackValue',
+		);
+		$ga4_account   = rgar( $options, 'ga4_account', false );
+		if ( ! $ga4_account ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'No GA4 account found.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+		$api_path  = rgar( $ga4_account, 'gtm_api_path' );
+		$workspace = rgar( $ga4_account, 'gtm_workspace_id' );
+
+		$variables = rgar( $google_analytics->get_tag_manager_variables( array(), $api_path, $workspace ), 'variable' );
+		if ( ! $variables ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'No GTM variables found.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		// If tags found, remove them from the tags to check for.
+		foreach ( $variables as $variable ) {
+			if ( in_array( $variable['name'], $tags_to_check, true ) ) {
+				$tags_to_check = array_diff( $tags_to_check, array( $variable['name'] ) );
+			}
+		}
+
+		if ( ! empty( $tags_to_check ) ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'There are no Event Tracking tags found in Google Tag Manager. It is recommended to skip migration, and you can safely disable this plugin.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		// Get all form feeds for this plugin.
+		$submission_feeds = GFGAET_Submission_Feeds::get_instance();
+		$form_feeds       = $submission_feeds->get_feeds();
+
+		if ( ! $form_feeds ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'No form feeds found to migrate.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		$form_feeds_to_migrate = array();
+		foreach ( $form_feeds as $form_feed ) {
+			if ( $form_feed['is_active'] && 'gravity-forms-event-tracking' === $form_feed['addon_slug'] ) {
+				$form_feeds_to_migrate[] = array(
+					'meta'    => rgar( $form_feed, 'meta', array() ),
+					'form_id' => rgar( $form_feed, 'form_id', 0 ),
+				);
+			}
+		}
+
+		$meta_vars_to_check = array(
+			'gaEventCategory',
+			'gaEventAction',
+			'gaEventLabel',
+			'gaEventValue',
+		);
+
+		// Loop through form feeds to migrate, and add them to Google Aanalytics feeds.
+		foreach ( $form_feeds_to_migrate as $form_feed ) {
+			$submission_parameters = array();
+			foreach ( $meta_vars_to_check as $meta_var ) {
+				if ( isset( $form_feed['meta'][ $meta_var ] ) ) {
+					$key = '';
+					switch ( $meta_var ) {
+						case 'gaEventCategory':
+							$key = 'GFTrackCategory';
+							break;
+						case 'gaEventAction':
+							$key = 'GFTrackAction';
+							break;
+						case 'gaEventLabel':
+							$key = 'GFTrackLabel';
+							break;
+						case 'gaEventValue':
+							$key = 'GFTrackValue';
+							break;
+					}
+					$submission_parameters[] = array(
+						'key'          => $key,
+						'value'        => 'gf_custom',
+						'custom_key'   => $key,
+						'custom_value' => $form_feed['meta'][ $meta_var ],
+					);
+				}
+			}
+			$form_params = array(
+				'is_active' => true,
+				'formId'    => rgar( $form_feed, 'form_id', 0 ),
+				'meta'      => array(
+					'feedName'              => rgar( $form_feed, 'meta', array() )['feedName'],
+					'submission_trigger'    => 'GFTrackEvent',
+					'submission_parameters' => $submission_parameters,
+				),
+			);
+
+			\GFAPI::add_feed( $form_feed['form_id'], $form_params['meta'], 'gravityformsgoogleanalytics' );
+		}
+
+		// Set an option that we've migrated the data.
+		update_option( 'gfgaet_ua_migrated_data', true );
+
+		wp_send_json_success(
+			array(
+				'success' => true,
+				'message' => __( 'Data migrated successfully.', 'gravity-forms-google-analytics-event-tracking' ),
+			)
+		);
 	}
 
 	/**
@@ -223,9 +428,12 @@ class GFGAET_UA extends GFAddOn {
 					'get_nonce'              => wp_create_nonce( 'gfgaet_get_plugin_status' ),
 					'install_nonce'          => wp_create_nonce( 'gfgaet_ga_install_nonce' ),
 					'activate_nonce'         => wp_create_nonce( 'gfgaet_ga_activate_nonce' ),
+					'deactivate_nonce'       => wp_create_nonce( 'gfgaet_deactivate_addon' ),
+					'migrate_nonce'          => wp_create_nonce( 'gfgaet_migrate_data' ),
 					'ga_plugin_icon'         => $this->get_base_url() . '/img/gformsga-addon.png',
 					'can_install_ga'         => $can_install_ga,
 					'is_gtm_installed'       => $is_connected && $is_gtm_installed,
+					'is_migrated'            => (bool) get_option( 'gfgaet_ua_migrated_data', false ),
 				),
 				'in_footer' => true,
 			),

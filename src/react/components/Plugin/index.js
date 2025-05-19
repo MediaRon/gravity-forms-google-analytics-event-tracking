@@ -144,6 +144,7 @@ const Plugin = ( props ) => {
 											const { data, success } = response.data;
 											if ( success ) {
 												setActivated( true );
+												window.location.href = 'admin.php?page=gf_settings&subview=GFGAET_UA';
 											} else {
 												setError( data.message );
 											}

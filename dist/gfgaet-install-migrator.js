@@ -6013,6 +6013,40 @@ var defaultAttributes = {
 
 /***/ }),
 
+/***/ "./node_modules/lucide-react/dist/esm/icons/arrow-right.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/lucide-react/dist/esm/icons/arrow-right.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   __iconNode: () => (/* binding */ __iconNode),
+/* harmony export */   "default": () => (/* binding */ ArrowRight)
+/* harmony export */ });
+/* harmony import */ var _createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../createLucideIcon.js */ "./node_modules/lucide-react/dist/esm/createLucideIcon.js");
+/**
+ * @license lucide-react v0.511.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+
+
+const __iconNode = [
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "m12 5 7 7-7 7", key: "xquz4c" }]
+];
+const ArrowRight = (0,_createLucideIcon_js__WEBPACK_IMPORTED_MODULE_0__["default"])("arrow-right", __iconNode);
+
+
+//# sourceMappingURL=arrow-right.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/lucide-react/dist/esm/icons/cloud-download.js":
 /*!********************************************************************!*\
   !*** ./node_modules/lucide-react/dist/esm/icons/cloud-download.js ***!
@@ -8606,6 +8640,7 @@ var Plugin = function Plugin(props) {
             success = _response$data.success;
           if (success) {
             setActivated(true);
+            window.location.href = 'admin.php?page=gf_settings&subview=GFGAET_UA';
           } else {
             setError(data.message);
           }
@@ -8730,12 +8765,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_url__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_url__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/loader.js");
+/* harmony import */ var lucide_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! lucide-react */ "./node_modules/lucide-react/dist/esm/icons/arrow-right.js");
 /* harmony import */ var _components_Section__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Section */ "./src/react/components/Section/index.js");
 /* harmony import */ var _components_Button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/Button */ "./src/react/components/Button/index.js");
 /* harmony import */ var _components_Spinner__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/Spinner */ "./src/react/components/Spinner/index.js");
 /* harmony import */ var _utils_SendCommand__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../utils/SendCommand */ "./src/react/utils/SendCommand.js");
 /* harmony import */ var _components_Alerts__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/Alerts */ "./src/react/components/Alerts.js");
 /* harmony import */ var _components_Plugin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/Plugin */ "./src/react/components/Plugin/index.js");
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+
 
 
 
@@ -8752,12 +8796,20 @@ var gaPlugin = {
   installed: gforms_gfgaet_admin_settings_strings.is_gforms_ga_installed,
   activated: gforms_gfgaet_admin_settings_strings.is_gforms_ga_activated,
   orgUrl: 'https://www.gravityforms.com/add-ons/google-analytics/?utm_source=gravity-forms-event-tracking&utm_medium=plugin-notice&utm_campaign=gf-gaet-notice',
-  description: 'The official Google Analytics Add-On for Gravity Forms is a replacement for the Event Tracking Add-On. Please install this plugin as a replacement for the Event Tracking Add-On.',
+  description: 'The official Google Analytics Add-On for Gravity Forms is a replacement for the Event Tracking Add-On. Please install this plugin as a replacement for the Event Tracking Add-On. Your data can be migrated later after installation and activation.',
   installNonce: gforms_gfgaet_admin_settings_strings.install_nonce,
   activateNonce: gforms_gfgaet_admin_settings_strings.activate_nonce,
   icon: gforms_gfgaet_admin_settings_strings.ga_plugin_icon
 };
 var InstallMigrator = function InstallMigrator() {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    migrating = _useState2[0],
+    setMigrating = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState4 = _slicedToArray(_useState3, 2),
+    migrateError = _useState4[0],
+    setMigrateError = _useState4[1];
   if (!gforms_gfgaet_admin_settings_strings.can_install_ga) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Section__WEBPACK_IMPORTED_MODULE_4__["default"], {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Analytics Event Tracking Notice', 'gravity-forms-google-analytics-event-tracking'),
@@ -8781,14 +8833,57 @@ var InstallMigrator = function InstallMigrator() {
   if (gforms_gfgaet_admin_settings_strings.is_gtm_installed) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Section__WEBPACK_IMPORTED_MODULE_4__["default"], {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Analytics Add-On Installer and Migrator', 'gravity-forms-google-analytics-event-tracking')
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Alerts__WEBPACK_IMPORTED_MODULE_8__["default"], {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, !gforms_gfgaet_admin_settings_strings.is_migrated && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Alerts__WEBPACK_IMPORTED_MODULE_8__["default"], {
       message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Tag Manager is connected. Please use the migration settings below to migrate your data.', 'gravity-forms-google-analytics-event-tracking'),
       alertType: "success"
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Migrate Event Tracking Data', 'gravity-forms-google-analytics-event-tracking'),
+      label: migrating ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Migrating...', 'gravity-forms-google-analytics-event-tracking') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Migrate Event Tracking Data', 'gravity-forms-google-analytics-event-tracking'),
       type: "button",
+      disabled: migrating,
+      icon: migrating ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_10__["default"], null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(lucide_react__WEBPACK_IMPORTED_MODULE_11__["default"], null),
+      onClick: function onClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        setMigrating(true);
+        setMigrateError(false);
+
+        // Send ajax request to migrate data
+        (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_7__["default"])('gfgaet_migrate_data', {
+          nonce: gforms_gfgaet_admin_settings_strings.migrate_nonce
+        }).then(function (response) {
+          var _response$data = response.data,
+            success = _response$data.success,
+            data = _response$data.data;
+          if (success) {
+            window.location.href = 'admin.php?page=gf_settings&subview=GFGAET_UA';
+          } else {
+            setMigrateError(data.message);
+          }
+        })["finally"](function () {
+          setMigrating(false);
+        });
+      }
+    })), migrateError && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Alerts__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      message: migrateError,
+      alertType: "error"
+    }), gforms_gfgaet_admin_settings_strings.is_migrated && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Alerts__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Event Tracking data has been migrated. Please deactivate the Event Tracking Add-On.', 'gravity-forms-google-analytics-event-tracking'),
+      alertType: "success"
+    })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Deactivate the Event Tracking Add-On', 'gravity-forms-google-analytics-event-tracking'),
+      type: "button",
+      className: "button secondary",
       onClick: function onClick() {
-        // Todo - Send ajax request to migrate data
+        (0,_utils_SendCommand__WEBPACK_IMPORTED_MODULE_7__["default"])('gfgaet_deactivate_addon', {
+          nonce: gforms_gfgaet_admin_settings_strings.deactivate_nonce
+        }).then(function (response) {
+          var _response$data2 = response.data,
+            success = _response$data2.success,
+            data = _response$data2.data;
+          if (success) {
+            window.location.href = 'admin.php?page=gf_settings&subview=gravityformsgoogleanalytics';
+          }
+        });
       }
     }))));
   }
@@ -8796,7 +8891,7 @@ var InstallMigrator = function InstallMigrator() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Section__WEBPACK_IMPORTED_MODULE_4__["default"], {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Analytics Add-On Installer and Migrator', 'gravity-forms-google-analytics-event-tracking')
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Alerts__WEBPACK_IMPORTED_MODULE_8__["default"], {
-      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Gravity Forms Google Analytics Add-On is installed and activated. Please connect to Google Tag Manager to continue.', 'gravity-forms-google-analytics-event-tracking'),
+      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Gravity Forms Google Analytics Add-On is installed and activated. Please connect to Google Tag Manager to continue. Once connected, return to this page to migrate your feed data.', 'gravity-forms-google-analytics-event-tracking'),
       alertType: "info"
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Connect to Google Tag Manager to continue', 'gravity-forms-google-analytics-event-tracking'),
