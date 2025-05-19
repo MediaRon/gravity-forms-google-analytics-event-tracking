@@ -8758,32 +8758,15 @@ var gaPlugin = {
   icon: gforms_gfgaet_admin_settings_strings.ga_plugin_icon
 };
 var InstallMigrator = function InstallMigrator() {
-  var getDescription = function getDescription() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Todoist is a task management service that allows you to create, organize, and manage your tasks and projects.', 'gf-hey-todos'), ' ', (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Connect to the', 'gf-hey-todos'), ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("a", {
-      href: "https://todoist.com",
-      target: "_blank",
-      rel: "noopener noreferrer"
-    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Todoist Service', 'gf-hey-todos')), ' ', (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('to create your task from Gravity Forms.', 'gf-hey-todos'));
-  };
-  var connectTodoistInterface = function connectTodoistInterface() {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Section__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('HeyTodos Todoist Settings', 'gf-hey-todos'),
-      description: getDescription()
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Connect to Todoist', 'gf-hey-todos'),
-      type: "link",
-      href: connectUrl
-    }))));
-  };
   if (!gforms_gfgaet_admin_settings_strings.can_install_ga) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Section__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Analytics Event Tracking Notice', 'gf-hey-todos'),
-      description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('This plugin has been deprecated. Please install the official Google Analytics Add-On for Gravity Forms.', 'gf-hey-todos')
+      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Analytics Event Tracking Notice', 'gravity-forms-google-analytics-event-tracking'),
+      description: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('This plugin has been deprecated. Please install the official Google Analytics Add-On for Gravity Forms.', 'gravity-forms-google-analytics-event-tracking')
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Alerts__WEBPACK_IMPORTED_MODULE_8__["default"], {
-      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('This plugin has been deprecated. Please install the official Google Analytics Add-On for Gravity Forms.', 'gf-hey-todos'),
+      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('This plugin has been deprecated. Please install the official Google Analytics Add-On for Gravity Forms.', 'gravity-forms-google-analytics-event-tracking'),
       alertType: "warning"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('View the official Google Analytics Add-On', 'gf-hey-todos'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('View the official Google Analytics Add-On', 'gravity-forms-google-analytics-event-tracking'),
       type: "link",
       href: "https://www.gravityforms.com/add-ons/google-analytics/?utm_source=gravity-forms-event-tracking&utm_medium=plugin-notice&utm_campaign=gf-gaet-notice",
       target: "_blank",
@@ -8792,10 +8775,37 @@ var InstallMigrator = function InstallMigrator() {
   }
   var initialInterface = function initialInterface() {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Section__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Analytics Add-On Installer and Migrator', 'gf-hey-todos')
+      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Analytics Add-On Installer and Migrator', 'gravity-forms-google-analytics-event-tracking')
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Plugin__WEBPACK_IMPORTED_MODULE_9__["default"], gaPlugin))));
   };
-  console.log('here');
+  if (gforms_gfgaet_admin_settings_strings.is_gtm_installed) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Section__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Analytics Add-On Installer and Migrator', 'gravity-forms-google-analytics-event-tracking')
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Alerts__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Tag Manager is connected. Please use the migration settings below to migrate your data.', 'gravity-forms-google-analytics-event-tracking'),
+      alertType: "success"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Migrate Event Tracking Data', 'gravity-forms-google-analytics-event-tracking'),
+      type: "button",
+      onClick: function onClick() {
+        // Todo - Send ajax request to migrate data
+      }
+    }))));
+  }
+  if (gforms_gfgaet_admin_settings_strings.is_gforms_ga_installed && gforms_gfgaet_admin_settings_strings.is_gforms_ga_activated) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Section__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Google Analytics Add-On Installer and Migrator', 'gravity-forms-google-analytics-event-tracking')
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Alerts__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      message: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Gravity Forms Google Analytics Add-On is installed and activated. Please connect to Google Tag Manager to continue.', 'gravity-forms-google-analytics-event-tracking'),
+      alertType: "info"
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Button__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Connect to Google Tag Manager to continue', 'gravity-forms-google-analytics-event-tracking'),
+      type: "button",
+      onClick: function onClick() {
+        window.location.href = 'admin.php?page=gf_settings&subview=gravityformsgoogleanalytics';
+      }
+    }))));
+  }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "gform_settings_form"
   }, initialInterface()));

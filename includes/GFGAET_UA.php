@@ -1,5 +1,15 @@
 <?php
+/**
+ * Gravity Forms Google Analytics Event Tracking
+ *
+ * @package GravityForms\GoogleAnalyticsEventTracking
+ *
+ * @inheritdoc GFFeedAddOn
+ * @inheritdoc GFAddOn
+ * @inheritdoc \Gravity_Forms\Gravity_Forms_Google_Analytics
+ */
 GFForms::include_addon_framework();
+
 class GFGAET_UA extends GFAddOn {
 	protected $_version                  = '2.4.0';
 	protected $_min_gravityforms_version = '1.8.20';
@@ -187,6 +197,14 @@ class GFGAET_UA extends GFAddOn {
 			}
 		}
 
+		$is_gtm_installed = false;
+		if ( function_exists( 'gf_google_analytics' ) ) {
+			$google_analytics = gf_google_analytics();
+			$options          = $google_analytics::get_options();
+			$is_connected     = ! empty( $options['connected'] ) && $options['connected'] === true;
+			$is_gtm_installed = (bool) ( rgar( $options, 'mode', '' ) === 'gtm' );
+		}
+
 		$scripts = array(
 			array(
 				'handle'    => 'gforms_gfgaet_admin_settings',
@@ -207,6 +225,7 @@ class GFGAET_UA extends GFAddOn {
 					'activate_nonce'         => wp_create_nonce( 'gfgaet_ga_activate_nonce' ),
 					'ga_plugin_icon'         => $this->get_base_url() . '/img/gformsga-addon.png',
 					'can_install_ga'         => $can_install_ga,
+					'is_gtm_installed'       => $is_connected && $is_gtm_installed,
 				),
 				'in_footer' => true,
 			),

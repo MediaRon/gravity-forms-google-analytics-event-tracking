@@ -25,52 +25,19 @@ const gaPlugin =
 
 const InstallMigrator = () => {
 
-	const getDescription = () => {
-		return (
-			<>
-				{__('Todoist is a task management service that allows you to create, organize, and manage your tasks and projects.', 'gf-hey-todos')}
-				{' '}
-				{__('Connect to the', 'gf-hey-todos')}
-				{' '}
-				<a href="https://todoist.com" target="_blank" rel="noopener noreferrer">{__('Todoist Service', 'gf-hey-todos')}</a>
-				{' '}
-				{__('to create your task from Gravity Forms.', 'gf-hey-todos')}
-			</>
-		);
-	};
-
-	const connectTodoistInterface = () => {
-		return (
-			<>
-				<Section
-					title={__('HeyTodos Todoist Settings', 'gf-hey-todos')}
-					description={getDescription()}
-				>
-					<>
-						<Button
-							label={__('Connect to Todoist', 'gf-hey-todos')}
-							type="link"
-							href={connectUrl}
-						/>
-					</>
-				</Section>
-			</>
-		);
-	};
-
 	if ( ! gforms_gfgaet_admin_settings_strings.can_install_ga ) {
 		return (
 			<>
-				<Section title={__('Google Analytics Event Tracking Notice', 'gf-hey-todos')}
-					description={__('This plugin has been deprecated. Please install the official Google Analytics Add-On for Gravity Forms.', 'gf-hey-todos')}
+				<Section title={__('Google Analytics Event Tracking Notice', 'gravity-forms-google-analytics-event-tracking')}
+					description={__('This plugin has been deprecated. Please install the official Google Analytics Add-On for Gravity Forms.', 'gravity-forms-google-analytics-event-tracking')}
 				>
 					<Alerts
-						message={__('This plugin has been deprecated. Please install the official Google Analytics Add-On for Gravity Forms.', 'gf-hey-todos')}
+						message={__('This plugin has been deprecated. Please install the official Google Analytics Add-On for Gravity Forms.', 'gravity-forms-google-analytics-event-tracking')}
 						alertType="warning"
 					>
 						<p>
 							<Button
-								label={__('View the official Google Analytics Add-On', 'gf-hey-todos')}
+								label={__('View the official Google Analytics Add-On', 'gravity-forms-google-analytics-event-tracking')}
 								type="link"
 								href="https://www.gravityforms.com/add-ons/google-analytics/?utm_source=gravity-forms-event-tracking&utm_medium=plugin-notice&utm_campaign=gf-gaet-notice"
 								target="_blank"
@@ -87,7 +54,7 @@ const InstallMigrator = () => {
 	const initialInterface = () => {
 		return (
 			<>
-				<Section title={__('Google Analytics Add-On Installer and Migrator', 'gf-hey-todos')}>
+				<Section title={__('Google Analytics Add-On Installer and Migrator', 'gravity-forms-google-analytics-event-tracking')}>
 					<>
 						<Plugin { ...gaPlugin } />
 					</>
@@ -96,8 +63,51 @@ const InstallMigrator = () => {
 		);
 	};
 
-	console.log( 'here' );
+	if ( gforms_gfgaet_admin_settings_strings.is_gtm_installed ) {
+		return (
+			<>
+				<Section title={__('Google Analytics Add-On Installer and Migrator', 'gravity-forms-google-analytics-event-tracking')}>
+					<>
+						<Alerts
+							message={__('Google Tag Manager is connected. Please use the migration settings below to migrate your data.', 'gravity-forms-google-analytics-event-tracking')}
+							alertType="success"
+						/>
+						<Button
+							label={__('Migrate Event Tracking Data', 'gravity-forms-google-analytics-event-tracking')}
+							type="button"
+							onClick={() => {
+								// Todo - Send ajax request to migrate data
+							}}
+						/>
+					</>
+				</Section>
+			</>
+		);
+	}
 
+
+
+	if ( gforms_gfgaet_admin_settings_strings.is_gforms_ga_installed && gforms_gfgaet_admin_settings_strings.is_gforms_ga_activated ) {
+		return (
+			<>
+				<Section title={__('Google Analytics Add-On Installer and Migrator', 'gravity-forms-google-analytics-event-tracking')}>
+					<>
+						<Alerts
+							message={__('Gravity Forms Google Analytics Add-On is installed and activated. Please connect to Google Tag Manager to continue.', 'gravity-forms-google-analytics-event-tracking')}
+							alertType="info"
+						/>
+						<Button
+							label={__('Connect to Google Tag Manager to continue', 'gravity-forms-google-analytics-event-tracking')}
+							type="button"
+							onClick={() => {
+								window.location.href = 'admin.php?page=gf_settings&subview=gravityformsgoogleanalytics';
+							}}
+						/>
+					</>
+				</Section>
+			</>
+		);
+	}
 	return (
 		<>
 			<div className="gform_settings_form">
