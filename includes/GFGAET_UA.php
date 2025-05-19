@@ -5,7 +5,7 @@ class GFGAET_UA extends GFAddOn {
 	protected $_min_gravityforms_version = '1.8.20';
 	protected $_slug                     = 'GFGAET_UA';
 	protected $_path                     = 'gravity-forms-google-analytics-event-tracking/gravity-forms-event-tracking.php';
-	protected $_full_path                = __FILE__;
+	protected $_full_path                = GFGAET_FILE;
 	protected $_title                    = 'Gravity Forms Google Analytics Event Tracking';
 	protected $_short_title              = 'Event Tracking';
 	// Members plugin integration
@@ -16,6 +16,7 @@ class GFGAET_UA extends GFAddOn {
 	protected $_capabilities_uninstall     = 'gravityforms_event_tracking_uninstall';
 
 	private static $_instance = null;
+
 
 	/**
 	 * Returns an instance of this class, and stores it in the $_instance property.
@@ -41,18 +42,227 @@ class GFGAET_UA extends GFAddOn {
 				update_option( 'gravityformsaddon_GFGAET_UA_settings', $old_ga_option );
 			}
 		}
+	}
 
+	public function init_ajax() {
+		add_action( 'wp_ajax_gfgaet_install_plugin', array( $this, 'ajax_install_ga_plugin' ) );
+		add_action( 'wp_ajax_gfgaet_activate_plugin', array( $this, 'ajax_activate_ga_plugin' ) );
+	}
+
+	/**
+	 * Installs the official GA Google Analytics plugin.
+	 */
+	public function ajax_install_ga_plugin() {
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'gfgaet_ga_install_nonce' ) ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid nonce.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+		if ( ! current_user_can( 'install_plugins' ) ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'You do not have permission to install plugins.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		$version_info      = GFCommon::get_version_info();
+		$version_offerings = rgar( $version_info, 'offerings', false );
+		if ( ! $version_offerings ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Google Analytics is not available on your current plan.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		$google_analytics_data = rgar( $version_offerings, 'gravityformsgoogleanalytics' );
+		if ( ! $google_analytics_data ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Google Analytics is not available on your current plan.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		$is_available = (bool) rgar( $google_analytics_data, 'is_available', false );
+		if ( ! $is_available ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Google Analytics is not available on your current plan.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		$download_url = rgar( $google_analytics_data, 'url', false );
+		if ( ! $download_url ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Google Analytics download could not be found.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		// Include plugin installation dependencies.
+		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		require_once ABSPATH . 'wp-admin/includes/class-plugin-upgrader.php';
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		// Build title and match variables.
+		$title  = 'Installing Gravity Forms Google Analytics Add-On...';
+		$url    = \GFCommon::truncate_url( $download_url, 10 );
+		$plugin = 'gravityformsgoogleanalytics';
+
+		// Build the installer.
+		$upgrader        = new \Plugin_Upgrader( new \Plugin_Installer_Skin( compact( 'title', 'url', 'nonce', 'plugin' ) ) );
+		$install_results = $upgrader->install( esc_url_raw( $download_url ) );
+
+		if ( is_wp_error( $install_results ) ) {
+			wp_send_json_error(
+				array(
+					'message'     => __( 'Could not install plugin.', 'wp-ajaxify-comments' ),
+					'type'        => 'error',
+					'dismissable' => true,
+				)
+			);
+		}
+
+		wp_send_json_success(
+			array(
+				'success' => true,
+			)
+		);
+	}
+
+	/**
+	 * Activates the official GA Google Analytics plugin.
+	 */
+	public function ajax_activate_ga_plugin() {
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'gfgaet_ga_activate_nonce' ) ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'Invalid nonce.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			wp_send_json_error(
+				array(
+					'success' => false,
+					'message' => __( 'You do not have permission to activate plugins.', 'gravity-forms-google-analytics-event-tracking' ),
+				)
+			);
+		}
+
+		activate_plugin( 'gravityformsgoogleanalytics/googleanalytics.php', '', false, true );
+
+		wp_send_json_success(
+			array(
+				'success' => true,
+			)
+		);
+	}
+
+	public function scripts() {
+		$deps = require $this->get_base_path() . '/dist/gfgaet-install-migrator.asset.php';
+
+		// Check if user can install GA add-on.
+		$version_info           = GFCommon::get_version_info();
+		$can_install_ga         = false;
+		$version_info_offerings = rgar( $version_info, 'offerings', false );
+		if ( $version_info_offerings ) {
+			$google_analytics_data = rgar( $version_info_offerings, 'gravityformsgoogleanalytics' );
+			if ( $google_analytics_data ) {
+				$can_install_ga = (bool) rgar( $google_analytics_data, 'is_available', false );
+			}
+		}
+
+		$scripts = array(
+			array(
+				'handle'    => 'gforms_gfgaet_admin_settings',
+				'src'       => $this->get_base_url() . '/dist/gfgaet-install-migrator.js',
+				'version'   => $deps['version'],
+				'deps'      => $deps['dependencies'],
+				'enqueue'   => array(
+					array(
+						'query' => 'page=gf_settings&subview=GFGAET_UA',
+					),
+				),
+				'strings'   => array(
+					'home_url'               => esc_url_raw( home_url() ),
+					'is_gforms_ga_installed' => $this->is_gforms_ga_installed(),
+					'is_gforms_ga_activated' => $this->is_gforms_ga_activated(),
+					'get_nonce'              => wp_create_nonce( 'gfgaet_get_plugin_status' ),
+					'install_nonce'          => wp_create_nonce( 'gfgaet_ga_install_nonce' ),
+					'activate_nonce'         => wp_create_nonce( 'gfgaet_ga_activate_nonce' ),
+					'ga_plugin_icon'         => $this->get_base_url() . '/img/gformsga-addon.png',
+					'can_install_ga'         => $can_install_ga,
+				),
+				'in_footer' => true,
+			),
+		);
+
+		return array_merge( parent::scripts(), $scripts );
+	}
+
+	public function styles() {
+		return array_merge(
+			parent::styles(),
+			array(
+				array(
+					'handle'  => 'gforms_gfgaet_admin_settings',
+					'enqueue' => array(
+						array(
+							'query' => 'page=gf_settings&subview=GFGAET_UA',
+						),
+					),
+					'src'     => $this->get_base_url() . '/dist/gfgaet-css.css',
+				),
+			)
+		);
+	}
+
+	/**
+	 * Checks to see if a plugin is installed or not.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $path Path to the asset.
+	 *
+	 * @return bool true if installed, false if not.
+	 */
+	public function is_gforms_ga_installed() {
+
+		// Get all plugins for current site.
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		$all_plugins = get_plugins();
+
+		if ( array_key_exists( 'gravityformsgoogleanalytics/googleanalytics.php', $all_plugins ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function is_gforms_ga_activated() {
+		return is_plugin_active( 'gravityformsgoogleanalytics/googleanalytics.php' );
 	}
 
 	public function settings_gforms_beta_cta() {
 		ob_start();
 		?>
 		
-		<div class="alert info">
-		<div style="padding-top: 25px; padding-bottom: 25px"><a href="https://www.gravityforms.com/add-ons/google-analytics/" target="_blank"><img src="<?php echo esc_url( GFGAET::get_plugin_url( '/img/gravity-forms-ga-addon-horizontal.png' ) ); ?>" width="800" height="214" /></a></div>
-			<h3 style="font-size: 18px; line-height: 1.2; font-weight: 400">The team behind Gravity Forms has developed and released an official Google Analytics Add-on.</h3>
-			<p><a class="button primary" href="https://www.gravityforms.com/add-ons/google-analytics/" target="_blank">Check out the new Google Analytics Add-On</a>
-		</div>
+		<div class="gfgaet-install-migration-notice" id="gfgaet-install-migration-notice"></div>
 		<?php
 		echo wp_kses_post( ob_get_clean() );
 	}
@@ -75,17 +285,11 @@ class GFGAET_UA extends GFAddOn {
 		return array(
 			array(
 				'title'       => __( 'Google Analytics and Google Tag Manager', 'gravity-forms-google-analytics-event-tracking' ),
-				'description' => '<p>' . __( 'By default, events are sent using the measurement protocol. You can change to using pure Google Analytics and Google Tag Manager if your forms are Ajax only.', 'gravity-forms-google-analytics-event-tracking' ) . '</p><p>' . __( 'Do you need help? <a target="_blank" href="https://mediaron.com/event-tracking-for-gravity-forms/?utm_source=wordpress_admin&utm_medium=documentation&utm_campaign=event_tracking">Please see the documentation</a>.</p>', 'gravity-forms-google-analytics-event-tracking' ),
+				'description' => '<p>' . __( 'To support Google Analytics 4, only Google Tag Manager is supported.', 'gravity-forms-google-analytics-event-tracking' ) . '</p>',
 				'fields'      => array(
 					array(
-						'name'       => 'gravityforms_ga',
-						'type'       => 'gforms_beta_cta',
-						'dependency' => array(
-							'field' => 'beta_notification',
-							'values' => array(
-								'on',
-							),
-						),
+						'name' => 'gravityforms_ga',
+						'type' => 'gforms_beta_cta',
 					),
 					array(
 						'type'          => 'radio',
@@ -95,26 +299,26 @@ class GFGAET_UA extends GFAddOn {
 						'label'         => 'How would you like to send events?',
 						'choices'       => array(
 							array(
-								'name'  => 'gmp_on',
-								'label' => esc_html__( 'Measurement Protocol (Deprecated)', 'gravity-forms-google-analytics-event-tracking' ),
-								'value' => 'gmp',
-								'icon'  => GFGAET::get_plugin_url( '/img/google-brands.png' ),
-								'tooltip' => esc_html__( 'This option will send analytics server-to-server using the measurement protocol', 'gravity-forms-google-analytics-event-tracking' ),
+								'name'     => 'gmp_on',
+								'label'    => esc_html__( 'Measurement Protocol (Deprecated)', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'    => 'gmp',
+								'icon'     => GFGAET::get_plugin_url( '/img/google-brands.png' ),
+								'tooltip'  => esc_html__( 'This option will send analytics server-to-server using the measurement protocol', 'gravity-forms-google-analytics-event-tracking' ),
 								'disabled' => true,
 							),
 							array(
-								'name'  => 'ga_on',
-								'label' => esc_html__( 'Google Analytics (Deprecated)', 'gravity-forms-google-analytics-event-tracking' ),
-								'value' => 'ga',
-								'icon'  => GFGAET::get_plugin_url( '/img/analytics.png' ),
-								'tooltip' => esc_html__( 'Send form data via JavaScript using an existing Google Analytics account.', 'gravity-forms-google-analytics-event-tracking' ),
+								'name'     => 'ga_on',
+								'label'    => esc_html__( 'Google Analytics (Deprecated)', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'    => 'ga',
+								'icon'     => GFGAET::get_plugin_url( '/img/analytics.png' ),
+								'tooltip'  => esc_html__( 'Send form data via JavaScript using an existing Google Analytics account.', 'gravity-forms-google-analytics-event-tracking' ),
 								'disabled' => true,
 							),
 							array(
-								'name'  => 'gtm_on',
-								'label' => esc_html__( 'Google Tag Manager (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
-								'value' => 'gtm',
-								'icon'  => GFGAET::get_plugin_url( '/img/gtm.png' ),
+								'name'    => 'gtm_on',
+								'label'   => esc_html__( 'Google Tag Manager (Ajax only forms)', 'gravity-forms-google-analytics-event-tracking' ),
+								'value'   => 'gtm',
+								'icon'    => GFGAET::get_plugin_url( '/img/gtm.png' ),
 								'tooltip' => esc_html__( 'Send form data using GA4 to your Google Tag Manager account.', 'gravity-forms-google-analytics-event-tracking' ),
 							),
 						),

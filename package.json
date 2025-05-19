@@ -1,0 +1,56 @@
+{
+	"name": "gravity-forms-google-analytics-event-tracking",
+	"version": "2.5.0",
+	"description": "Add event tracking to your Gravity Forms with ease using Google Tag Manager",
+	"main": "webpack.config.js",
+	"scripts": {
+		"start": "webpack --watch --env mode=development",
+		"dev": "webpack --mode development --env mode=development",
+		"build": "webpack --mode production --env mode=production"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MediaRon/gravity-forms-google-analytics-event-tracking"
+	},
+	"author": "Ronald Huereca",
+	"license": "GPL-3.0-or-later",
+	"devDependencies": {
+		"@babel/core": "^7.26.0",
+		"@babel/eslint-parser": "^7.18.2",
+		"@babel/plugin-transform-arrow-functions": "^7.25.9",
+		"@babel/plugin-transform-class-properties": "^7.25.9",
+		"@babel/preset-env": "^7.18.2",
+		"@babel/preset-react": "^7.25.9",
+		"@fortawesome/fontawesome-svg-core": "^6.7.1",
+		"@fortawesome/free-solid-svg-icons": "^6.7.1",
+		"@fortawesome/react-fontawesome": "^0.2.2",
+		"@tanstack/react-router": "^1.90.0",
+		"@wordpress/components": "^29.0.0",
+		"@wordpress/dependency-extraction-webpack-plugin": "^6.13.0",
+		"@wordpress/escape-html": "^3.13.0",
+		"@wordpress/hooks": "^4.13.0",
+		"@wordpress/i18n": "^5.13.0",
+		"@wordpress/url": "^4.13.0",
+		"axios": "^1.7.8",
+		"babel-loader": "^9.2.1",
+		"classnames": "^2.5.1",
+		"css-loader": "^7.1.2",
+		"grunt": "^1.5.3",
+		"grunt-cli": "^1.4.2",
+		"grunt-contrib-compress": "^2.0.0",
+		"mini-css-extract-plugin": "^2.9.2",
+		"qs": "^6.13.1",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-hook-form": "^7.53.2",
+		"resolve-url-loader": "^5.0.0",
+		"sass": "^1.81.0",
+		"sass-loader": "^16.0.3",
+		"webpack": "^5.35.1",
+		"webpack-cli": "^5.1.4",
+		"webpack-remove-empty-scripts": "^1.0.4"
+	},
+	"dependencies": {
+		"lucide-react": "^0.511.0"
+	}
+}

@@ -1,0 +1,688 @@
+@import '../../node_modules/@wordpress/components/build-style/style.css';
+
+$dark_blue: #0B1C47;
+$black: #040A18;
+$green: #44873F;
+$white: #FFFFFF;
+$marsala: #873F49;
+
+/**
+Core Overrides with Gravity Forms Colors **/
+.components-form-toggle .components-form-toggle__track {
+	height: 24px;
+	line-height: 24px;
+	width: 44px;
+	padding: 4px;
+	border: 2px solid transparent;
+	border-radius: 15px;
+}
+
+.components-form-toggle {
+	min-height: 24px;
+}
+
+.heytodos-gform-settings-row {
+	margin-bottom: 16px;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	.is-required label {
+		display: inline-flex;
+		align-items: center;
+		position: relative;
+	}
+
+	.is-required label:after {
+		position: absolute;
+		display: inline-block;
+		vertical-align: middle;
+		content: '*';
+		top: -3px;
+		right: -12px;
+		color: #b53b07;
+		font-size: 1.4em;
+		line-height: 1.3;
+	}
+}
+
+.components-toggle-control .components-toggle-control__label,
+.components-input-control__label,
+.components-base-control__label {
+	margin-left: 8px;
+	text-transform: unset !important;
+	font-weight: 500 !important;
+	font-size: .8125rem !important;
+}
+
+.components-form-toggle:not(.is-checked) .components-form-toggle__track {
+	background-color: #9092b2;
+}
+
+.components-form-toggle:not(.is-checked) .components-form-toggle__thumb {
+	background: #fff center no-repeat url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0yLjQ3NDkgMi41MjUxYS41ODMzLjU4MzMgMCAwMDAgLjgyNUw0LjEyNDggNWwtMS42NSAxLjY1YS41ODMzLjU4MzMgMCAxMC44MjUuODI0OWwxLjY1LTEuNjUgMS42NDk5IDEuNjVhLjU4MzMuNTgzMyAwIDEwLjgyNS0uODI1TDUuNzc0NiA1bDEuNjUtMS42NWEuNTgzMy41ODMzIDAgMTAtLjgyNS0uODI0OWwtMS42NSAxLjY1LTEuNjQ5OS0xLjY1YS41ODMzLjU4MzMgMCAwMC0uODI1IDB6IiBmaWxsPSIjOTA5MkIyIi8+PC9zdmc+);
+	height: 16px;
+	width: 16px;
+	top: 4px;
+	left: 4px;
+}
+
+.components-form-toggle.is-checked .components-form-toggle__track {
+	background-color: #3e7da6;
+}
+
+.components-form-toggle.is-checked .components-form-toggle__thumb {
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI3IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0yLjY2NjcgNC4zOTA1TDYuODYxOS4xOTUzYS42NjY3LjY2NjcgMCAwMS45NDI4Ljk0MjhsLTUuMTM4IDUuMTM4TC4xOTUzIDMuODA0N2EuNjY2Ny42NjY3IDAgMDEuOTQyOC0uOTQyOGwxLjUyODYgMS41Mjg2eiIgZmlsbD0iIzNFN0RBNiIvPjwvc3ZnPg==);
+	background-size: 8px;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 50%;
+	height: 16px;
+	width: 16px;
+	top: 4px;
+	right: 20px;
+	left: unset;
+}
+
+@keyframes gfgaet-spin {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.prefix__fa-spinner {
+	animation: gfgaet-spin 1s steps(8) infinite;
+}
+
+#gfgaet-auth-loading h3 {
+	margin-top: 0;
+}
+
+.gform-settings__wrapper .button.primary.danger {
+	background: #ab0400;
+}
+.gform-settings-panel__content .alert.has-children button {
+	margin-top: 12px;
+}
+
+.heytodos-gform-settings-save-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+#tab_gfgaet {
+
+	#gform-settings-section-task-details,
+	#gform_setting_todoist_projects,
+	#gform_setting_todoist_sections,
+	#gform_setting_todoist_assignees_ {
+		// display: none;
+	}
+}
+
+.heytodos-gform-settings-dynamic-select-container span.gform-settings-input__container {
+	box-sizing: border-box;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: end;
+}
+
+.heytodos-gform-settings-dynamic-select-container .gform-settings-input__container.gform-settings-input__container--with-add-button,
+.heytodos-gform-settings-tree-select-container {
+	display: grid;
+	grid-template-columns: 1fr auto auto;
+	align-items: end;
+	gap: 16px;
+}
+
+.heytodos-gform-settings-dynamic-select-container.gfgaet-form-token-field-container .gform-settings-input__container.gform-settings-input__container--with-add-button {
+	align-items: start;
+}
+
+.gfgaet-form-token-field {
+
+	&~.gfgaet-form-token-field-refresh-button,
+	&~.gfgaet-form-token-field-add-button {
+		position: relative;
+		top: 30px;
+	}
+}
+
+
+/**
+Style the token field.
+*/
+.gform-settings-input__container {
+	.components-form-token-field__input-container input[type=text].components-form-token-field__input {
+		padding: .6875rem 2rem .6875rem 1rem;
+		font-size: .875rem;
+		line-height: 1.25rem;
+		border: 0 !important;
+	}
+
+	.components-form-token-field__token {
+		display: flex;
+		align-items: center;
+		background: rgb(221, 221, 221);
+	}
+}
+
+/**
+ * Style the Labels..
+ */
+.gform-settings-input__container label {
+	text-transform: unset;
+	font-weight: 600;
+	font-size: .8125rem;
+	line-height: 1.25rem;
+}
+
+#gform-settings button.button.secondary {
+	line-height: 1.25rem;
+	height: unset;
+	min-width: unset;
+
+	&.is-loading {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: row-reverse;
+
+		svg {
+			margin-left: 0.5rem;
+		}
+	}
+}
+
+.heytodos-gform-settings-save-container {
+	button {
+		&.button.is-primary,
+		&.button.primary {
+			background-color: #3e7da6;
+
+			&:hover {
+				background-color: #3e7da6;
+			}
+		}
+
+		&.button.components-button,
+		&.button {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+		svg {
+			height: 100%;
+		}
+		.saving {
+			display: inline-flex;
+			align-items: center;
+		}
+	}
+}
+
+.heytodos-gform-settings-select-alert-container {
+	margin-bottom: 1.5rem;
+
+	.has-children {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 1rem;
+	}
+}
+
+/*
+ * Remove the margin-left from the help text for the toggle control.
+ */
+.gform-settings-panel__content .components-toggle-control__help {
+	margin-left: 0;
+}
+
+/**
+ * Bold the label for the toggle control.
+ */
+.gform-settings-panel__content .components-toggle-control__label,
+.heytodos-gform-settings-tree-select-container .components-select-control__label {
+	font-weight: 600;
+	text-transform: unset;
+}
+
+.heytodos-gform-settings-tree-select-container .components-input-control__suffix {
+	display: none;
+}
+
+body .components-select-control.heytodos-gform-settings-tree-select select.components-select-control__input {
+	border: 1px solid #3985b7;
+	box-shadow: 0 .125rem .0675rem rgba(28, 31, 63, .0634624), 0 0 0 2px #bed8ed !important;
+	color: #242748;
+	font-size: .875rem;
+	line-height: 1.25rem;
+	max-height: none;
+	min-height: 0;
+	min-height: initial;
+	padding: .6875rem 2rem .6875rem 1rem;
+	background-image: unset;
+	background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%239092B2%22%2F%3E%3C%2Fsvg%3E) no-repeat right .6rem top 55%;
+	background-color: #fff;
+	background-size: 1rem 1rem;
+	width: 100%;
+	height: 100%;
+}
+
+body .heytodos-gform-settings-tree-select-container .components-base-control__field {
+	margin-bottom: 0;
+}
+
+body .components-select-control.heytodos-gform-settings-tree-select select.components-select-control__input:hover {
+	color: #2271b1;
+}
+
+body .components-select-control.heytodos-gform-settings-tree-select select.components-select-control__input:focus {
+	border-color: #2271b1;
+	color: #0a4b78;
+	box-shadow: 0 0 0 1px #2271b1;
+	outline: 2px solid transparent;
+}
+
+/* Indent child items */
+body .components-select-control.heytodos-gform-settings-tree-select select.components-select-control__input option[data-depth="1"] {
+	padding-left: 12px;
+}
+
+body .components-select-control.heytodos-gform-settings-tree-select select.components-select-control__input option[data-depth="2"] {
+	padding-left: 24px;
+}
+
+body .components-select-control.heytodos-gform-settings-tree-select select.components-select-control__input option[data-depth="3"] {
+	padding-left: 36px;
+}
+
+.gfgaet-color-picker {
+	.components-base-control__field {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		gap: 1.5rem;
+	}
+	.components-base-control__label {
+		margin-bottom: 0;
+	}
+}
+.gfgaet-color-picker-popover {
+	.color-swatch {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 40px;
+		height: 40px;
+		border-radius: 4px;
+		border: 1px solid #ddd;
+		cursor: pointer;
+		margin: 2px;
+
+		&.is-selected {
+			box-shadow: 0 0 0 2px #fff, 0 0 0 4px #007cba;
+		}
+
+		button {
+			position: relative;
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+		}
+	}
+	.swatch-container {
+		max-height: 200px;
+		overflow-y: auto;
+		padding: 4px;
+	}
+}
+.gfgaet-color-picker {
+
+	.color-button {
+		border: 2px solid #fff;
+		border-radius: 100%;
+		box-shadow: 0 3px 8px rgba(18, 25, 97, 0.15), 0 1px 1px rgba(18, 25, 97, 0.16), 0 2px 1px rgba(18, 25, 97, 0.04);
+		cursor: pointer;
+		display: inline-block;
+		height: 30px;
+		position: relative;
+		width: 30px;
+	}
+}
+
+/**
+ * Add Info Alt Alert Icon to GForms Alerts
+ */
+.gform-settings__wrapper .alert.info.info-alt:after  {
+
+	background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23FFFFFF'/%3E%3Cpath d='M256,0C114.509,0,0,114.496,0,256c0,141.489,114.496,256,256,256c141.491,0,256-114.496,256-256C512,114.511,397.504,0,256,0z M282.289,357.621c0,8.088-11.794,16.174-26.284,16.174c-15.164,0-25.946-8.086-25.946-16.174V229.234c0-9.435,10.783-15.839,25.946-15.839c14.49,0,26.284,6.404,26.284,15.839V357.621z M256.006,182.396c-15.501,0-27.631-11.457-27.631-24.263c0-12.805,12.131-23.925,27.631-23.925c15.164,0,27.296,11.12,27.296,23.925C283.302,170.939,271.169,182.396,256.006,182.396z' fill='%236b6bf4'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
+
+.gform-settings__wrapper .alert.info.info-loading:after {
+	background-image: url('data:image/svg+xml,<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="fi_17879255"><rect width="100%" height="100%" fill="white" rx="20" ry="20"/><g id="Layer_2" data-name="Layer 2"><g id="Layer_1_copy_6" data-name="Layer 1 copy 6"><g id="_30" data-name="30"><path fill="%236b6bf4" d="m256 0c-141.38 0-256 114.62-256 256s114.62 256 256 256 256-114.62 256-256-114.62-256-256-256zm55.15 164.06a26 26 0 1 1 0 36.78 26 26 0 0 1 0-36.78zm-55.15-38.06a26 26 0 1 1 -26 26 26 26 0 0 1 26-26zm-130 130a26 26 0 1 1 26 26 26 26 0 0 1 -26-26zm74.85 91.94a26 26 0 1 1 0-36.79 26 26 0 0 1 0 36.78zm0-147.09a26 26 0 1 1 0-36.78 26 26 0 0 1 0 36.77zm55.15 185.15a26 26 0 1 1 26-26 26 26 0 0 1 -26 26zm91.93-38.09a26 26 0 1 1 0-36.76 26 26 0 0 1 0 36.76zm12.07-65.91a26 26 0 1 1 26-26 26 26 0 0 1 -26 26z"></path></g></g></g></svg>');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	animation-name: gfgaet-spin;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+.gfgaet-progress-bar {
+    margin: 20px 0;
+	min-width: 100%;
+
+	background-color: color-mix(
+		in srgb,
+		var(--wp-components-color-foreground, #1e1e1e),
+		transparent 90%
+	);
+	height: 24px !important;
+	display: flex
+;
+    align-items: center;
+    padding: 8px;
+	box-sizing: border-box;
+
+    // Style the progress element
+    progress {
+        width: 100%;
+		height: 12px;
+		border-radius: 9999px;
+		padding: 0;
+
+        // Remove default styling
+        &::-webkit-progress-bar {
+            background-color: #f0f0f1;
+            border-radius: 9999px;
+        }
+
+        // Style the progress value
+        &::-webkit-progress-value {
+            background-color: #2271b1;
+            border-radius: 9999px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        // Firefox support
+        &::-moz-progress-bar {
+            background-color: #2271b1;
+            border-radius: 9999px;
+            transition: width 0.3s ease-in-out;
+        }
+    }
+
+    // Style the sync status text
+    .sync-status {
+        color: #50575e;
+        font-size: 14px;
+        margin-top: 12px;
+    }
+	
+	> div {
+		position: static;
+		top: 6px;
+		background-color: color-mix(
+			in srgb,
+			var(--wp-components-color-foreground, #6b6bf4),
+			transparent 0%
+		);
+		height: 12px;
+		border-radius: 9999px;
+	}
+}
+
+.gfgaet-auth-wizard {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 16px;
+	position: relative;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	margin-bottom: 24px;
+
+	li {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0;
+		padding: 0;
+		margin-top: 24px;
+		padding-top: 12px;
+
+		&:before {
+			display: block;
+			content: '';
+			position: absolute;
+			height: 3px;
+			background-color: #9092b2;
+			width: 100%;
+			top: -18px;
+			left: calc(-50% - 18px);
+			z-index: 1;
+		}
+		&:after {
+			position: absolute;
+			content: attr(data-step);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 36px;
+			height: 36px;
+			background-color: #9092b2;
+			border-radius: 50%;
+			top: -36px;
+			color: #FFF;
+			font-weight: 600;
+			font-size: 14px;
+			z-index: 2;
+		}
+		
+		&:first-child:before {
+			display: none;
+		}
+		&.active:before,
+		&.completed:before {
+			background-color: #6b6bf4;
+		}
+		&.active:after {
+			background-color: #6b6bf4;
+		}
+		&.completed:after {
+			background-color: #b3b3ef;
+		}
+	}
+
+	
+}
+
+.gform-card--metric-group {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 24px;
+    
+    // Default mobile view (1 column)
+    grid-template-columns: 1fr;
+    
+    // Tablet view (2 columns)
+    @media screen and (min-width: 783px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    // Desktop view (4 columns)
+    @media screen and (min-width: 1024px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+
+.gfgaet-button {
+	background: #fff;
+	color: #017e01;
+	border-style: solid;
+	border-color: #017e01;
+	padding: 15px 25px !important;
+	font-size: 14px;
+	cursor: pointer;
+	border-radius: 2px;
+	transition: all 0.4s ease-in-out;
+	border-width: 1px;
+	margin-right: 10px;
+	line-height: 1;
+	height: unset;
+	outline: none;
+	max-height: unset;
+	vertical-align: middle;
+
+	&:last-child {
+		margin-right: 0;
+	}
+
+	&:hover {
+		background: #e9ece6;
+		color: #005200;
+		border-color: #006400;
+	}
+
+	&.gfgaet__btn-secondary {
+		background: $dark_blue;
+		color: #ffffff;
+		border-color: #111;
+
+		&:hover {
+			background: $black;
+			color: #ffffff;
+			border-color: lighten(#111, 10%);
+		}
+
+		&.gfgaet-button-heart svg {
+			color: pink;
+			transition: all 0.5s ease-in-out;
+		}
+
+		&.gfgaet-button-zap svg {
+			color: yellow;
+			transition: all 0.5s ease-in-out;
+		}
+
+		svg {
+			fill: none;
+			color: #FFF;
+			margin-right: 8px;
+			transition: all 0.5s ease-in-out;
+		}
+	}
+
+	&.gfgaet__btn-info {
+		background: #fff;
+		color: #333;
+		border-color: #FFF;
+
+		&:hover {
+			background: rgb(248, 247, 254);
+			color: #000;
+			border-color: #000;
+
+			svg path {
+				fill: #000;
+			}
+		}
+
+		svg {
+			display: inline-block;
+			margin-right: 8px;
+
+			path {
+				fill: #000;
+			}
+		}
+	}
+	&.is-loading {
+
+		svg {
+			width: 24px;
+			height: 24px;
+			animation: gfgaet-rotate 1s linear infinite;
+
+			path {
+				fill: #FFF;
+			}
+		}
+	}
+}
+
+
+/* Plugin Integrations */
+.gfgaet-plugin-integrations-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-column-gap: 40px;
+	row-gap: 40px;
+}
+.gfgaet-plugin-integration {
+
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	border-radius: 3px;
+}
+.gfgaet-plugin-integration-info {
+	display: flex;
+	column-gap: 25px;
+	align-items: center;
+	padding: 0px 20px;
+	padding-bottom: 10px;
+	min-height: 125px;
+
+	.gfgaet-plugin-integration-icon {
+		img {
+			width: 75px;
+			height: 75px;
+		}
+	}
+	.gfgaet-plugin-integration-meta {
+		flex: 1;
+		h3 {
+			margin: 0;
+			margin-bottom: 8px;
+		}
+		p {
+			font-size: 13px;
+		}
+	}
+}
+.gfgaet-plugin-integration-button .is-loading.has-icon svg {
+	animation: gfgaet-spin 1s linear infinite;
+}
+.gfgaet-plugin-integration-actions {
+	background: #F7F7F7;
+	border-top: 1px solid #ddd;
+	padding: 10px 20px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	align-items: center;
+	min-height: 55px;
+	
+
+	.gfgaet-plugin-integration-button {
+		text-align: right;
+		button {
+			text-align: center;
+			justify-content: center;
+			min-width: 125px;
+		}
+	}
+}
